@@ -5,6 +5,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 
 import algorithms.mazeGenerators.Maze3d;
+import io.MyCompressorOutputStream;
 
 public class StreamTest {
 	public void run(){
