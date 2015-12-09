@@ -8,21 +8,16 @@ import algorithms.search.Searcher;
 /**
  * 
  * 
-* <h1>Maze3d</h1>
-* This class represents a 3d maze.  
- * a three dimensional int matrix is used to represent the walls and paths of the maze (map)
- * along with methods to manipulate it or check its status. 
-* <p>
-* <b>Notes:</b> 
-*
-* @author  Lior Shachar
-* @version 1.0
-* @since   2015-11-28
-*/
-
-
-
-
+ * <h1>Maze3d</h1> This class represents a 3d maze. a three dimensional int
+ * matrix is used to represent the walls and paths of the maze (map) along with
+ * methods to manipulate it or check its status.
+ * <p>
+ * <b>Notes:</b>
+ *
+ * @author Lior Shachar
+ * @version 1.0
+ * @since 2015-11-28
+ */
 
 public class Maze3d implements MazeProblem {
 
@@ -32,35 +27,18 @@ public class Maze3d implements MazeProblem {
 	private int zSize;
 	private Position StartPosition;
 	private Position GoalPosition;
-	
-	
-	
-	
-	
-	
-	public Maze3d(byte[] b){
+
+	public Maze3d(byte[] arr){
 		
+		ySize=(int)arr[0];
+		xSize=(int)arr[1];
+		zSize=(int)arr[2];
 		
-	}
-	
-	
-	
-	public byte[] toByteArray(){
+		StartPosition= new Position((int)arr[3],(int)arr[4],(int)arr[5]) ;
+		GoalPosition= new Position((int)arr[6],(int)arr[7],(int)arr[8]) ;
 		
-		byte arr[] = new byte[(xSize * ySize *zSize)+9];
-		arr[0]=(byte)ySize;
-		arr[1]=(byte)xSize;
-		arr[2]=(byte)zSize;
-		
-		arr[3]=(byte)this.getStartPosition().getY();
-		arr[4]=(byte)this.getStartPosition().getX();
-		arr[5]=(byte)this.getStartPosition().getZ();
-		
-		arr[6]=(byte)this.getGoalPosition().getY();
-		arr[7]=(byte)this.getGoalPosition().getX();
-		arr[8]=(byte)this.getGoalPosition().getZ();
-		
-		int itr = 9; // maze map info starts from the 9th place on our array
+		this.map = new int[ySize][xSize][zSize];
+		int itr = 9;
 		
 		for (int i = 0; i < ySize; i++) {
 
@@ -68,7 +46,42 @@ public class Maze3d implements MazeProblem {
 
 				for (int k = 0; k < zSize; k++) {
 
-					arr[itr]=(byte)this.map[i][j][k];
+					this.map[i][j][k] = arr[itr];
+					itr++;
+
+				}
+
+			}
+		}
+		
+		
+		
+	}
+
+	public byte[] toByteArray() {
+
+		byte arr[] = new byte[(xSize * ySize * zSize) + 9];
+		arr[0] = (byte) ySize;
+		arr[1] = (byte) xSize;
+		arr[2] = (byte) zSize;
+
+		arr[3] = (byte) this.getStartPosition().getY();
+		arr[4] = (byte) this.getStartPosition().getX();
+		arr[5] = (byte) this.getStartPosition().getZ();
+
+		arr[6] = (byte) this.getGoalPosition().getY();
+		arr[7] = (byte) this.getGoalPosition().getX();
+		arr[8] = (byte) this.getGoalPosition().getZ();
+
+		int itr = 9; // maze map info starts from the 9th place on our array
+
+		for (int i = 0; i < ySize; i++) {
+
+			for (int j = 0; j < xSize; j++) {
+
+				for (int k = 0; k < zSize; k++) {
+
+					arr[itr] = (byte) this.map[i][j][k];
 					itr++;
 
 				}
@@ -107,7 +120,7 @@ public class Maze3d implements MazeProblem {
 	}
 
 	public String[] getPossibleMoves(Position p) {
-		
+
 		ArrayList<Position> moves = getPossibleMovesList(p);
 		ArrayList<String> strings = new ArrayList<String>();
 		for (Position move : moves)
@@ -538,7 +551,8 @@ public class Maze3d implements MazeProblem {
 				else
 					z = 0;
 
-			} while (this.numOfMoves(new Position(y, w, z)) != 1 || (new Position(y, w, z).isNextTo(StartPosition)) || (new Position(y, w, z).equals(StartPosition)));
+			} while (this.numOfMoves(new Position(y, w, z)) != 1 || (new Position(y, w, z).isNextTo(StartPosition))
+					|| (new Position(y, w, z).equals(StartPosition)));
 
 			this.GoalPosition = new Position(y, w, z);
 			this.path(this.GoalPosition);
@@ -557,7 +571,8 @@ public class Maze3d implements MazeProblem {
 					z = rnd.nextInt(zSize - 1);
 				else
 					z = 0;
-			} while (this.numOfMoves(new Position(w, x, z)) != 1 || (new Position(w, x, z).isNextTo(StartPosition)) || (new Position(w, x, z).equals(StartPosition)));
+			} while (this.numOfMoves(new Position(w, x, z)) != 1 || (new Position(w, x, z).isNextTo(StartPosition))
+					|| (new Position(w, x, z).equals(StartPosition)));
 
 			this.GoalPosition = new Position(w, x, z);
 			this.path(this.GoalPosition);
