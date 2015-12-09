@@ -33,6 +33,18 @@ public class Maze3d implements MazeProblem {
 	private Position StartPosition;
 	private Position GoalPosition;
 	
+	
+	
+	
+	
+	
+	public Maze3d(byte[] b){
+		
+		
+	}
+	
+	
+	
 	public byte[] toByteArray(){
 		
 		byte arr[] = new byte[(xSize * ySize *zSize)+9];

@@ -11,6 +11,7 @@ public class Run {
 		MyMaze3dGenerator creator = new MyMaze3dGenerator();
 		Maze3d maze = creator.generate(12 ,13, 15);
 		
+		
 
 	}
 
