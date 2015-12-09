@@ -10,7 +10,7 @@ import algorithms.search.Searcher;
  * 
 * <h1>Maze3d</h1>
 * This class represents a 3d maze.  
- * a three dimensional matrix is used to represent the walls and paths of the maze (map)
+ * a three dimensional int matrix is used to represent the walls and paths of the maze (map)
  * along with methods to manipulate it or check its status. 
 * <p>
 * <b>Notes:</b> 
@@ -32,6 +32,39 @@ public class Maze3d implements MazeProblem {
 	private int zSize;
 	private Position StartPosition;
 	private Position GoalPosition;
+	
+	public byte[] toByteArray(){
+		
+		byte arr[] = new byte[(xSize * ySize *zSize)+9];
+		arr[0]=(byte)ySize;
+		arr[1]=(byte)xSize;
+		arr[2]=(byte)zSize;
+		
+		arr[3]=(byte)this.getStartPosition().getY();
+		arr[4]=(byte)this.getStartPosition().getX();
+		arr[5]=(byte)this.getStartPosition().getZ();
+		
+		arr[6]=(byte)this.getGoalPosition().getY();
+		arr[7]=(byte)this.getGoalPosition().getX();
+		arr[8]=(byte)this.getGoalPosition().getZ();
+		
+		int itr = 9; // maze map info starts from the 9th place on our array
+		
+		for (int i = 0; i < ySize; i++) {
+
+			for (int j = 0; j < xSize; j++) {
+
+				for (int k = 0; k < zSize; k++) {
+
+					arr[itr]=(byte)this.map[i][j][k];
+					itr++;
+
+				}
+
+			}
+		}
+		return arr;
+	}
 
 	public Maze3d(int ySize, int xSize, int zSize) { // C`tor, initialize every
 														// cell with 1.
