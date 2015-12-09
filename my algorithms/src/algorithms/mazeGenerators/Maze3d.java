@@ -3,6 +3,8 @@ package algorithms.mazeGenerators;
 import java.util.ArrayList;
 import java.util.Random;
 
+import algorithms.search.Searcher;
+
 /**
  * 
  * 
@@ -22,7 +24,7 @@ import java.util.Random;
 
 
 
-public class Maze3d {
+public class Maze3d implements MazeProblem {
 
 	private int map[][][];
 	private int xSize;
