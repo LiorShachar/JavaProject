@@ -1,28 +1,26 @@
 package algorithms.mazeGenerators;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Random;
+
+import algorithms.search.Searcher;
 
 /**
  * 
  * 
-* <h1>Maze3d</h1>
-* This class represents a 3d maze.  
- * a three dimensional matrix is used to represent the walls and paths of the maze (map)
- * along with methods to manipulate it or check its status. 
-* <p>
-* <b>Notes:</b> 
-*
-* @author  Lior Shachar
-* @version 1.0
-* @since   2015-11-28
-*/
+ * <h1>Maze3d</h1> This class represents a 3d maze. a three dimensional int
+ * matrix is used to represent the walls and paths of the maze (map) along with
+ * methods to manipulate it or check its status.
+ * <p>
+ * <b>Notes:</b>
+ *
+ * @author Lior Shachar
+ * @version 1.0
+ * @since 2015-11-28
+ */
 
-
-
-
-
-public class Maze3d {
+public class Maze3d implements MazeProblem {
 
 	private int map[][][];
 	private int xSize;
@@ -30,6 +28,116 @@ public class Maze3d {
 	private int zSize;
 	private Position StartPosition;
 	private Position GoalPosition;
+
+	
+	
+	
+	
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((GoalPosition == null) ? 0 : GoalPosition.hashCode());
+		result = prime * result + ((StartPosition == null) ? 0 : StartPosition.hashCode());
+		result = prime * result + Arrays.deepHashCode(map);
+		result = prime * result + xSize;
+		result = prime * result + ySize;
+		result = prime * result + zSize;
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Maze3d other = (Maze3d) obj;
+		if (GoalPosition == null) {
+			if (other.GoalPosition != null)
+				return false;
+		} else if (!GoalPosition.equals(other.GoalPosition))
+			return false;
+		if (StartPosition == null) {
+			if (other.StartPosition != null)
+				return false;
+		} else if (!StartPosition.equals(other.StartPosition))
+			return false;
+		if (!Arrays.deepEquals(map, other.map))
+			return false;
+		if (xSize != other.xSize)
+			return false;
+		if (ySize != other.ySize)
+			return false;
+		if (zSize != other.zSize)
+			return false;
+		return true;
+	}
+
+	public Maze3d(byte[] arr){
+		
+		ySize=(int)arr[0];
+		xSize=(int)arr[1];
+		zSize=(int)arr[2];
+		
+		StartPosition= new Position((int)arr[3],(int)arr[4],(int)arr[5]) ;
+		GoalPosition= new Position((int)arr[6],(int)arr[7],(int)arr[8]) ;
+		
+		this.map = new int[ySize][xSize][zSize];
+		int itr = 9;
+		
+		for (int i = 0; i < ySize; i++) {
+
+			for (int j = 0; j < xSize; j++) {
+
+				for (int k = 0; k < zSize; k++) {
+
+					this.map[i][j][k] = arr[itr];
+					itr++;
+
+				}
+
+			}
+		}
+		
+		
+		
+	}
+
+	public byte[] toByteArray() {
+
+		byte arr[] = new byte[(xSize * ySize * zSize) + 9];
+		arr[0] = (byte) ySize;
+		arr[1] = (byte) xSize;
+		arr[2] = (byte) zSize;
+
+		arr[3] = (byte) this.getStartPosition().getY();
+		arr[4] = (byte) this.getStartPosition().getX();
+		arr[5] = (byte) this.getStartPosition().getZ();
+
+		arr[6] = (byte) this.getGoalPosition().getY();
+		arr[7] = (byte) this.getGoalPosition().getX();
+		arr[8] = (byte) this.getGoalPosition().getZ();
+
+		int itr = 9; // maze map info starts from the 9th place on our array
+
+		for (int i = 0; i < ySize; i++) {
+
+			for (int j = 0; j < xSize; j++) {
+
+				for (int k = 0; k < zSize; k++) {
+
+					arr[itr] = (byte) this.map[i][j][k];
+					itr++;
+
+				}
+
+			}
+		}
+		return arr;
+	}
 
 	public Maze3d(int ySize, int xSize, int zSize) { // C`tor, initialize every
 														// cell with 1.
@@ -60,7 +168,7 @@ public class Maze3d {
 	}
 
 	public String[] getPossibleMoves(Position p) {
-		
+
 		ArrayList<Position> moves = getPossibleMovesList(p);
 		ArrayList<String> strings = new ArrayList<String>();
 		for (Position move : moves)
@@ -491,7 +599,8 @@ public class Maze3d {
 				else
 					z = 0;
 
-			} while (this.numOfMoves(new Position(y, w, z)) != 1 || (new Position(y, w, z).isNextTo(StartPosition)) || (new Position(y, w, z).equals(StartPosition)));
+			} while (this.numOfMoves(new Position(y, w, z)) != 1 || (new Position(y, w, z).isNextTo(StartPosition))
+					|| (new Position(y, w, z).equals(StartPosition)));
 
 			this.GoalPosition = new Position(y, w, z);
 			this.path(this.GoalPosition);
@@ -510,7 +619,8 @@ public class Maze3d {
 					z = rnd.nextInt(zSize - 1);
 				else
 					z = 0;
-			} while (this.numOfMoves(new Position(w, x, z)) != 1 || (new Position(w, x, z).isNextTo(StartPosition)) || (new Position(w, x, z).equals(StartPosition)));
+			} while (this.numOfMoves(new Position(w, x, z)) != 1 || (new Position(w, x, z).isNextTo(StartPosition))
+					|| (new Position(w, x, z).equals(StartPosition)));
 
 			this.GoalPosition = new Position(w, x, z);
 			this.path(this.GoalPosition);
