@@ -22,21 +22,6 @@ public class Run {
 		StreamTest start = new StreamTest();
 		start.run();
 		
-		/*
-		FileOutputStream out = new FileOutputStream("lol.txt");
-		MyCompressorOutputStream myc = new MyCompressorOutputStream(out);
-		MyMaze3dGenerator creator = new MyMaze3dGenerator();
-		Maze3d maze = creator.generate(1 ,10, 10);
-		myc.write(maze.toByteArray());
-		out.flush();
-		out.close();
-		
-		FileInputStream newin = new  FileInputStream("lol.txt");
-		MyDecompressorInputStream dc = new MyDecompressorInputStream(newin);
-		byte b[] = new byte[maze.toByteArray().length];
-		System.out.println(dc.read(b)); 
-		
-		*/
 		
 	
 	

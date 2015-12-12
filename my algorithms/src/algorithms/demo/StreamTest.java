@@ -15,7 +15,7 @@ import io.MyDecompressorInputStream;
 public class StreamTest {
 	public void run() throws IOException{
 		MyMaze3dGenerator creator = new MyMaze3dGenerator();
-		Maze3d maze = creator.generate(1 ,10, 10);
+		Maze3d maze = creator.generate(30 ,10, 10);
 	
 	// save it to a file
 	OutputStream out=new MyCompressorOutputStream(
@@ -33,13 +33,6 @@ public class StreamTest {
 	Maze3d loaded=new Maze3d(b);
 	System.out.println(loaded.equals(maze));
 	
-	
-	
-	int z=0;
-	while (z<30){
-		System.out.println((int)o[z] +" against "+(int)b[z] );
-		z++;
-	}
 	
 	
 	
