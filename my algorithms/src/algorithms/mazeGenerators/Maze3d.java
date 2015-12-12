@@ -1,6 +1,7 @@
 package algorithms.mazeGenerators;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Random;
 
 import algorithms.search.Searcher;
@@ -27,6 +28,53 @@ public class Maze3d implements MazeProblem {
 	private int zSize;
 	private Position StartPosition;
 	private Position GoalPosition;
+
+	
+	
+	
+	
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((GoalPosition == null) ? 0 : GoalPosition.hashCode());
+		result = prime * result + ((StartPosition == null) ? 0 : StartPosition.hashCode());
+		result = prime * result + Arrays.deepHashCode(map);
+		result = prime * result + xSize;
+		result = prime * result + ySize;
+		result = prime * result + zSize;
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Maze3d other = (Maze3d) obj;
+		if (GoalPosition == null) {
+			if (other.GoalPosition != null)
+				return false;
+		} else if (!GoalPosition.equals(other.GoalPosition))
+			return false;
+		if (StartPosition == null) {
+			if (other.StartPosition != null)
+				return false;
+		} else if (!StartPosition.equals(other.StartPosition))
+			return false;
+		if (!Arrays.deepEquals(map, other.map))
+			return false;
+		if (xSize != other.xSize)
+			return false;
+		if (ySize != other.ySize)
+			return false;
+		if (zSize != other.zSize)
+			return false;
+		return true;
+	}
 
 	public Maze3d(byte[] arr){
 		
