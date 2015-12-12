@@ -8,6 +8,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutput;
 import java.io.ObjectOutputStream;
 import java.io.OutputStream;
+import java.nio.ByteBuffer;
 
 public class MyCompressorOutputStream extends OutputStream {
 
@@ -19,41 +20,46 @@ public class MyCompressorOutputStream extends OutputStream {
 
 	@Override
 	public void write(int b) throws IOException {
-
-	write(intToBytes(b));
+		DataOutputStream dout = new DataOutputStream(this.out);
+				dout.writeInt(b);
+	
 
 	}
 
 	@Override
 	public void write(byte[] b) throws IOException {
+		DataOutputStream dout = new DataOutputStream(this.out);
 		int len = b.length; // might and probably will exceed 127 so we need to
-							// write it as int, and our overridden methode write(int b)
+							// write it as int, and our overridden method write(int b)
 							// handles it.
+	
+		int c=0;
+		int t;
 		
+		if (len > 1){
+			for (int i=0 ; i<len; i++){
+			t= b[i];
+			c=1;
+			while (i+1 < len && b[i+1]==b[i]){
+				i++;
+				c++;
+			}
+			write(t);
+			write(c);
+			
+			}
+		}
+		else if (len == 1){
+		write(b[0]);
+		c=1;
+		write(c);
+		}
 		
-		//TODO
+	
 			
 			
 		}
 	
-	
-	public byte[] intToBytes(int my_int) throws IOException {
-	    ByteArrayOutputStream bos = new ByteArrayOutputStream();
-	    ObjectOutput out = new ObjectOutputStream(bos);
-	    out.writeInt(my_int);
-	    out.close();
-	    byte[] int_bytes = bos.toByteArray();
-	    bos.close();
-	    return int_bytes;
-	}
-	
-	public int bytesToInt(byte[] int_bytes) throws IOException {
-	    ByteArrayInputStream bis = new ByteArrayInputStream(int_bytes);
-	    ObjectInputStream ois = new ObjectInputStream(bis);
-	    int my_int = ois.readInt();
-	    ois.close();
-	    return my_int;
-	}
 	
 	
 
