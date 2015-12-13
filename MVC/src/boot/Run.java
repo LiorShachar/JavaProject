@@ -10,14 +10,26 @@ import view.View;
 public class Run {
 
 	public static void main(String[] args) {
+		String lol = "blabla";
+		
+		
+		
+		
+		/*
 		Controller c = new MyController();
 		   View v = new MyView(c);
 		   Model m = new MyModel(c);
 		   c.setModel(m);
 		   c.setView(v);
 		   v.start();
-
+*/
 
 	}
-
+	
+	public void printregex(String[] args){
+		if (args.equals("fuck /w")){
+			System.out.println(args[1]);
+		
+	}
+	}
 }

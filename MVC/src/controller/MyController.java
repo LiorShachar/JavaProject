@@ -13,12 +13,67 @@ public class MyController implements Controller {
 	private View v;
 	HashMap<String, Command> commandCreator;
 	
+
 	
-	
-	
-	
-	
-	public void fillMap{
+	public MyController(Model m, View v) {
+		super();
+		this.m = m;
+		this.v = v;
+		commandCreator = new HashMap<String, Command>();
+		fillMap(commandCreator);
+	}
+
+
+
+
+	public void fillMap(HashMap<String, Command> map){
+		
+		
+		
+		map.put("dir",new Command(){
+
+			@Override
+			public void doCommand() {
+				// TODO Auto-generated method stub
+				
+			}});
+		
+		map.put("dir",new Command(){
+
+			@Override
+			public void doCommand() {
+				// TODO Auto-generated method stub
+				
+			}});
+		
+		map.put("dir",new Command(){
+
+			@Override
+			public void doCommand() {
+				// TODO Auto-generated method stub
+				
+			}});
+		
+		map.put("dir",new Command(){
+
+			@Override
+			public void doCommand() {
+				// TODO Auto-generated method stub
+				
+			}});
+		
+		map.put("dir",new Command(){
+
+			@Override
+			public void doCommand() {
+				// TODO Auto-generated method stub
+				
+			}});
+		
+		
+		
+		
+		
 		
 	}
 	
