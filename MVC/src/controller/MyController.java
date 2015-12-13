@@ -1,5 +1,7 @@
 package controller;
 
+import java.util.HashMap;
+
 import algorithms.mazeGenerators.MazeProblem;
 import algorithms.search.Solution;
 import model.Model;
@@ -9,6 +11,16 @@ public class MyController implements Controller {
 
 	private Model m;
 	private View v;
+	HashMap<String, Command> commandCreator;
+	
+	
+	
+	
+	
+	
+	public void fillMap{
+		
+	}
 	
 	
 	
