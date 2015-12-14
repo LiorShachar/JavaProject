@@ -6,7 +6,7 @@ import java.util.HashMap;
 
 import controller.Command;
 
-public class CLI {
+public class CLI extends Thread {
 
 	private HashMap<String, Command> hmap;
 	private BufferedReader in;
