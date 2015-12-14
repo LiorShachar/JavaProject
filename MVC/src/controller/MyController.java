@@ -26,14 +26,14 @@ public class MyController implements Controller {
 
 
 /**
- * this method puts a regex string as a key value for our generated Commands.
- * that way, the cli is able to distinct whether the input from the user matches the correct pattern
+ * this method puts a regEx string as a key value for our generated Commands.
+ * that way, the CLI is able to distinct whether the input from the user matches the correct pattern
  *  for the right command. since some of the commands have similar words or multiple different parameters
- *  regex patterns make sure we get the right match. 
+ *  regEx patterns make sure we get the right syntax. 
  *  
  *  <P>
  *   http://regexr.com/
- *  a very helpful website which helps build the right regex syntax
+ *  a very helpful website which helps build the right regEx syntax
  *   
  * @param map
  */
@@ -58,7 +58,7 @@ public class MyController implements Controller {
 				
 			}});
 		
-		map.put("display (?!cross section by)[^\n\r]+",new Command(){
+		map.put("display (?!cross section by)(?!solution)[^\n\r]+",new Command(){
 
 			@Override
 			public void doCommand() {
@@ -107,10 +107,22 @@ public class MyController implements Controller {
 				
 			}});
 		
+		map.put("solve [^\n\r]+ [^\n\r]+",new Command(){
+
+			@Override
+			public void doCommand() {
+				// TODO Auto-generated method stub
+				
+			}});
 		
 		
-		
-		
+		map.put("display solution [^\n\r]+",new Command(){
+
+			@Override
+			public void doCommand() {
+				// TODO Auto-generated method stub
+				
+			}});
 		
 		
 	}
