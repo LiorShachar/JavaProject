@@ -25,12 +25,23 @@ public class MyController implements Controller {
 
 
 
-
+/**
+ * this method puts a regex string as a key value for our generated Commands.
+ * that way, the cli is able to distinct whether the input from the user matches the correct pattern
+ *  for the right command. since some of the commands have similar words or multiple different parameters
+ *  regex patterns make sure we get the right match. 
+ *  
+ *  <P>
+ *   http://regexr.com/
+ *  a very helpful website which helps build the right regex syntax
+ *   
+ * @param map
+ */
 	public void fillMap(HashMap<String, Command> map){
 		
 		
 		
-		map.put("dir",new Command(){
+		map.put("dir [^\n\r]+",new Command(){
 
 			@Override
 			public void doCommand() {
@@ -38,7 +49,8 @@ public class MyController implements Controller {
 				
 			}});
 		
-		map.put("dir",new Command(){
+		//generate 3d maze <name> <Y size> <X size> <Z size>
+		map.put("generate 3d maze [^\n\r]+ [0-9]+ [0-9]+ [0-9]+",new Command(){
 
 			@Override
 			public void doCommand() {
@@ -46,7 +58,7 @@ public class MyController implements Controller {
 				
 			}});
 		
-		map.put("dir",new Command(){
+		map.put("display (?!cross section by)[^\n\r]+",new Command(){
 
 			@Override
 			public void doCommand() {
@@ -54,7 +66,7 @@ public class MyController implements Controller {
 				
 			}});
 		
-		map.put("dir",new Command(){
+		map.put("display cross section by [XYZxyz] [0-9]+ for [^\n\r]+",new Command(){
 
 			@Override
 			public void doCommand() {
@@ -62,13 +74,39 @@ public class MyController implements Controller {
 				
 			}});
 		
-		map.put("dir",new Command(){
+		map.put("save maze [^\n\r]+ [^\n\r]+",new Command(){
 
 			@Override
 			public void doCommand() {
 				// TODO Auto-generated method stub
 				
 			}});
+		
+
+		map.put("load maze [^\n\r]+ [^\n\r]+",new Command(){
+
+			@Override
+			public void doCommand() {
+				// TODO Auto-generated method stub
+				
+			}});
+		
+		map.put("maze size [^\n\r]+",new Command(){
+
+			@Override
+			public void doCommand() {
+				// TODO Auto-generated method stub
+				
+			}});
+		
+		map.put("file size [^\n\r]+",new Command(){
+
+			@Override
+			public void doCommand() {
+				// TODO Auto-generated method stub
+				
+			}});
+		
 		
 		
 		
