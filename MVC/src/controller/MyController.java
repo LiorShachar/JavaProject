@@ -124,6 +124,21 @@ public class MyController implements Controller {
 				
 			}});
 		
+		map.put("display solution [^\n\r]+",new Command(){
+
+			@Override
+			public void doCommand() {
+				// TODO Auto-generated method stub
+				
+			}});
+		
+		map.put("exit[^\n]*",new Command(){
+
+			@Override
+			public void doCommand() {
+				// TODO Auto-generated method stub
+				
+			}});
 		
 	}
 	
