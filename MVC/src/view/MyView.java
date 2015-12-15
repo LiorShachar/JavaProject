@@ -1,9 +1,9 @@
 package view;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
-import java.math.BigInteger;
 
 import algorithms.search.Solution;
 import controller.Controller;
@@ -61,4 +61,29 @@ public class MyView implements View {
 		
 	}
 
+
+
+
+	@Override
+	public void list(String string) {
+		File lister = new File(string);
+		String[] pathdetails = lister.list();
+		for (String s: pathdetails)
+			System.out.println(s);
+		
+	}
+@Override
+public void printMsg(String s) {
+	System.out.println(s);
+	
+}
+
+
+
+
+@Override
+public void displayMaze(String string) {
+	
+	
+}
 }

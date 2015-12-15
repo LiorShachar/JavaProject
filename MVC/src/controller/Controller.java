@@ -2,6 +2,7 @@ package controller;
 
 import java.util.HashMap;
 
+import algorithms.mazeGenerators.Maze3d;
 import algorithms.mazeGenerators.MazeProblem;
 import algorithms.search.Solution;
 import model.Model;
@@ -15,5 +16,8 @@ public interface Controller {
 		public void setView(View v);
 		public HashMap<String, Command> getCommandCreator();
 		public void setCommandCreator(HashMap<String, Command> commandCreator);
+		public void toView(String s);
+		public void addMaze(String name, Maze3d maze);
+		
 			
 }

@@ -2,13 +2,14 @@ package controller;
 
 import java.util.HashMap;
 
+import algorithms.mazeGenerators.Maze3d;
 import algorithms.mazeGenerators.MazeProblem;
 import algorithms.search.Solution;
 import model.Model;
 import view.View;
 
 public class MyController implements Controller {
-
+	HashMap<String, Maze3d> mazes;
 	private Model m;
 	private View v;
 	HashMap<String, Command> commandCreator;
@@ -20,11 +21,13 @@ public class MyController implements Controller {
 		this.m = m;
 		this.v = v;
 		commandCreator = new HashMap<String, Command>();
+		mazes=new HashMap<String, Maze3d>();
 		fillMap(commandCreator);
 	}
 	public MyController() {
 		super();
 		commandCreator = new HashMap<String, Command>();
+		mazes=new HashMap<String, Maze3d>();
 		fillMap(commandCreator);
 	}
 
@@ -49,17 +52,16 @@ public class MyController implements Controller {
 
 			@Override
 			public void doCommand(String[] args) {
-				
-				
-				
+				v.list(args[1]);
 			}});
 		
-		//generate 3d maze <name> <Y size> <X size> <Z size>
+		//generate 3d maze <name> <x size (rows)> <y size (levels)> <z size(columns)>
 		map.put("generate 3d maze [^\n\r]+ [0-9]+ [0-9]+ [0-9]+",new Command(){
 
 			@Override
 			public void doCommand(String[] args) {
-				// TODO Auto-generated method stub
+				m.generateMaze(args[3],Integer.parseInt(args[5]),Integer.parseInt(args[4]),Integer.parseInt(args[6]));
+				
 				
 			}});
 		
@@ -67,7 +69,7 @@ public class MyController implements Controller {
 
 			@Override
 			public void doCommand(String[] args) {
-				// TODO Auto-generated method stub
+				v.displayMaze(args[1]);
 				
 			}});
 		
@@ -213,7 +215,20 @@ public HashMap<String, Command> getCommandCreator() {
 
 
 public void setCommandCreator(HashMap<String, Command> commandCreator) {
+
 	this.commandCreator = commandCreator;
+}
+
+
+@Override
+
+public void toView(String s) {
+	v.printMsg(s);
+	
+}
+@Override
+public void addMaze(String name, Maze3d maze) {
+	mazes.put(name, maze);
 }
 	
 	
