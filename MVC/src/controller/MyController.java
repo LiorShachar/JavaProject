@@ -9,7 +9,7 @@ import model.Model;
 import view.View;
 
 public class MyController implements Controller {
-	HashMap<String, Maze3d> mazes;
+	HashMap<String, byte[]> mazes;
 	private Model m;
 	private View v;
 	HashMap<String, Command> commandCreator;
@@ -21,13 +21,13 @@ public class MyController implements Controller {
 		this.m = m;
 		this.v = v;
 		commandCreator = new HashMap<String, Command>();
-		mazes=new HashMap<String, Maze3d>();
+		mazes=new HashMap<String, byte[]>();
 		fillMap(commandCreator);
 	}
 	public MyController() {
 		super();
 		commandCreator = new HashMap<String, Command>();
-		mazes=new HashMap<String, Maze3d>();
+		mazes=new HashMap<String,  byte[]>();
 		fillMap(commandCreator);
 	}
 
@@ -60,16 +60,17 @@ public class MyController implements Controller {
 
 			@Override
 			public void doCommand(String[] args) {
-				m.generateMaze(args[3],Integer.parseInt(args[5]),Integer.parseInt(args[4]),Integer.parseInt(args[6]));
+				m.generateMazeThread(args[3],Integer.parseInt(args[5]),Integer.parseInt(args[4]),Integer.parseInt(args[6]));
 				
 				
 			}});
 		
+		//display <name>
 		map.put("display (?!cross section by)(?!solution)[^\n\r]+",new Command(){
 
 			@Override
 			public void doCommand(String[] args) {
-				v.displayMaze(args[1]);
+				v.displayMaze(mazes.get(args[1]));
 				
 			}});
 		
@@ -77,7 +78,7 @@ public class MyController implements Controller {
 
 			@Override
 			public void doCommand(String[] args) {
-				// TODO Auto-generated method stub
+				v.displayCross(mazes.get(args[7]),args[4],Integer.parseInt(args[5])));
 				
 			}});
 		
@@ -227,7 +228,7 @@ public void toView(String s) {
 	
 }
 @Override
-public void addMaze(String name, Maze3d maze) {
+public void addMaze(String name, byte[] maze) {
 	mazes.put(name, maze);
 }
 	

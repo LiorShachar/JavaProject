@@ -5,6 +5,7 @@ import java.io.File;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 
+import algorithms.mazeGenerators.Maze3d;
 import algorithms.search.Solution;
 import controller.Controller;
 
@@ -82,8 +83,26 @@ public void printMsg(String s) {
 
 
 @Override
-public void displayMaze(String string) {
+public void displayMaze(byte[] arr) {
+	Maze3d maze = new Maze3d(arr);
+	int levels = maze.getySize();
+	int lvl=0;
+	int[][] twodi;
+	System.out.println("********************************************************");
+	System.out.println("Maze Starting point:" + maze.getStartPosition().toString());
+	System.out.println("Maze Ending point:" + maze.getGoalPosition().toString());
+	while(lvl<levels){
+		System.out.println("**************************[   level:"+lvl+"       ]******************************");
+		twodi=maze.getCrossSectionByY(lvl);
+	for (int i=0; i < twodi.length ; i++){
+		
+		for (int j=0 ; j < twodi[0].length; j++){ 
+			System.out.print(twodi[i][j]);
+		}
+		System.out.print("\n");
+	}
 	
-	
+	lvl++;
+	}
 }
 }

@@ -7,6 +7,8 @@ public interface View {
 	   void displaySolution(Solution s);
 	void list(String string);
 	void printMsg(String s);
-	void displayMaze(String string);
+	
+	void displayMaze(byte[] arr);
+	void displayCross(byte[] arr,String by,int i);
 
 }
