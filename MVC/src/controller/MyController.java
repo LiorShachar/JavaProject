@@ -22,7 +22,11 @@ public class MyController implements Controller {
 		commandCreator = new HashMap<String, Command>();
 		fillMap(commandCreator);
 	}
-
+	public MyController() {
+		super();
+		commandCreator = new HashMap<String, Command>();
+		fillMap(commandCreator);
+	}
 
 
 /**
@@ -44,8 +48,9 @@ public class MyController implements Controller {
 		map.put("dir [^\n\r]+",new Command(){
 
 			@Override
-			public void doCommand() {
-				// TODO Auto-generated method stub
+			public void doCommand(String[] args) {
+				
+				
 				
 			}});
 		
@@ -53,7 +58,7 @@ public class MyController implements Controller {
 		map.put("generate 3d maze [^\n\r]+ [0-9]+ [0-9]+ [0-9]+",new Command(){
 
 			@Override
-			public void doCommand() {
+			public void doCommand(String[] args) {
 				// TODO Auto-generated method stub
 				
 			}});
@@ -61,7 +66,7 @@ public class MyController implements Controller {
 		map.put("display (?!cross section by)(?!solution)[^\n\r]+",new Command(){
 
 			@Override
-			public void doCommand() {
+			public void doCommand(String[] args) {
 				// TODO Auto-generated method stub
 				
 			}});
@@ -69,7 +74,7 @@ public class MyController implements Controller {
 		map.put("display cross section by [XYZxyz] [0-9]+ for [^\n\r]+",new Command(){
 
 			@Override
-			public void doCommand() {
+			public void doCommand(String[] args) {
 				// TODO Auto-generated method stub
 				
 			}});
@@ -77,7 +82,7 @@ public class MyController implements Controller {
 		map.put("save maze [^\n\r]+ [^\n\r]+",new Command(){
 
 			@Override
-			public void doCommand() {
+			public void doCommand(String[] args) {
 				// TODO Auto-generated method stub
 				
 			}});
@@ -86,7 +91,7 @@ public class MyController implements Controller {
 		map.put("load maze [^\n\r]+ [^\n\r]+",new Command(){
 
 			@Override
-			public void doCommand() {
+			public void doCommand(String[] args) {
 				// TODO Auto-generated method stub
 				
 			}});
@@ -94,7 +99,7 @@ public class MyController implements Controller {
 		map.put("maze size [^\n\r]+",new Command(){
 
 			@Override
-			public void doCommand() {
+			public void doCommand(String[] args) {
 				// TODO Auto-generated method stub
 				
 			}});
@@ -102,7 +107,7 @@ public class MyController implements Controller {
 		map.put("file size [^\n\r]+",new Command(){
 
 			@Override
-			public void doCommand() {
+			public void doCommand(String[] args) {
 				// TODO Auto-generated method stub
 				
 			}});
@@ -110,7 +115,7 @@ public class MyController implements Controller {
 		map.put("solve [^\n\r]+ [^\n\r]+",new Command(){
 
 			@Override
-			public void doCommand() {
+			public void doCommand(String[] args) {
 				// TODO Auto-generated method stub
 				
 			}});
@@ -119,7 +124,7 @@ public class MyController implements Controller {
 		map.put("display solution [^\n\r]+",new Command(){
 
 			@Override
-			public void doCommand() {
+			public void doCommand(String[] args) {
 				// TODO Auto-generated method stub
 				
 			}});
@@ -127,43 +132,93 @@ public class MyController implements Controller {
 		map.put("display solution [^\n\r]+",new Command(){
 
 			@Override
-			public void doCommand() {
+			public void doCommand(String[] args) {
 				// TODO Auto-generated method stub
 				
 			}});
 		
-		map.put("exit[^\n]*",new Command(){
+		
+		
+		map.put("test",new Command(){
 
 			@Override
-			public void doCommand() {
-				// TODO Auto-generated method stub
+			public void doCommand(String[] args) {
+				System.out.println("test activated successfuly u guys");
+				int d=0;
+				
+				for (int k=0; k < 10000;k++)
+					for (int j=0; j < 1000000;j++){
+						d=0;
+						while (d<2)
+							d++;
+						}
+						
+						
+					
+				
+				System.out.println("Test completed");
+					
+					
+					
 				
 			}});
+		map.put("threadtest",new Command(){
+
+			@Override
+			public void doCommand(String[] args) {
+				
+						
+					
+				
+				System.out.println("Test completed");
+					
+					
+					
+				
+			}});		
+		
 		
 	}
-	
-	
-	
-	
-	@Override
-	public void setModel(Model m) {
-		// TODO Auto-generated method stub
-		
-	}
-	@Override
-	public void setView(View v) {
-		// TODO Auto-generated method stub
-		
-	}
-	@Override
-	public void setSolution(Solution s) {
-		// TODO Auto-generated method stub
-		
-	}
-	@Override
-	public void calculate(MazeProblem p) {
-		// TODO Auto-generated method stub
-		
-	}
-	
+
+
+
+public Model getModel() {
+	return m;
 }
+
+
+
+public void setModel(Model m) {
+	this.m = m;
+}
+
+
+
+public View getView() {
+	return v;
+}
+
+
+
+public void setView(View v) {
+	this.v = v;
+}
+
+
+
+public HashMap<String, Command> getCommandCreator() {
+	return commandCreator;
+}
+
+
+
+public void setCommandCreator(HashMap<String, Command> commandCreator) {
+	this.commandCreator = commandCreator;
+}
+	
+	
+	
+	
+	}
+	
+

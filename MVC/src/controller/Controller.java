@@ -1,14 +1,19 @@
 package controller;
 
+import java.util.HashMap;
+
 import algorithms.mazeGenerators.MazeProblem;
 import algorithms.search.Solution;
 import model.Model;
 import view.View;
 
 public interface Controller {
-	   void setModel(Model m);
-	   void setView(View v);
-	   void setSolution(Solution s);
-	   void calculate( MazeProblem p);
-
+	   
+	   public Model getModel();
+		public void setModel(Model m);
+		public View getView();
+		public void setView(View v);
+		public HashMap<String, Command> getCommandCreator();
+		public void setCommandCreator(HashMap<String, Command> commandCreator);
+			
 }
