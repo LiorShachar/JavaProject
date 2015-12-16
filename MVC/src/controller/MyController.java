@@ -103,7 +103,7 @@ public class MyController implements Controller {
 
 			@Override
 			public void doCommand(String[] args) {
-				// TODO Auto-generated method stub
+				v.printMsg("Maze size of "+args[2]+" is: "+mazes.get(args[2]).length+" Bytes");
 				
 			}});
 		
@@ -111,7 +111,7 @@ public class MyController implements Controller {
 
 			@Override
 			public void doCommand(String[] args) {
-				// TODO Auto-generated method stub
+				m.fileSize(mazes.get(args[2]));
 				
 			}});
 		
@@ -140,44 +140,16 @@ public class MyController implements Controller {
 				
 			}});
 		
+		///////////////////////////////////////////////////// commands for testing
 		
 		
-		map.put("test",new Command(){
-
-			@Override
-			public void doCommand(String[] args) {
-				System.out.println("test activated successfuly u guys");
-				int d=0;
-				
-				for (int k=0; k < 10000;k++)
-					for (int j=0; j < 1000000;j++){
-						d=0;
-						while (d<2)
-							d++;
-						}
-						
-						
-					
-				
-				System.out.println("Test completed");
-					
-					
-					
-				
-			}});
-		map.put("threadtest",new Command(){
+		map.put("[^\n\r]+ equals [^\n\r]+",new Command(){
 
 			@Override
 			public void doCommand(String[] args) {
 				
-						
+				System.out.println((new Maze3d(mazes.get(args[0])).equals(new Maze3d(mazes.get(args[2])))));
 					
-				
-				System.out.println("Test completed");
-					
-					
-					
-				
 			}});		
 		
 		

@@ -1,18 +1,20 @@
 package model;
 
+import java.io.DataInputStream;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.ArrayList;
+
+import javax.swing.text.AbstractDocument.LeafElement;
 
 import algorithms.mazeGenerators.Maze3d;
 import algorithms.mazeGenerators.MazeProblem;
 import algorithms.mazeGenerators.MyMaze3dGenerator;
 import controller.Controller;
+import gnu.trove.list.array.TByteArrayList;
 import io.MyCompressorOutputStream;
 import io.MyDecompressorInputStream;
-import gnu.trove.TByteCollection;
-import gnu.trove.list.array.*;
 
 public class MyModel implements Model {
 
@@ -71,21 +73,43 @@ public void saveMaze(byte[] maze, String path) {
 @Override
 public byte[] loadMaze(String path) {
 	try {
-		byte[] temp= new byte[5000000];
-		MyDecompressorInputStream reader = new MyDecompressorInputStream(new FileInputStream(path));
-		reader.read(temp);
-		TByteArrayList arr = new TByteArrayList(temp);
-		TByteArrayList nuller = new TByteArrayList();
-		nuller.add(null);
-		arr.removeAll(nuller);
+		// we need to know the array size, the compressed version of the maze have a pattern of (value,number of returns)
+		//so if we sum up all the values in the odd index places well get the right size
+		DataInputStream reader = new DataInputStream(new FileInputStream(path));
+		int val=0;
+		int i=0;
+		int sum=0;
+		while(reader.available()>=4){
+			val=reader.readInt();
+			if(!(i%2==0)){
+				sum+=val;
+			}
+				i++;
+		}
 		reader.close();
+		
+		byte[] arr= new byte[sum];
+		MyDecompressorInputStream comp = new MyDecompressorInputStream(new FileInputStream(path));
+		comp.read(arr);
+		comp.close();
 		c.toView("Loading completed successfuly");
-		return arr.toArray();
+		return arr;
 	} catch (IOException e) {
 		c.toView("error: could not load");
 		e.printStackTrace();
 	}
 	return null;
+	
+}
+
+
+@Override
+public void fileSize(byte[] maze) {
+	saveMaze(maze,"test.maz");
+	File test = new File("test.maz");
+	c.toView("File Size: "+test.length()+" Bytes");
+	test.delete();
+
 	
 }
 
