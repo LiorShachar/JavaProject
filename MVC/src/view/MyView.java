@@ -16,6 +16,7 @@ public class MyView implements View {
 	 public MyView(Controller c){
 	   this.c=c;
 	   this.cli =new CLI(c.getCommandCreator(),new BufferedReader(new InputStreamReader(System.in)),new PrintWriter(System.out));
+	  
 	 }
 	 
 	 
@@ -73,9 +74,14 @@ public class MyView implements View {
 			System.out.println(s);
 		
 	}
-@Override
+
+	@Override
 public void printMsg(String s) {
-	System.out.println(s);
+	cli.getOut().println(s);
+	cli.getOut().flush();
+	
+
+	
 	
 }
 
@@ -104,5 +110,109 @@ public void displayMaze(byte[] arr) {
 	
 	lvl++;
 	}
+}
+
+
+
+
+@Override
+public void displayCross(byte[] arr, String by, int index) {
+	Maze3d maze = new Maze3d(arr);
+	
+	int[][] twodi;
+	switch (by) {
+	case "y":
+		if(!(index>=maze.getySize())){
+		twodi=maze.getCrossSectionByY(index);
+		for (int i=0; i < twodi.length ; i++){
+			
+			for (int j=0 ; j < twodi[0].length; j++){ 
+				System.out.print(twodi[i][j]);
+			}
+			System.out.print("\n");
+		}
+		}
+		else
+			System.out.println("ilegal index");
+		break;
+	case "Y":
+		if(!(index>=maze.getySize())){
+		twodi=maze.getCrossSectionByY(index);
+		for (int i=0; i < twodi.length ; i++){
+			
+			for (int j=0 ; j < twodi[0].length; j++){ 
+				System.out.print(twodi[i][j]);
+			}
+			System.out.print("\n");
+		}
+		}
+		else
+			System.out.println("ilegal index");
+		break;
+		
+	case "x":
+		if(!(index>=maze.getxSize())){
+		twodi=maze.getCrossSectionByX(index);
+		for (int i=0; i < twodi.length ; i++){
+			
+			for (int j=0 ; j < twodi[0].length; j++){ 
+				System.out.print(twodi[i][j]);
+			}
+			System.out.print("\n");
+		}
+		}
+		else
+			System.out.println("ilegal index");
+		break;
+	case "X":
+		if(!(index>=maze.getxSize())){
+		twodi=maze.getCrossSectionByX(index);
+		for (int i=0; i < twodi.length ; i++){
+			
+			for (int j=0 ; j < twodi[0].length; j++){ 
+				System.out.print(twodi[i][j]);
+			}
+			System.out.print("\n");
+		}
+		}
+		else
+			System.out.println("ilegal index");
+		break;
+	case "z":
+		if(!(index>=maze.getzSize())){
+		twodi=maze.getCrossSectionByZ(index);
+		for (int i=0; i < twodi.length ; i++){
+			
+			for (int j=0 ; j < twodi[0].length; j++){ 
+				System.out.print(twodi[i][j]);
+			}
+			System.out.print("\n");
+		}
+	}
+	else
+		System.out.println("ilegal index");
+		break;
+	case "Z":
+		if(!(index>=maze.getzSize())){
+		twodi=maze.getCrossSectionByZ(index);
+		for (int i=0; i < twodi.length ; i++){
+			
+			for (int j=0 ; j < twodi[0].length; j++){ 
+				System.out.print(twodi[i][j]);
+			}
+			System.out.print("\n");
+		}
+		}
+		else
+			System.out.println("ilegal index");
+		break;
+		
+
+
+	default:
+		System.out.println("ilegal axis; choose x/y/z");
+		break;
+	}
+	
 }
 }

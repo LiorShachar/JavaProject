@@ -18,7 +18,55 @@ public class CLI extends Thread {
 
 	
 	
-	 public CLI(HashMap<String, Command> hmap, BufferedReader in, PrintWriter out) {
+	 public PrintWriter getOut() {
+		return out;
+	}
+
+
+
+
+
+	public HashMap<String, Command> getHmap() {
+		return hmap;
+	}
+
+
+
+
+
+	public void setHmap(HashMap<String, Command> hmap) {
+		this.hmap = hmap;
+	}
+
+
+
+
+
+	public BufferedReader getIn() {
+		return in;
+	}
+
+
+
+
+
+	public void setIn(BufferedReader in) {
+		this.in = in;
+	}
+
+
+
+
+
+	public void setOut(PrintWriter out) {
+		this.out = out;
+	}
+
+
+
+
+
+	public CLI(HashMap<String, Command> hmap, BufferedReader in, PrintWriter out) {
 		super();
 		this.hmap = hmap;
 		this.in = in;

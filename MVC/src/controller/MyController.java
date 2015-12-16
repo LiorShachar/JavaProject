@@ -78,7 +78,7 @@ public class MyController implements Controller {
 
 			@Override
 			public void doCommand(String[] args) {
-				v.displayCross(mazes.get(args[7]),args[4],Integer.parseInt(args[5])));
+				v.displayCross(mazes.get(args[7]),args[4],Integer.parseInt(args[5]));
 				
 			}});
 		
@@ -86,7 +86,7 @@ public class MyController implements Controller {
 
 			@Override
 			public void doCommand(String[] args) {
-				// TODO Auto-generated method stub
+				m.saveMaze(mazes.get(args[2]),args[3]);
 				
 			}});
 		
@@ -95,7 +95,7 @@ public class MyController implements Controller {
 
 			@Override
 			public void doCommand(String[] args) {
-				// TODO Auto-generated method stub
+			addMaze(args[3], m.loadMaze(args[2]));
 				
 			}});
 		
