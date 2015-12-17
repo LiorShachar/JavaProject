@@ -62,7 +62,7 @@ public class MyController implements Controller {
 	public void fillMap(HashMap<String, Command> map){
 		
 		
-		
+		//dir <directory/path>
 		map.put("dir [^\n\r]+",new Command(){
 
 			@Override
@@ -187,7 +187,25 @@ public class MyController implements Controller {
 					
 			}});		
 		
-		
+		///////////////////////////////////////////////////// list the commands available to the user
+		map.put("help",new Command(){
+
+			@Override
+			public void doCommand(String[] args) {
+				toView("*************************************************************************************************");
+				toView("dir <directory/path>");
+				toView("generate 3d maze <name of the maze> <x size (rows)> <y size (levels)> <z size(columns)>");
+				toView("display <name of the maze>");
+				toView("display cross section by <X/Y/Z> <index> for <name of the maze>");
+				toView("save maze <name of the maze> <file name / path to file name>");
+				toView("load maze <file name / path to file name> <name of the maze>");
+				toView("maze size <name of the maze>");
+				toView("file size <name of the maze>");
+				toView("solve <name of the maze> <BFS/Astar>");
+				toView("display solution <name of the maze>");
+				toView("*************************************************************************************************");
+					
+			}});	
 	}
 
 

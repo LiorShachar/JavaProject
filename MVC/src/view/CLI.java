@@ -103,10 +103,9 @@ public class CLI extends Thread {
 		String input;
 		Set<String> keys=hmap.keySet();
 		Command c;
-		System.out.println("Hello there please enter your desired command: ");
+		System.out.println("** Greetings! please enter your desired command, for the commands list type \"help\" **");
 		try {
 			while (!(input=in.readLine()).matches("exit")){
-				System.out.println("your order is: "+input);
 				for (String s : keys){
 					if (input.matches(s)){
 						String[] args = input.split(" ");

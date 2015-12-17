@@ -3,6 +3,7 @@ package model;
 import java.io.DataInputStream;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -186,9 +187,8 @@ public void loadMaze(String path,String name) {
 		mazes.put(name, arr);
 		c.toView("Loading completed successfuly");
 		
-	} catch (IOException e) {
-		c.toView("error: could not load");
-		e.printStackTrace();
+	} catch (IOException e ) {
+		c.toView("error: could not load from the file specified");
 	}
 	
 }
