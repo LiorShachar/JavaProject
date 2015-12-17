@@ -9,7 +9,7 @@ import model.Model;
 import view.View;
 
 public class MyController implements Controller {
-	HashMap<String, byte[]> mazes;
+	
 	private Model m;
 	private View v;
 	HashMap<String, Command> commandCreator;
@@ -21,13 +21,11 @@ public class MyController implements Controller {
 		this.m = m;
 		this.v = v;
 		commandCreator = new HashMap<String, Command>();
-		mazes=new HashMap<String, byte[]>();
 		fillMap(commandCreator);
 	}
 	public MyController() {
 		super();
 		commandCreator = new HashMap<String, Command>();
-		mazes=new HashMap<String,  byte[]>();
 		fillMap(commandCreator);
 	}
 
@@ -70,75 +68,85 @@ public class MyController implements Controller {
 
 			@Override
 			public void doCommand(String[] args) {
-				v.displayMaze(mazes.get(args[1]));
+				v.displayMaze(m.getMazes().get(args[1]));
 				
 			}});
 		
+		
+		//display cross section by {X,Y,Z} <index> for <name>
 		map.put("display cross section by [XYZxyz] [0-9]+ for [^\n\r]+",new Command(){
 
 			@Override
 			public void doCommand(String[] args) {
-				v.displayCross(mazes.get(args[7]),args[4],Integer.parseInt(args[5]));
+				v.displayCross(m.getMazes().get(args[7]),args[4],Integer.parseInt(args[5]));
 				
 			}});
-		
+		//save maze <name> <file name>
 		map.put("save maze [^\n\r]+ [^\n\r]+",new Command(){
 
 			@Override
 			public void doCommand(String[] args) {
-				m.saveMaze(mazes.get(args[2]),args[3]);
+				m.saveMaze(m.getMazes().get(args[2]),args[3]);
 				
 			}});
 		
-
+//load maze <file name> <name>
 		map.put("load maze [^\n\r]+ [^\n\r]+",new Command(){
 
 			@Override
 			public void doCommand(String[] args) {
-			addMaze(args[3], m.loadMaze(args[2]));
+			 m.loadMaze(args[2],args[3]);
 				
 			}});
-		
+		//maze size <name>
 		map.put("maze size [^\n\r]+",new Command(){
 
 			@Override
 			public void doCommand(String[] args) {
-				v.printMsg("Maze size of "+args[2]+" is: "+mazes.get(args[2]).length+" Bytes");
+				v.printMsg("Maze size of "+args[2]+" is: "+m.getMazes().get(args[2]).length+" Bytes");
 				
 			}});
-		
+		//file size <name>
 		map.put("file size [^\n\r]+",new Command(){
 
 			@Override
 			public void doCommand(String[] args) {
-				m.fileSize(mazes.get(args[2]));
+				m.fileSize(args[2]);
 				
 			}});
-		
+		//solve <name> <algorithm>
 		map.put("solve [^\n\r]+ [^\n\r]+",new Command(){
 
 			@Override
 			public void doCommand(String[] args) {
-				// TODO Auto-generated method stub
+				m.solveMazeThread(args[1],args[2]);
 				
 			}});
 		
-		
+		//display solution <name>
 		map.put("display solution [^\n\r]+",new Command(){
 
 			@Override
 			public void doCommand(String[] args) {
-				// TODO Auto-generated method stub
+				
+				if (m.getSolutions().containsKey(args[2])){
+					v.displaySolution(m.getSolutions().get(args[2]));
+				}
+				else{
+					toView("no solution found for this maze");
+				}
 				
 			}});
 		
-		map.put("display solution [^\n\r]+",new Command(){
+		map.put("exit",new Command(){
 
 			@Override
 			public void doCommand(String[] args) {
-				// TODO Auto-generated method stub
+				m.kill();
 				
 			}});
+		
+		
 		
 		///////////////////////////////////////////////////// commands for testing
 		
@@ -148,7 +156,17 @@ public class MyController implements Controller {
 			@Override
 			public void doCommand(String[] args) {
 				
-				System.out.println((new Maze3d(mazes.get(args[0])).equals(new Maze3d(mazes.get(args[2])))));
+				System.out.println((new Maze3d(m.getMazes().get(args[0])).equals(new Maze3d(m.getMazes().get(args[2])))));
+					
+			}});	
+		
+		//////////////////////////////////////////////// adds a test thread to run in background and print until stopped
+		map.put("runtestthread",new Command(){
+
+			@Override
+			public void doCommand(String[] args) {
+				
+				m.testThread();
 					
 			}});		
 		
@@ -199,10 +217,7 @@ public void toView(String s) {
 	v.printMsg(s);
 	
 }
-@Override
-public void addMaze(String name, byte[] maze) {
-	mazes.put(name, maze);
-}
+
 	
 	
 	

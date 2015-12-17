@@ -4,9 +4,12 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 
 import algorithms.mazeGenerators.Maze3d;
+import algorithms.mazeGenerators.Position;
 import algorithms.search.Solution;
+import algorithms.search.State;
 import controller.Controller;
 
 public class MyView implements View {
@@ -57,11 +60,8 @@ public class MyView implements View {
 		
 	}
 	
-	@Override
-	public void displaySolution(Solution s) {
-		// TODO Auto-generated method stub
-		
-	}
+	
+	
 
 
 
@@ -69,9 +69,14 @@ public class MyView implements View {
 	@Override
 	public void list(String string) {
 		File lister = new File(string);
-		String[] pathdetails = lister.list();
-		for (String s: pathdetails)
-			System.out.println(s);
+		try {
+			String[] pathdetails = lister.list();
+			for (String s: pathdetails)
+				printMsg(s);
+		} catch (NullPointerException e) {
+			printMsg("File or Directory not found");
+		}
+		
 		
 	}
 
@@ -215,4 +220,20 @@ public void displayCross(byte[] arr, String by, int index) {
 	}
 	
 }
+
+
+
+
+@Override
+public void displaySolution(Solution<Position> s) {
+	ArrayList<State<Position>> sol= s.getSolution();
+	for (State<Position> p : sol)
+		printMsg(p.toString());
+	
+}
+
+
+
+
+
 }

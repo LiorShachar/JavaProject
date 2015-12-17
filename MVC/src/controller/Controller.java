@@ -17,7 +17,7 @@ public interface Controller {
 		public HashMap<String, Command> getCommandCreator();
 		public void setCommandCreator(HashMap<String, Command> commandCreator);
 		public void toView(String s);
-		public void addMaze(String name, byte[] maze);
+		
 		
 			
 }

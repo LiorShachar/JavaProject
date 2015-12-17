@@ -5,27 +5,84 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
 
 import javax.swing.text.AbstractDocument.LeafElement;
 
 import algorithms.mazeGenerators.Maze3d;
 import algorithms.mazeGenerators.MazeProblem;
 import algorithms.mazeGenerators.MyMaze3dGenerator;
+import algorithms.mazeGenerators.Position;
+import algorithms.search.Astar;
+import algorithms.search.BFS;
+import algorithms.search.MazeManDis;
+import algorithms.search.Solution;
+import algorithms.search.searchableMaze3d;
 import controller.Controller;
 import gnu.trove.list.array.TByteArrayList;
 import io.MyCompressorOutputStream;
 import io.MyDecompressorInputStream;
 
 public class MyModel implements Model {
-
 	
+	HashMap<String, byte[]> mazes;
+	HashMap<String,Solution<Position>> solutions;
+	ArrayList<Thread> threads;
 	private Controller c;
 	
 	 public MyModel(Controller c){
 	   this.c = c;
+	   mazes = new HashMap<String, byte[]>();
+	   solutions =new HashMap<String,Solution<Position>>();
+	   threads= new ArrayList<Thread>();
 	 }
 
 	
+	 
+	 
+	public HashMap<String, byte[]> getMazes() {
+		return mazes;
+	}
+
+
+
+
+	public void setMazes(HashMap<String, byte[]> mazes) {
+		this.mazes = mazes;
+	}
+
+
+
+
+	public HashMap<String, Solution<Position>> getSolutions() {
+		return solutions;
+	}
+
+
+
+
+	public void setSolutions(HashMap<String, Solution<Position>> solutions) {
+		this.solutions = solutions;
+	}
+
+
+
+
+	public Controller getC() {
+		return c;
+	}
+
+
+
+
+	public void setC(Controller c) {
+		this.c = c;
+	}
+
+
+
+
 	@Override
 	public void search(MazeProblem p) {
 		// TODO Auto-generated method stub
@@ -39,19 +96,21 @@ public class MyModel implements Model {
 		c.toView("generating maze...");
 		MyMaze3dGenerator gen = new MyMaze3dGenerator();
 		Maze3d created = gen.generate(y,x,z);
-		c.addMaze(name,created.toByteArray());
+		mazes.put(name,created.toByteArray());
 		c.toView("maze "+name+" is ready");
 		
 	}
 	
 public void generateMazeThread(String name, int y, int x, int z) {
-		
-	new Thread(new Runnable() {
+		threads.add(new Thread(new Runnable() {  //creates the thread
 		   public void run() {
 			   generateMaze(name,y,x,z);
 		   }
-		 }).start();
-
+		 }));
+		if (threads != null && !threads.isEmpty()) { // add the thread to our list and starts it
+			  threads.get(threads.size()-1).start();
+			}
+		
 		
 	}
 
@@ -71,7 +130,7 @@ public void saveMaze(byte[] maze, String path) {
 }
 
 @Override
-public byte[] loadMaze(String path) {
+public void loadMaze(String path,String name) {
 	try {
 		// we need to know the array size, the compressed version of the maze have a pattern of (value,number of returns)
 		//so if we sum up all the values in the odd index places well get the right size
@@ -92,25 +151,103 @@ public byte[] loadMaze(String path) {
 		MyDecompressorInputStream comp = new MyDecompressorInputStream(new FileInputStream(path));
 		comp.read(arr);
 		comp.close();
+		mazes.put(name, arr);
 		c.toView("Loading completed successfuly");
-		return arr;
+		
 	} catch (IOException e) {
 		c.toView("error: could not load");
 		e.printStackTrace();
 	}
-	return null;
 	
 }
 
 
 @Override
-public void fileSize(byte[] maze) {
-	saveMaze(maze,"test.maz");
-	File test = new File("test.maz");
-	c.toView("File Size: "+test.length()+" Bytes");
+public void fileSize(String name) {
+	saveMaze(mazes.get(name),"testfile.maz");
+	File test = new File("testfile.maz");
+	c.toView("File Size of "+name+": "+test.length()+" Bytes");
 	test.delete();
 
 	
+}
+
+public void solveMazeThread(String name,String algo){
+	threads.add(new Thread(new Runnable() {  //creates the thread
+		   public void run() {
+			   solveMaze(name,algo);
+		   }
+		 }));
+		if (threads != null && !threads.isEmpty()) { // add the thread to our list and starts it
+			  threads.get(threads.size()-1).start();
+			}
+}
+
+
+@Override
+public void solveMaze(String name,String algo) {
+	if(mazes.containsKey(name)){
+		c.toView("Maze name found");
+		if (algo.matches("[Bb][Ff][Ss]")|| algo.matches("[Aa][Ss][Tt][Aa][Rr]")){
+			c.toView("algorithm found");
+			if ( algo.matches("[Bb][Ff][Ss]")){
+				c.toView("Solving "+name+" using "+algo);
+				Solution<Position> sol = new BFS<Position>().search(new searchableMaze3d(new Maze3d(mazes.get(name))));
+				solutions.put(name,sol);
+				c.toView("solution for "+name+" is ready");
+			}
+			else if ( algo.matches("[Aa][Ss][Tt][Aa][Rr]")){
+				c.toView("Solving "+name+" using "+algo);
+				Solution<Position> sol = new Astar<Position>(new MazeManDis()).search(new searchableMaze3d(new Maze3d(mazes.get(name))));
+				solutions.put(name,sol);
+				c.toView("solution for "+name+" is ready");
+			}
+				
+		}
+		else{c.toView("algorithm not found");}
+		
+	}
+	else{c.toView("maze not found");}
+			
+	
+	
+}
+
+
+
+
+@SuppressWarnings("deprecation")
+@Override
+public void kill() {
+	for (Thread t : threads){
+		if(t.isAlive())
+		t.stop();
+	}
+	
+}
+
+
+
+
+@Override
+public void testThread() {
+	
+	threads.add(new Thread(new Runnable() {  //creates the thread
+		   public void run() {
+			  while(true){
+				  System.out.println("*** test Thread running ***");
+				  try {
+					Thread.sleep(2000);
+				} catch (InterruptedException e) {
+				 System.out.println("test thread interrupted");
+					e.printStackTrace();
+				}
+			  }
+		   }
+		 }));
+		if (threads != null && !threads.isEmpty()) { // add the thread to our list and starts it
+			  threads.get(threads.size()-1).start();
+			}
 }
 
 

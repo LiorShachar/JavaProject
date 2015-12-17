@@ -95,7 +95,10 @@ public class CLI extends Thread {
 				}
 					
 			}
-			System.out.println("we are out of the loop");
+			System.out.println("Shutting down...");
+			c=hmap.get("exit");
+			c.doCommand(null);
+			
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
