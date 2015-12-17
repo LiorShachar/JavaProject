@@ -3,16 +3,32 @@ package controller;
 import java.util.HashMap;
 
 import algorithms.mazeGenerators.Maze3d;
-import algorithms.mazeGenerators.MazeProblem;
-import algorithms.search.Solution;
 import model.Model;
 import view.View;
+
+/**
+*
+* 
+* 
+* 
+* 
+* <h1>MyController</h1>
+* this class represent my controller part of the project, it is suitable for a Maze3d problem.
+* 
+* 
+* <p>
+* <b>Notes:</b> 
+*
+* @author  Lior Shachar
+* @version 1.0
+* @since   2015-12-17
+*/
 
 public class MyController implements Controller {
 	
 	private Model m;
 	private View v;
-	HashMap<String, Command> commandCreator;
+	HashMap<String, Command> commandCreator; // our command map
 	
 
 	
@@ -31,16 +47,17 @@ public class MyController implements Controller {
 
 
 /**
- * this method puts a regEx string as a key value for our generated Commands.
+ * this method puts a regEx string as a key value for our generated Commands inside our command map.
  * that way, the CLI is able to distinct whether the input from the user matches the correct pattern
  *  for the right command. since some of the commands have similar words or multiple different parameters
  *  regEx patterns make sure we get the right syntax. 
+ *  <p>
+ *  <b>Notes:</b>
  *  
- *  <P>
- *   http://regexr.com/
- *  a very helpful website which helps build the right regEx syntax
- *   
- * @param map
+ *  a very helpful website which helps build the right regEx syntax  
+ *   {@link regexr.com http://regexr.com/} 
+ * @param 
+ * 
  */
 	public void fillMap(HashMap<String, Command> map){
 		
@@ -210,7 +227,9 @@ public void setCommandCreator(HashMap<String, Command> commandCreator) {
 	this.commandCreator = commandCreator;
 }
 
-
+/**
+ * pass a string to the View section, which uses the right output to print it
+ */
 @Override
 
 public void toView(String s) {

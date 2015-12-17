@@ -12,6 +12,25 @@ import algorithms.search.Solution;
 import algorithms.search.State;
 import controller.Controller;
 
+/**
+*
+* 
+* 
+* 
+* 
+* <h1>MyView</h1>
+* this class represent my View part of the project, it is suitable for a Maze3d problem.
+* initialized CLI with the regular system input/output and a command map from MyController
+* 
+* 
+* <p>
+* <b>Notes:</b> 
+*
+* @author  Lior Shachar
+* @version 1.0
+* @since   2015-12-17
+*/
+
 public class MyView implements View {
 	private Controller c;
 	private CLI cli;
@@ -53,6 +72,10 @@ public class MyView implements View {
 
 
 
+	/**
+	 * starts the CLI thread
+	 */
+	
 	@Override
 	public void start() {
 		cli.start();
@@ -64,7 +87,10 @@ public class MyView implements View {
 	
 
 
-
+/**
+ * uses the File class in order to execute the Dir command.
+ * print the names of files and folders in the path provided
+ */
 
 	@Override
 	public void list(String string) {
@@ -80,6 +106,11 @@ public class MyView implements View {
 		
 	}
 
+	
+	
+	/**
+	 * prints the string provided using the scanner in the cli, so the view will interact with the user the way he chose.
+	 */
 	@Override
 public void printMsg(String s) {
 	cli.getOut().println(s);
@@ -91,7 +122,10 @@ public void printMsg(String s) {
 }
 
 
-
+/**
+ * gets a maze3d provided by its byte array and prints its details.
+ * the maze is printed as cross sections of its levels. (the Y axis is fixed)
+ */
 
 @Override
 public void displayMaze(byte[] arr) {
@@ -118,7 +152,9 @@ public void displayMaze(byte[] arr) {
 }
 
 
-
+/**
+ * prints the maze cross section provided by byte array of maze3d, a fixed axis and its index. 
+ */
 
 @Override
 public void displayCross(byte[] arr, String by, int index) {
@@ -222,7 +258,9 @@ public void displayCross(byte[] arr, String by, int index) {
 }
 
 
-
+/**
+ * gets a solution representing a path of Position array and prints every Position as part of the path from start to exit
+ */
 
 @Override
 public void displaySolution(Solution<Position> s) {

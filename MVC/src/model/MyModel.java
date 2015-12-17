@@ -24,6 +24,26 @@ import gnu.trove.list.array.TByteArrayList;
 import io.MyCompressorOutputStream;
 import io.MyDecompressorInputStream;
 
+/**
+*
+* 
+* 
+* 
+* 
+* <h1>MyModel</h1>
+* this class represent my controller part of the project, it is suitable for a Maze3d problem.
+* 
+* 
+* <p>
+* <b>Notes:</b> 
+*
+* @author  Lior Shachar
+* @version 1.0
+* @since   2015-12-17
+*/
+
+
+
 public class MyModel implements Model {
 	
 	HashMap<String, byte[]> mazes;
@@ -83,12 +103,9 @@ public class MyModel implements Model {
 
 
 
-	@Override
-	public void search(MazeProblem p) {
-		// TODO Auto-generated method stub
-		
-	}
-
+/**
+ * generate a maze based on the coordinates size given and save it on the system with the specified name
+ */
 
 	@Override
 	public void generateMaze(String name, int y, int x, int z) {
@@ -100,6 +117,10 @@ public class MyModel implements Model {
 		c.toView("maze "+name+" is ready");
 		
 	}
+	
+	/**
+	 * same as generateMaze only threaded
+	 */
 	
 public void generateMazeThread(String name, int y, int x, int z) {
 		threads.add(new Thread(new Runnable() {  //creates the thread
@@ -115,6 +136,11 @@ public void generateMazeThread(String name, int y, int x, int z) {
 	}
 
 
+
+
+/**
+ * save an array of bytes that represent a maze in the specified path
+ */
 @Override
 public void saveMaze(byte[] maze, String path) {
 	try {
@@ -128,6 +154,12 @@ public void saveMaze(byte[] maze, String path) {
 	}
 	
 }
+
+
+
+/**
+ * load a maze from the path given and save it in the system with the specified name
+ */
 
 @Override
 public void loadMaze(String path,String name) {
@@ -162,6 +194,10 @@ public void loadMaze(String path,String name) {
 }
 
 
+/**
+ * saves the maze in a temporary file in order to test its size and return it
+ */
+
 @Override
 public void fileSize(String name) {
 	saveMaze(mazes.get(name),"testfile.maz");
@@ -171,6 +207,11 @@ public void fileSize(String name) {
 
 	
 }
+
+
+/**
+ * solve a maze inside a thread
+ */
 
 public void solveMazeThread(String name,String algo){
 	threads.add(new Thread(new Runnable() {  //creates the thread
@@ -183,6 +224,10 @@ public void solveMazeThread(String name,String algo){
 			}
 }
 
+
+/**
+ * solve the maze represented by a key name with the algorithm specified in the string algo
+ */
 
 @Override
 public void solveMaze(String name,String algo) {
@@ -215,7 +260,9 @@ public void solveMaze(String name,String algo) {
 
 
 
-
+/**
+ * shutting down every thread that was created by this model
+ */
 @SuppressWarnings("deprecation")
 @Override
 public void kill() {
@@ -227,7 +274,7 @@ public void kill() {
 }
 
 
-
+// adds a background thread for testing
 
 @Override
 public void testThread() {

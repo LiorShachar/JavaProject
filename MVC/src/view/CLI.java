@@ -4,16 +4,33 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.HashMap;
-import java.util.Scanner;
 import java.util.Set;
 
 import controller.Command;
 
+/**
+*
+* 
+* 
+* 
+* 
+* <h1>CLI</h1><h4>(Command Line Interface)</h4>
+* this class represent a user interface based on textual commands as input.
+* it is threaded since it has an I\O loop.
+* 
+* 
+* <p>
+* <b>Notes:</b> 
+*
+* @author  Lior Shachar
+* @version 1.0
+* @since   2015-12-17
+*/
 public class CLI extends Thread {
 
-	private HashMap<String, Command> hmap;
-	private BufferedReader in;
-	private PrintWriter out;
+	private HashMap<String, Command> hmap; // command map supplied by the controller
+	private BufferedReader in; // source for reading
+	private PrintWriter out; // source for writing
 	
 
 	
@@ -74,7 +91,11 @@ public class CLI extends Thread {
 	}
 
 
-
+/**
+ * an Input loop from the user, matching the input using regex in order to get the right command from the controller
+ * and executing it.
+ * once it gets "exit" as input it will kill all running threads and shutdown.
+ */
 	 
 	 
 	@Override

@@ -2,12 +2,29 @@ package controller;
 
 import java.util.HashMap;
 
-import algorithms.mazeGenerators.Maze3d;
-import algorithms.mazeGenerators.MazeProblem;
-import algorithms.search.Solution;
+
 import model.Model;
 import view.View;
 
+
+/**
+*
+* 
+* 
+* 
+* 
+* <h1>Controller</h1>
+* The interface façade of the controller section in our MVC architectural pattern
+* the controller acts as a "middleman" between the view section and the model section
+* 
+* 
+* <p>
+* <b>Notes:</b> 
+*
+* @author  Lior Shachar
+* @version 1.0
+* @since   2015-12-17
+*/
 public interface Controller {
 	   
 	   public Model getModel();
