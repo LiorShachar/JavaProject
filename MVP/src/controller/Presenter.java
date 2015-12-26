@@ -1,6 +1,8 @@
 package controller;
 
 import java.util.HashMap;
+import java.util.Observable;
+import java.util.Observer;
 
 import algorithms.mazeGenerators.Maze3d;
 import model.Model;
@@ -24,7 +26,7 @@ import view.View;
 * @since   2015-12-17
 */
 
-public class MyController implements Controller {
+public class Presenter implements Observer{
 	
 	private Model m;
 	private View v;
@@ -32,14 +34,14 @@ public class MyController implements Controller {
 	
 
 	
-	public MyController(Model m, View v) {
+	public Presenter(Model m, View v) {
 		super();
 		this.m = m;
 		this.v = v;
 		commandCreator = new HashMap<String, Command>();
 		fillMap(commandCreator);
 	}
-	public MyController() {
+	public Presenter() {
 		super();
 		commandCreator = new HashMap<String, Command>();
 		fillMap(commandCreator);
@@ -245,13 +247,14 @@ public void setCommandCreator(HashMap<String, Command> commandCreator) {
 	this.commandCreator = commandCreator;
 }
 
-/**
- * pass a string to the View section, which uses the right output to print it
- */
-@Override
-
 public void toView(String s) {
 	v.printMsg(s);
+	
+}
+
+@Override
+public void update(Observable arg0, Object arg1) {
+	// TODO Auto-generated method stub
 	
 }
 

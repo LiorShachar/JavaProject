@@ -1,6 +1,6 @@
 package boot;
-import controller.Controller;
-import controller.MyController;
+import controller.Presenter;
+import controller.Presenter;
 import model.Model;
 import model.MyModel;
 import view.MyView;
@@ -14,7 +14,7 @@ public class Run {
 		System.out.println(" ");
 		System.out.println(" ");
 		
-		Controller c = new MyController();
+		Presenter c = new Presenter();
 		   View v = new MyView(c);  
 		   Model m = new MyModel(c);
 		   c.setModel(m);

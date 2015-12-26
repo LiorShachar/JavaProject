@@ -10,7 +10,7 @@ import algorithms.mazeGenerators.Maze3d;
 import algorithms.mazeGenerators.Position;
 import algorithms.search.Solution;
 import algorithms.search.State;
-import controller.Controller;
+import controller.Presenter;
 
 /**
 *
@@ -32,10 +32,10 @@ import controller.Controller;
 */
 
 public class MyView implements View {
-	private Controller c;
+	private Presenter c;
 	private CLI cli;
 	
-	 public MyView(Controller c){
+	 public MyView(Presenter c){
 	   this.c=c;
 	   this.cli =new CLI(c.getCommandCreator(),new BufferedReader(new InputStreamReader(System.in)),new PrintWriter(System.out));
 	  
@@ -44,14 +44,14 @@ public class MyView implements View {
 	 
 	 
 	 
-	public Controller getC() {
+	public Presenter getC() {
 		return c;
 	}
 
 
 
 
-	public void setC(Controller c) {
+	public void setC(Presenter c) {
 		this.c = c;
 	}
 

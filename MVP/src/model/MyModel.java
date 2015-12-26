@@ -20,7 +20,7 @@ import algorithms.search.BFS;
 import algorithms.search.MazeManDis;
 import algorithms.search.Solution;
 import algorithms.search.searchableMaze3d;
-import controller.Controller;
+import controller.Presenter;
 import gnu.trove.list.array.TByteArrayList;
 import io.MyCompressorOutputStream;
 import io.MyDecompressorInputStream;
@@ -45,14 +45,14 @@ import io.MyDecompressorInputStream;
 
 
 
-public class MyModel implements Model {
+public class MyModel extends CommonModel  {
 	
 	HashMap<String, byte[]> mazes;
 	HashMap<String,Solution<Position>> solutions;
 	ArrayList<Thread> threads;
-	private Controller c;
+	private Presenter c;
 	
-	 public MyModel(Controller c){
+	 public MyModel(Presenter c){
 	   this.c = c;
 	   mazes = new HashMap<String, byte[]>();
 	   solutions =new HashMap<String,Solution<Position>>();
@@ -90,14 +90,14 @@ public class MyModel implements Model {
 
 
 
-	public Controller getC() {
+	public Presenter getC() {
 		return c;
 	}
 
 
 
 
-	public void setC(Controller c) {
+	public void setC(Presenter c) {
 		this.c = c;
 	}
 
@@ -202,6 +202,7 @@ public void loadMaze(String path,String name) {
 public void fileSize(String name) {
 	saveMaze(mazes.get(name),"testfile.maz");
 	File test = new File("testfile.maz");
+	
 	c.toView("File Size of "+name+": "+test.length()+" Bytes");
 	test.delete();
 
