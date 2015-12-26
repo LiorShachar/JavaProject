@@ -5,6 +5,26 @@ import java.io.EOFException;
 import java.io.IOException;
 import java.io.InputStream;
 
+/**
+ * 
+ * 
+* <h1>MyDecompressorInputStream</h1>
+* 
+* a class which represent a {@link Maze3d} decompressor.
+* it uses read() in order to get the original array written to its source by {@link MyCompressorOutputStream}
+*  
+* 
+* <p>
+* <b>Notes:</b> 
+*
+* @author  Lior Shachar
+* @version 1.0
+* @since   2015-12-17
+*/
+
+
+
+
 public class MyDecompressorInputStream extends InputStream {
 
 	private DataInputStream in;
@@ -45,10 +65,10 @@ public class MyDecompressorInputStream extends InputStream {
 					b[i] = (byte)s;
 					i++;
 				}
-				else return -1;
+				else {in.close();return -1;}
 			}
 		}
-		return i;
+		in.close();return i;
 	}
 
 }

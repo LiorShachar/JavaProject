@@ -106,6 +106,11 @@ public class Maze3d implements MazeProblem {
 		
 	}
 
+	/**
+	 * returns this maze represented by an array of bytes, this array can be used in the constructor to load a completely identical maze
+	 * @return
+	 */
+	
 	public byte[] toByteArray() {
 
 		byte arr[] = new byte[(xSize * ySize * zSize) + 9];
@@ -162,12 +167,12 @@ public class Maze3d implements MazeProblem {
 		}
 	}
 
-	public int numOfMoves(Position p) {
+	public int numOfMoves(Position p) {// number of moves available from the given position
 		ArrayList<Position> list = getPossibleMovesList(p);
 		return list.size();
 	}
 
-	public String[] getPossibleMoves(Position p) {
+	public String[] getPossibleMoves(Position p) { //
 
 		ArrayList<Position> moves = getPossibleMovesList(p);
 		ArrayList<String> strings = new ArrayList<String>();
@@ -177,7 +182,7 @@ public class Maze3d implements MazeProblem {
 
 	}
 
-	public ArrayList<Position> getPossibleMovesList(Position p) {
+	public ArrayList<Position> getPossibleMovesList(Position p) { // a list of available Positions with the available coords
 		ArrayList<Position> moves = new ArrayList<Position>();
 
 		if (this.getCell(p.down()) == 0)
@@ -202,7 +207,8 @@ public class Maze3d implements MazeProblem {
 
 	}
 
-	public String[] getPossibleMovesStringDirections(Position p) {
+	
+	public String[] getPossibleMovesStringDirections(Position p) {//get all possible moves as actual directions by strings
 
 		String[] moves = new String[6];
 		int c = 0;
@@ -473,7 +479,9 @@ public class Maze3d implements MazeProblem {
 
 		StartPosition = startPosition;
 	}
-
+	/**
+	 * generates a starting point in the boundaries of the maze.
+	 */
 	public void generateStartPosition() {
 
 		int c;
@@ -570,7 +578,9 @@ public class Maze3d implements MazeProblem {
 		}
 
 	}
-
+/**
+ * generates an exit point in the boundaries of the maze
+ */
 	public void generateGoalPosition() {
 
 		int c;

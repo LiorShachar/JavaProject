@@ -10,6 +10,26 @@ import java.io.ObjectOutputStream;
 import java.io.OutputStream;
 import java.nio.ByteBuffer;
 
+/**
+ * 
+ * 
+* <h1>MyCompressorOutputStream</h1>
+* 
+* a class which represent a {@link Maze3d} compressor.
+* it uses write() in order to get an array of bytes, count the returns and
+* write them with the value, instead of repeating and writing the same value all over again.
+*  
+* 
+* <p>
+* <b>Notes:</b> 
+*
+* @author  Lior Shachar
+* @version 1.0
+* @since   2015-12-17
+*/
+
+
+
 public class MyCompressorOutputStream extends OutputStream {
 
 	private OutputStream out;
@@ -26,6 +46,12 @@ public class MyCompressorOutputStream extends OutputStream {
 
 	}
 
+	
+	
+	/**
+	 * writes a compressed version of the array by reading the amount of element returns and write it instead
+	 * of repeating the same element 
+	 */
 	@Override
 	public void write(byte[] b) throws IOException {
 		DataOutputStream dout = new DataOutputStream(this.out);
@@ -57,7 +83,7 @@ public class MyCompressorOutputStream extends OutputStream {
 		
 	
 			
-			
+			dout.close();
 		}
 	
 	
