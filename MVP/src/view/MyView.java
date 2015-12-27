@@ -32,7 +32,7 @@ import controller.Presenter;
 */
 
 public class MyView implements View {
-	private Presenter c;
+	
 	private CLI cli;
 	
 	 public MyView(Presenter c){

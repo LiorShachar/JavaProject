@@ -50,7 +50,7 @@ public class MyModel extends CommonModel  {
 	HashMap<String, byte[]> mazes;
 	HashMap<String,Solution<Position>> solutions;
 	ArrayList<Thread> threads;
-	private Presenter c;
+	
 	
 	 public MyModel(Presenter c){
 	   this.c = c;
