@@ -31,32 +31,31 @@ import controller.Presenter;
 * @since   2015-12-17
 */
 
-public class MyView implements View {
+public class MyViewCLI extends CommonView implements View {
 	
 	private CLI cli;
+	String todo;
 	
-	 public MyView(Presenter c){
-	   this.c=c;
-	   this.cli =new CLI(c.getCommandCreator(),new BufferedReader(new InputStreamReader(System.in)),new PrintWriter(System.out));
+	
+	
+	
+	 public String getTodo() {
+		return todo;
+	}
+
+
+	public void setTodo(String todo) {
+		this.todo = todo;
+		notifyObservers(this.todo);
+	}
+
+
+	public MyViewCLI(){
+	   
+	   this.cli =new CLI(new BufferedReader(new InputStreamReader(System.in)),new PrintWriter(System.out));
 	  
 	 }
 	 
-	 
-	 
-	 
-	public Presenter getC() {
-		return c;
-	}
-
-
-
-
-	public void setC(Presenter c) {
-		this.c = c;
-	}
-
-
-
 
 	public CLI getCli() {
 		return cli;

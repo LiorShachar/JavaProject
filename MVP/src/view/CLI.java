@@ -28,7 +28,7 @@ import controller.Command;
 */
 public class CLI extends Thread {
 
-	private HashMap<String, Command> hmap; // command map supplied by the controller
+	private String inputCom;
 	private BufferedReader in; // source for reading
 	private PrintWriter out; // source for writing
 	
@@ -38,23 +38,6 @@ public class CLI extends Thread {
 	 public PrintWriter getOut() {
 		return out;
 	}
-
-
-
-
-
-	public HashMap<String, Command> getHmap() {
-		return hmap;
-	}
-
-
-
-
-
-	public void setHmap(HashMap<String, Command> hmap) {
-		this.hmap = hmap;
-	}
-
 
 
 
@@ -82,10 +65,9 @@ public class CLI extends Thread {
 
 
 
-
-	public CLI(HashMap<String, Command> hmap, BufferedReader in, PrintWriter out) {
+	public CLI(BufferedReader in, PrintWriter out) {
 		super();
-		this.hmap = hmap;
+		
 		this.in = in;
 		this.out = out;
 	}
@@ -105,13 +87,10 @@ public class CLI extends Thread {
 		Command c;
 		System.out.println("** Greetings! please enter your desired command, for the commands list type \"help\" **");
 		try {
-			while (!(input=in.readLine()).matches("exit")){
-				for (String s : keys){
-					if (input.matches(s)){
-						String[] args = input.split(" ");
-						c = hmap.get(s);
-						c.doCommand(args);
-					}
+			while (true){
+				if(!(input=in.readLine()).isEmpty()){
+					
+					
 				}
 					
 			}

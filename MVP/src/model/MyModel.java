@@ -52,8 +52,8 @@ public class MyModel extends CommonModel  {
 	ArrayList<Thread> threads;
 	
 	
-	 public MyModel(Presenter c){
-	   this.c = c;
+	 public MyModel(){
+	  
 	   mazes = new HashMap<String, byte[]>();
 	   solutions =new HashMap<String,Solution<Position>>();
 	   threads= new ArrayList<Thread>();
@@ -90,17 +90,6 @@ public class MyModel extends CommonModel  {
 
 
 
-	public Presenter getC() {
-		return c;
-	}
-
-
-
-
-	public void setC(Presenter c) {
-		this.c = c;
-	}
-
 
 
 
@@ -115,6 +104,8 @@ public class MyModel extends CommonModel  {
 		MyMaze3dGenerator gen = new MyMaze3dGenerator();
 		Maze3d created = gen.generate(y,x,z);
 		mazes.put(name,created.toByteArray());
+		
+		@ToDo
 		c.toView("maze "+name+" is ready");
 		
 	}

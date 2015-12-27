@@ -254,7 +254,11 @@ public void toView(String s) {
 
 @Override
 public void update(Observable arg0, Object arg1) {
-	// TODO Auto-generated method stub
+	if (arg0 == m){
+		Command command;
+		String[] input = (String[])arg1;
+		
+	}
 	
 }
 
