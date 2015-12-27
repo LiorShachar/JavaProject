@@ -5,6 +5,8 @@ import java.io.File;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.Observable;
+import java.util.Observer;
 
 import algorithms.mazeGenerators.Maze3d;
 import algorithms.mazeGenerators.Position;
@@ -31,7 +33,7 @@ import controller.Presenter;
 * @since   2015-12-17
 */
 
-public class MyViewCLI extends CommonView implements View {
+public class MyViewCLI extends CommonView implements View,Observer {
 	
 	private CLI cli;
 	String todo;
@@ -46,6 +48,7 @@ public class MyViewCLI extends CommonView implements View {
 
 	public void setTodo(String todo) {
 		this.todo = todo;
+		hasChanged();
 		notifyObservers(this.todo);
 	}
 
@@ -53,6 +56,7 @@ public class MyViewCLI extends CommonView implements View {
 	public MyViewCLI(){
 	   
 	   this.cli =new CLI(new BufferedReader(new InputStreamReader(System.in)),new PrintWriter(System.out));
+	   this.cli.addObserver(this);
 	  
 	 }
 	 
@@ -66,6 +70,7 @@ public class MyViewCLI extends CommonView implements View {
 
 	public void setCli(CLI cli) {
 		this.cli = cli;
+		this.cli.addObserver(this);
 	}
 
 
@@ -266,6 +271,17 @@ public void displaySolution(Solution<Position> s) {
 	ArrayList<State<Position>> sol= s.getSolution();
 	for (State<Position> p : sol)
 		printMsg(p.toString());
+	
+}
+
+
+@Override
+public void update(Observable o, Object arg) {
+	if (o==this.cli){
+		this.todo=this.cli.getInputCom();
+		hasChanged();
+		notifyObservers();
+	}
 	
 }
 

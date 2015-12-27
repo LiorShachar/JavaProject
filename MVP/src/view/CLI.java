@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.HashMap;
+import java.util.Observable;
 import java.util.Set;
 
 import controller.Command;
@@ -26,7 +27,7 @@ import controller.Command;
 * @version 1.0
 * @since   2015-12-17
 */
-public class CLI extends Thread {
+public class CLI extends Observable {
 
 	private String inputCom;
 	private BufferedReader in; // source for reading
@@ -65,6 +66,20 @@ public class CLI extends Thread {
 
 
 
+	public String getInputCom() {
+		return inputCom;
+	}
+
+
+
+
+	public void setInputCom(String inputCom) {
+		this.inputCom = inputCom;
+	}
+
+
+
+
 	public CLI(BufferedReader in, PrintWriter out) {
 		super();
 		
@@ -80,23 +95,22 @@ public class CLI extends Thread {
  */
 	 
 	 
-	@Override
-	public void run() {
+	
+	public void start() {
 		String input;
-		Set<String> keys=hmap.keySet();
-		Command c;
 		System.out.println("** Greetings! please enter your desired command, for the commands list type \"help\" **");
 		try {
 			while (true){
 				if(!(input=in.readLine()).isEmpty()){
+					this.inputCom=input;
+					hasChanged();
+					notifyObservers();
 					
 					
 				}
 					
 			}
-			System.out.println("Shutting down...");
-			c=hmap.get("exit");
-			c.doCommand(null);
+			
 			
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
