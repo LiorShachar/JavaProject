@@ -50,6 +50,8 @@ public class MyModel extends CommonModel  {
 	HashMap<String, byte[]> mazes;
 	HashMap<String,Solution<Position>> solutions;
 	ArrayList<Thread> threads;
+	String error;
+	String msg;
 	
 	
 	 public MyModel(){
@@ -60,36 +62,7 @@ public class MyModel extends CommonModel  {
 	 }
 
 	
-	 
-	 
-	public HashMap<String, byte[]> getMazes() {
-		return mazes;
-	}
-
-
-
-
-	public void setMazes(HashMap<String, byte[]> mazes) {
-		this.mazes = mazes;
-	}
-
-
-
-
-	public HashMap<String, Solution<Position>> getSolutions() {
-		return solutions;
-	}
-
-
-
-
-	public void setSolutions(HashMap<String, Solution<Position>> solutions) {
-		this.solutions = solutions;
-	}
-
-
-
-
+	
 
 
 
@@ -98,15 +71,17 @@ public class MyModel extends CommonModel  {
  */
 
 	@Override
-	public void generateMaze(String name, int y, int x, int z) {
+	public void handleGenerate(String name, int y, int x, int z) {
 		
-		c.toView("generating maze...");
+		msg="**generating maze**";
+		setChanged();
+		notifyObservers("msg");
 		MyMaze3dGenerator gen = new MyMaze3dGenerator();
 		Maze3d created = gen.generate(y,x,z);
 		mazes.put(name,created.toByteArray());
-		
-		@ToDo
-		c.toView("maze "+name+" is ready");
+		msg="**maze "+name+" is ready**";
+		setChanged();
+		notifyObservers("msg");
 		
 	}
 	
@@ -117,7 +92,7 @@ public class MyModel extends CommonModel  {
 public void generateMazeThread(String name, int y, int x, int z) {
 		threads.add(new Thread(new Runnable() {  //creates the thread
 		   public void run() {
-			   generateMaze(name,y,x,z);
+			   handleGenerate(name,y,x,z);
 		   }
 		 }));
 		if (threads != null && !threads.isEmpty()) { // add the thread to our list and starts it
@@ -134,14 +109,18 @@ public void generateMazeThread(String name, int y, int x, int z) {
  * save an array of bytes that represent a maze in the specified path
  */
 @Override
-public void saveMaze(byte[] maze, String path) {
+public void handleSaveMaze(byte[] maze, String path) {
 	try {
 		MyCompressorOutputStream writer = new MyCompressorOutputStream(new FileOutputStream(path));
 		writer.write(maze);
 		writer.close();
-		c.toView("Save completed successfuly");
+		msg="**Save completed successfuly**";
+		setChanged();
+		notifyObservers("msg");
 	} catch (IOException e) {
-		c.toView("error: could not save");
+		error="error: could not save";
+		setChanged();
+		notifyObservers("err");
 		e.printStackTrace();
 	}
 	
@@ -154,7 +133,7 @@ public void saveMaze(byte[] maze, String path) {
  */
 
 @Override
-public void loadMaze(String path,String name) {
+public void handleLoadMaze(String path,String name) {
 	try {
 		// we need to know the array size, the compressed version of the maze have a pattern of (value,number of returns)
 		//so if we sum up all the values in the odd index places well get the right size
@@ -176,10 +155,14 @@ public void loadMaze(String path,String name) {
 		comp.read(arr);
 		comp.close();
 		mazes.put(name, arr);
-		c.toView("Loading completed successfuly");
+		msg="Loading completed successfuly";
+		setChanged();
+		notifyObservers("msg");
 		
 	} catch (IOException e ) {
-		c.toView("error: could not load from the file specified");
+		error=("error: could not load from the file specified");
+		setChanged();
+		notifyObservers("err");
 	}
 	
 }
@@ -190,11 +173,13 @@ public void loadMaze(String path,String name) {
  */
 
 @Override
-public void fileSize(String name) {
-	saveMaze(mazes.get(name),"testfile.maz");
+public void handleFileSize(String name) {
+	handleSaveMaze(mazes.get(name),"testfile.maz");
 	File test = new File("testfile.maz");
 	
-	c.toView("File Size of "+name+": "+test.length()+" Bytes");
+	msg="File Size of "+name+": "+test.length()+" Bytes";
+	setChanged();
+	notifyObservers("msg");
 	test.delete();
 
 	
@@ -205,10 +190,10 @@ public void fileSize(String name) {
  * solve a maze inside a thread
  */
 
-public void solveMazeThread(String name,String algo){
+public void handleSolveMazeThread(String name,String algo){
 	threads.add(new Thread(new Runnable() {  //creates the thread
 		   public void run() {
-			   solveMaze(name,algo);
+			   handleSolveMaze(name,algo);
 		   }
 		 }));
 		if (threads != null && !threads.isEmpty()) { // add the thread to our list and starts it
@@ -222,29 +207,53 @@ public void solveMazeThread(String name,String algo){
  */
 
 @Override
-public void solveMaze(String name,String algo) {
+public void handleSolveMaze(String name,String algo) {
 	if(mazes.containsKey(name)){
-		c.toView("Maze name found");
+		msg="Maze name found";
+		setChanged();
+		notifyObservers("msg");
 		if (algo.matches("[Bb][Ff][Ss]")|| algo.matches("[Aa][Ss][Tt][Aa][Rr]")){
-			c.toView("algorithm found");
+			
+			msg="algorithm found";
+			setChanged();
+			notifyObservers("msg");
 			if ( algo.matches("[Bb][Ff][Ss]")){
-				c.toView("Solving "+name+" using "+algo);
+				
+				msg="Solving "+name+" using "+algo;
+				setChanged();
+				notifyObservers("msg");
 				Solution<Position> sol = new BFS<Position>().search(new searchableMaze3d(new Maze3d(mazes.get(name))));
 				solutions.put(name,sol);
-				c.toView("solution for "+name+" is ready");
+				msg="solution for "+name+" is ready";
+				setChanged();
+				notifyObservers("msg");
+				
 			}
 			else if ( algo.matches("[Aa][Ss][Tt][Aa][Rr]")){
-				c.toView("Solving "+name+" using "+algo);
+				
+				msg="Solving "+name+" using "+algo;
+				setChanged();
+				notifyObservers("msg");
 				Solution<Position> sol = new Astar<Position>(new MazeManDis()).search(new searchableMaze3d(new Maze3d(mazes.get(name))));
 				solutions.put(name,sol);
-				c.toView("solution for "+name+" is ready");
+				msg="solution for "+name+" is ready";
+				setChanged();
+				notifyObservers("msg");
 			}
 				
 		}
-		else{c.toView("algorithm not found");}
+		
+		else{error="algorithm not found";
+		setChanged();
+		notifyObservers("err");
+		}
+		
 		
 	}
-	else{c.toView("maze not found");}
+	else{error="maze not found";
+	setChanged();
+	notifyObservers("err");}
+	
 			
 	
 	
@@ -257,7 +266,7 @@ public void solveMaze(String name,String algo) {
  */
 @SuppressWarnings("deprecation")
 @Override
-public void kill() {
+public void handleKill() {
 	for (Thread t : threads){
 		if(t.isAlive())
 		t.stop();
@@ -288,6 +297,52 @@ public void testThread() {
 			  threads.get(threads.size()-1).start();
 			}
 }
+
+
+
+
+
+
+public HashMap<String, byte[]> getMazes() {
+	return mazes;
+}
+
+
+
+
+
+
+public HashMap<String, Solution<Position>> getSolutions() {
+	return solutions;
+}
+
+
+
+
+
+
+public String getError() {
+	return error;
+}
+
+
+
+
+
+
+public String getMsg() {
+	return msg;
+}
+
+
+
+
+
+
+
+
+
+
 
 
 }

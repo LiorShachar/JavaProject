@@ -276,8 +276,13 @@ public class Presenter implements Observer {
 				else if (arg0 == m) {
 					
 					String input = (String) arg1;
-					for (String s : keys) {
-						if (input.matches(s)) {
+					switch (input){
+					case "msg":
+						
+						
+					
+					
+					
 							String[] args = input.split(" ");
 							command = commandCreator.get(s);
 							command.doCommand(args);

@@ -27,27 +27,37 @@ import algorithms.search.Solution;
 public interface Model {
 	
 
-	void generateMaze(String name, int y, int x, int z);
+	void handleGenerate(String name, int y, int x, int z);
 
 	void generateMazeThread(String s, int y, int x, int z);
 
-	void saveMaze(byte[] maze, String path);
+	void handleSaveMaze(byte[] maze, String path);
 
-	void loadMaze(String path, String name);
+	void handleLoadMaze(String path, String name);
 
-	void fileSize(String name);
+	void handleFileSize(String name);
 
 	public HashMap<String, byte[]> getMazes();
-
-	public void setMazes(HashMap<String, byte[]> mazes);
 	
-	public void solveMaze(String name,String algo);
+	public void handleSolveMaze(String name,String algo);
 	
 	public HashMap<String, Solution<Position>> getSolutions();
 
-	void solveMazeThread(String string, String string2);
+	void handleSolveMazeThread(String string, String string2);
+	
 
-	void kill();
+public String getError();
+
+
+
+
+
+
+public String getMsg();
+
+
+
+	void handleKill();
 
 	void testThread();
 }
