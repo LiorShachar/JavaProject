@@ -263,9 +263,9 @@ public class Presenter implements Observer {
 		
 		if (arg0 == v) {
 			
-			String input = (String) arg1;
+			String input = v.getTodo();
 			for (String s : keys) {
-				if (s.matches(s)) {
+				if (input.matches(s)) {
 					String[] args = input.split(" ");
 					command = commandCreator.get(s);
 					command.doCommand(args);
@@ -273,11 +273,11 @@ public class Presenter implements Observer {
 			}
 		}
 			
-				else if (arg0 == v) {
+				else if (arg0 == m) {
 					
 					String input = (String) arg1;
 					for (String s : keys) {
-						if (s.matches(s)) {
+						if (input.matches(s)) {
 							String[] args = input.split(" ");
 							command = commandCreator.get(s);
 							command.doCommand(args);

@@ -1,6 +1,5 @@
 package boot;
 import controller.Presenter;
-import controller.Presenter;
 import model.Model;
 import model.MyModel;
 import view.MyViewCLI;

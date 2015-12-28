@@ -96,33 +96,37 @@ public class CLI extends Observable implements Runnable{
 	 
 	 
 	
-	public void start() {
-		String input;
-		System.out.println("** Greetings! please enter your desired command, for the commands list type \"help\" **");
-		
-		
-		try {
-			while (true){
-				if(!(input=in.readLine()).isEmpty()){
-					this.inputCom=input;
-					hasChanged();
-					notifyObservers(this.inputCom);
-					
-					
-				}
-					
+
+
+
+
+
+@Override
+public void run() {
+	String input="";
+	System.out.println("** Greetings! please enter your desired command, for the commands list type \"help\" **");
+	
+	
+	try {
+		while (input!="exit"){
+			if(!(input=in.readLine()).isEmpty()){
+				this.inputCom=input;
+				setChanged();
+				notifyObservers(this.inputCom);
+				
+				
 			}
-			
-			
-		} catch (IOException e) {
-			System.out.println("invalid input error ");
-			e.printStackTrace();
+				
 		}
 		
 		
-		
-		
+	} catch (IOException e) {
+		System.out.println("invalid input error ");
+		e.printStackTrace();
 	}
+	
+	
+}
 
 	 
 	 

@@ -82,7 +82,11 @@ public class MyViewCLI extends CommonView implements View,Observer {
 	
 	@Override
 	public void start() {
-		cli.start();
+		
+		
+		new Thread(cli).start();
+		
+		
 		
 		
 	}
@@ -277,10 +281,10 @@ public void displaySolution(Solution<Position> s) {
 
 @Override
 public void update(Observable o, Object arg) {
-	System.out.println("TEST WORKING");
+	
 	if (o==cli){
-		this.todo=cli.getInputCom();
-		hasChanged();
+		this.todo=(String)arg;
+		setChanged();
 		notifyObservers();
 	}
 	
