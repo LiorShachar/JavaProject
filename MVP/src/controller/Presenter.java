@@ -109,7 +109,7 @@ public class Presenter implements Observer {
 
 			@Override
 			public void doCommand(String[] args) {
-				m.saveMaze(m.getMazes().get(args[2]), args[3]);
+				m.handleSaveMaze(m.getMazes().get(args[2]), args[3]);
 
 			}
 		});
@@ -119,7 +119,7 @@ public class Presenter implements Observer {
 
 			@Override
 			public void doCommand(String[] args) {
-				m.loadMaze(args[2], args[3]);
+				m.handleLoadMaze(args[2], args[3]);
 
 			}
 		});
@@ -137,7 +137,7 @@ public class Presenter implements Observer {
 
 			@Override
 			public void doCommand(String[] args) {
-				m.fileSize(args[2]);
+				m.handleFileSize(args[2]);
 
 			}
 		});
@@ -146,7 +146,7 @@ public class Presenter implements Observer {
 
 			@Override
 			public void doCommand(String[] args) {
-				m.solveMazeThread(args[1], args[2]);
+				m.handleSolveMazeThread(args[1], args[2]);
 
 			}
 		});
@@ -170,7 +170,7 @@ public class Presenter implements Observer {
 
 			@Override
 			public void doCommand(String[] args) {
-				m.kill();
+				m.handleKill();
 
 			}
 		});
@@ -278,14 +278,16 @@ public class Presenter implements Observer {
 					String input = (String) arg1;
 					switch (input){
 					case "msg":
-						
-						
-					
-					
-					
-							String[] args = input.split(" ");
-							command = commandCreator.get(s);
-							command.doCommand(args);
+							input = m.getMsg();
+							v.printMsg(input);
+							break;
+					case "err":
+						input = m.getError();
+						v.printMsg(input);
+						break;
+					default :
+						break;
+							
 
 				}
 			}
@@ -294,4 +296,4 @@ public class Presenter implements Observer {
 	
 
 }
-}
+
