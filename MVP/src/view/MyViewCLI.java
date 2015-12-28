@@ -35,7 +35,7 @@ import controller.Presenter;
 
 public class MyViewCLI extends CommonView implements View,Observer {
 	
-	private CLI cli;
+	 CLI cli;
 	String todo;
 	
 	
@@ -56,7 +56,7 @@ public class MyViewCLI extends CommonView implements View,Observer {
 	public MyViewCLI(){
 	   
 	   this.cli =new CLI(new BufferedReader(new InputStreamReader(System.in)),new PrintWriter(System.out));
-	   this.cli.addObserver(this);
+	   
 	  
 	 }
 	 
@@ -277,8 +277,9 @@ public void displaySolution(Solution<Position> s) {
 
 @Override
 public void update(Observable o, Object arg) {
-	if (o==this.cli){
-		this.todo=this.cli.getInputCom();
+	System.out.println("TEST WORKING");
+	if (o==cli){
+		this.todo=cli.getInputCom();
 		hasChanged();
 		notifyObservers();
 	}

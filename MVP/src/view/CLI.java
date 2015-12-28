@@ -27,7 +27,7 @@ import controller.Command;
 * @version 1.0
 * @since   2015-12-17
 */
-public class CLI extends Observable {
+public class CLI extends Observable implements Runnable{
 
 	private String inputCom;
 	private BufferedReader in; // source for reading
@@ -99,12 +99,14 @@ public class CLI extends Observable {
 	public void start() {
 		String input;
 		System.out.println("** Greetings! please enter your desired command, for the commands list type \"help\" **");
+		
+		
 		try {
 			while (true){
 				if(!(input=in.readLine()).isEmpty()){
 					this.inputCom=input;
 					hasChanged();
-					notifyObservers();
+					notifyObservers(this.inputCom);
 					
 					
 				}
@@ -113,7 +115,7 @@ public class CLI extends Observable {
 			
 			
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
+			System.out.println("invalid input error ");
 			e.printStackTrace();
 		}
 		

@@ -14,11 +14,14 @@ public class Run {
 		System.out.println(" ");
 		System.out.println(" ");
 		
-		Presenter c = new Presenter();
-		   View v = new MyViewCLI();  
-		   Model m = new MyModel();
-		   c.setModel(m);
-		   c.setView(v);
+		Presenter p = new Presenter();
+		MyViewCLI v = new MyViewCLI();  
+		MyModel m = new MyModel();
+		   p.setModel(m);
+		   p.setView(v);
+		   v.getCli().addObserver(v);
+		  v.addObserver(p);
+		  m.addObserver(p);
 		   v.start();
 		   
 

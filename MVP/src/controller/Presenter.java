@@ -259,24 +259,34 @@ public class Presenter implements Observer {
 	@Override
 	public void update(Observable arg0, Object arg1) {
 		Set<String> keys=commandCreator.keySet();
-		if (arg0 == m) {
-			Command command;
-			String[] input = (String[]) arg1;
+		Command command;
+		
+		if (arg0 == v) {
+			
+			String input = (String) arg1;
 			for (String s : keys) {
 				if (s.matches(s)) {
 					String[] args = input.split(" ");
-					c = commandCreator.get(s);
-					c.doCommand(args);
+					command = commandCreator.get(s);
+					command.doCommand(args);
 				}
-
-				if (arg0 == v) {
-					Command command;
-					String[] input = (String[]) arg1;
+			}
+		}
+			
+				else if (arg0 == v) {
+					
+					String input = (String) arg1;
+					for (String s : keys) {
+						if (s.matches(s)) {
+							String[] args = input.split(" ");
+							command = commandCreator.get(s);
+							command.doCommand(args);
 
 				}
 			}
 
 		}
-	}
+	
 
+}
 }
