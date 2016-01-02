@@ -31,5 +31,6 @@ public interface View {
 	void displayMaze(byte[] arr);
 	void displayCross(byte[] arr,String by,int i);
 	void displaySolution(Solution<Position> s);
+	void showExit();
 
 }

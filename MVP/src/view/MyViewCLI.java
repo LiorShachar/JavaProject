@@ -45,6 +45,9 @@ public class MyViewCLI extends CommonView implements View,Observer {
 		return todo;
 	}
 
+	 public void showExit(){
+		this.cli.flag=false;
+	 } 
 
 	public void setTodo(String todo) {
 		this.todo = todo;

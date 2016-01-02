@@ -8,6 +8,8 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import javax.swing.text.AbstractDocument.LeafElement;
 
@@ -47,18 +49,18 @@ import io.MyDecompressorInputStream;
 
 public class MyModel extends CommonModel  {
 	
-	HashMap<String, byte[]> mazes;
-	HashMap<String,Solution<Position>> solutions;
-	ArrayList<Thread> threads;
-	String error;
-	String msg;
+	private	HashMap<String, byte[]> mazes;
+	private	HashMap<String,Solution<Position>> solutions;
+	private ExecutorService threadPool;
+	private	String error;
+	private	String msg;
 	
 	
 	 public MyModel(){
 	  
 	   mazes = new HashMap<String, byte[]>();
 	   solutions =new HashMap<String,Solution<Position>>();
-	   threads= new ArrayList<Thread>();
+	   threadPool= Executors.newCachedThreadPool();
 	 }
 
 	
@@ -264,15 +266,14 @@ public void handleSolveMaze(String name,String algo) {
 /**
  * shutting down every thread that was created by this model
  */
-@SuppressWarnings("deprecation")
+
 @Override
 public void handleKill() {
-	for (Thread t : threads){
-		if(t.isAlive())
-		t.stop();
+	this.threadPool.shutdownNow();
+	
 	}
 	
-}
+
 
 
 // adds a background thread for testing
@@ -280,23 +281,24 @@ public void handleKill() {
 @Override
 public void testThread() {
 	
-	threads.add(new Thread(new Runnable() {  //creates the thread
-		   public void run() {
-			  while(true){
-				  System.out.println("*** test Thread running ***");
-				  try {
-					Thread.sleep(2000);
-				} catch (InterruptedException e) {
-				 System.out.println("test thread interrupted");
-					e.printStackTrace();
-				}
-			  }
-		   }
-		 }));
-		if (threads != null && !threads.isEmpty()) { // add the thread to our list and starts it
-			  threads.get(threads.size()-1).start();
+	threadPool.execute(new Runnable(){ public void run() {
+		  while(true){
+			  System.out.println("*** test Thread running ***");
+			  try {
+				Thread.sleep(2000);
+			} catch (InterruptedException e) {
+			 System.out.println("test thread interrupted");
+				e.printStackTrace();
+				break;
 			}
-}
+		  }
+	   }
+	 } );
+		   
+		 
+		
+			}
+
 
 
 

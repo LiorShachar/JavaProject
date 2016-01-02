@@ -171,6 +171,7 @@ public class Presenter implements Observer {
 			@Override
 			public void doCommand(String[] args) {
 				m.handleKill();
+				v.showExit();
 
 			}
 		});

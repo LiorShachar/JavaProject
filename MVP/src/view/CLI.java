@@ -32,6 +32,7 @@ public class CLI extends Observable implements Runnable{
 	private String inputCom;
 	private BufferedReader in; // source for reading
 	private PrintWriter out; // source for writing
+	 boolean flag;
 	
 
 	
@@ -85,6 +86,7 @@ public class CLI extends Observable implements Runnable{
 		
 		this.in = in;
 		this.out = out;
+		this.flag=true;
 	}
 
 
@@ -108,7 +110,7 @@ public void run() {
 	
 	
 	try {
-		while (input!="exit"){
+		while (flag){
 			if(!(input=in.readLine()).isEmpty()){
 				this.inputCom=input;
 				setChanged();
