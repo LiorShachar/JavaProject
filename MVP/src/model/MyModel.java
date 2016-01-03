@@ -3,18 +3,13 @@ package model;
 import java.io.DataInputStream;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-
-import javax.swing.text.AbstractDocument.LeafElement;
-
+import java.util.concurrent.Future;
 import algorithms.mazeGenerators.Maze3d;
-import algorithms.mazeGenerators.MazeProblem;
 import algorithms.mazeGenerators.MyMaze3dGenerator;
 import algorithms.mazeGenerators.Position;
 import algorithms.search.Astar;
@@ -22,8 +17,6 @@ import algorithms.search.BFS;
 import algorithms.search.MazeManDis;
 import algorithms.search.Solution;
 import algorithms.search.searchableMaze3d;
-import controller.Presenter;
-import gnu.trove.list.array.TByteArrayList;
 import io.MyCompressorOutputStream;
 import io.MyDecompressorInputStream;
 
@@ -94,7 +87,13 @@ public class MyModel extends CommonModel  {
 public void generateMazeThread(String name, int y, int x, int z) {
 		
 		
-		
+		if(!this.mazes.containsKey(name)){
+			scno("m", "**generating maze**");
+			Future<Maze3d> futurem = threadPool.submit(arg0)
+		}
+		else{
+			scno("e", "**Name already exists, please use a valid name**");
+		}
 	}
 
 
