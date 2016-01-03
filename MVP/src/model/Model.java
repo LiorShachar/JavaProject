@@ -37,23 +37,23 @@ public interface Model {
 
 	void handleFileSize(String name);
 
-	public HashMap<String, byte[]> getMazes();
+	 HashMap<String, byte[]> getMazes();
 	
-	public void handleSolveMaze(String name,String algo);
+	 void handleSolveMaze(String name,String algo);
 	
-	public HashMap<String, Solution<Position>> getSolutions();
+	 HashMap<String, Solution<Position>> getSolutions();
 
 	void handleSolveMazeThread(String string, String string2);
 	
 
-public String getError();
+	 String getError();
 
 
 
 
 
 
-public String getMsg();
+	 String getMsg();
 
 
 

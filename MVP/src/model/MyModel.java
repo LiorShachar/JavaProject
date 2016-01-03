@@ -92,14 +92,7 @@ public class MyModel extends CommonModel  {
 	 */
 	
 public void generateMazeThread(String name, int y, int x, int z) {
-		threads.add(new Thread(new Runnable() {  //creates the thread
-		   public void run() {
-			   handleGenerate(name,y,x,z);
-		   }
-		 }));
-		if (threads != null && !threads.isEmpty()) { // add the thread to our list and starts it
-			  threads.get(threads.size()-1).start();
-			}
+		
 		
 		
 	}
@@ -336,8 +329,38 @@ public String getMsg() {
 	return msg;
 }
 
-
-
+/**
+ * this method serves as an easy way to notify the observers with the appropriate outcome
+ * in this case we want to save 3 lines by specifing in the parameters whether the data passed is an error a message 
+ * or some other data it will set changed and notify the observers accordingly.
+ * @param s acts as the notification type
+ * @param o acts as the data passed
+ * */
+public void scno(String s,Object o) {
+	switch (s){
+	case "m":
+		this.msg=(String)o;
+		if (this.msg!=null)
+		{
+			setChanged();
+			notifyObservers("msg");
+		}
+		break;
+	case "e":
+		this.error=(String)o;
+		if (this.error!=null)
+		{
+			setChanged();
+			notifyObservers("err");
+		}
+		break;
+		default:
+			System.out.println("unrecognized notification type, no changes were made");
+			
+		
+	}
+		
+}
 
 
 
