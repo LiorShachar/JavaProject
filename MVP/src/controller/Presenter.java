@@ -79,7 +79,7 @@ public class Presenter implements Observer {
 
 			@Override
 			public void doCommand(String[] args) {
-				m.generateMazeThread(args[3], Integer.parseInt(args[5]), Integer.parseInt(args[4]),
+				m.handleGenerate(args[3], Integer.parseInt(args[5]), Integer.parseInt(args[4]),
 						Integer.parseInt(args[6]));
 
 			}
@@ -146,7 +146,7 @@ public class Presenter implements Observer {
 
 			@Override
 			public void doCommand(String[] args) {
-				m.handleSolveMazeThread(args[1], args[2]);
+				m.handleSolveMaze(args[1], args[2]);
 
 			}
 		});

@@ -29,8 +29,6 @@ public interface Model {
 
 	void handleGenerate(String name, int y, int x, int z);
 
-	void generateMazeThread(String s, int y, int x, int z);
-
 	void handleSaveMaze(byte[] maze, String path);
 
 	void handleLoadMaze(String path, String name);
@@ -43,7 +41,7 @@ public interface Model {
 	
 	 HashMap<String, Solution<Position>> getSolutions();
 
-	void handleSolveMazeThread(String string, String string2);
+	
 	
 
 	 String getError();
