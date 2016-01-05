@@ -140,8 +140,8 @@ public class MyModel extends CommonModel {
 			int val = 0;
 			int i = 0;
 			int sum = 0;
-			while (reader.available() >= 4) {
-				val = reader.readInt();
+			while (reader.available() >0) {
+				val = reader.read();
 				if (!(i % 2 == 0)) {
 					sum += val;
 				}
