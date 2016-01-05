@@ -6,12 +6,12 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
-import java.util.concurrent.Callable;
-import java.util.concurrent.ExecutionException;
 
 import algorithms.mazeGenerators.Maze3d;
 import algorithms.mazeGenerators.MyMaze3dGenerator;
@@ -52,7 +52,7 @@ public class MyModel extends CommonModel {
 	private String error;
 	private String msg;
 	
-	private long starttime;
+	
 
 	public MyModel() {
 
@@ -60,8 +60,7 @@ public class MyModel extends CommonModel {
 		solutions = new HashMap<String, Solution<Position>>();
 		threadPool = Executors.newCachedThreadPool();
 		
-		/// for testing purposes
-		starttime= System.currentTimeMillis();
+		
 		
 	}
 
@@ -76,7 +75,7 @@ public class MyModel extends CommonModel {
 		if (!this.mazes.containsKey(name)) {
 			scno("m", "**generating maze**");
 			
-			scno("m", "time: "+(System.currentTimeMillis()-starttime));
+			
 			Future<Maze3d> futurem = threadPool.submit(new Callable<Maze3d>() {
 
 				@Override
@@ -89,7 +88,7 @@ public class MyModel extends CommonModel {
 			});
 			try {
 				mazes.put(name, futurem.get());
-				scno("m", "time: "+(System.currentTimeMillis()-starttime));
+				
 				scno("m", "**maze " + name + " is ready**");
 			} catch (InterruptedException e) {
 				scno("e", " thread interrupted, maze generation aborted");
@@ -279,7 +278,7 @@ public class MyModel extends CommonModel {
 
 		threadPool.execute(new Runnable() {
 			public void run() {
-				scno("m", "THREAD started ! time: "+(System.currentTimeMillis()-starttime));
+				
 				int c=0;
 				while (c!=1000000) {
 					c++;
@@ -299,7 +298,7 @@ public class MyModel extends CommonModel {
 					
 					
 				}
-				scno("m", "THREAD FINISHED ! time: "+(System.currentTimeMillis()-starttime));
+				
 			}
 		});
 
