@@ -44,17 +44,25 @@ import io.MyDecompressorInputStream;
 
 public class MyModel extends CommonModel {
 
-	private HashMap<String, byte[]> mazes;
+	private HashMap<String, Maze3d> mazes;
 	private HashMap<String, Solution<Position>> solutions;
+	
 	private ExecutorService threadPool;
+	
 	private String error;
 	private String msg;
+	
+	private long starttime;
 
 	public MyModel() {
 
-		mazes = new HashMap<String, byte[]>();
+		mazes = new HashMap<String,Maze3d>();
 		solutions = new HashMap<String, Solution<Position>>();
 		threadPool = Executors.newCachedThreadPool();
+		
+		/// for testing purposes
+		starttime= System.currentTimeMillis();
+		
 	}
 
 	/**
@@ -67,6 +75,8 @@ public class MyModel extends CommonModel {
 
 		if (!this.mazes.containsKey(name)) {
 			scno("m", "**generating maze**");
+			
+			scno("m", "time: "+(System.currentTimeMillis()-starttime));
 			Future<Maze3d> futurem = threadPool.submit(new Callable<Maze3d>() {
 
 				@Override
@@ -78,7 +88,8 @@ public class MyModel extends CommonModel {
 
 			});
 			try {
-				mazes.put(name, futurem.get().toByteArray());
+				mazes.put(name, futurem.get());
+				scno("m", "time: "+(System.currentTimeMillis()-starttime));
 				scno("m", "**maze " + name + " is ready**");
 			} catch (InterruptedException e) {
 				scno("e", " thread interrupted, maze generation aborted");
@@ -143,7 +154,7 @@ public class MyModel extends CommonModel {
 			MyDecompressorInputStream comp = new MyDecompressorInputStream(new FileInputStream(path));
 			comp.read(arr);
 			comp.close();
-			mazes.put(name, arr);
+			mazes.put(name, new Maze3d(arr));
 			msg = "Loading completed successfuly";
 			setChanged();
 			notifyObservers("msg");
@@ -163,7 +174,7 @@ public class MyModel extends CommonModel {
 
 	@Override
 	public void handleFileSize(String name) {
-		handleSaveMaze(mazes.get(name), "testfile.maz");
+		handleSaveMaze(mazes.get(name).toByteArray(), "testfile.maz");
 		File test = new File("testfile.maz");
 
 		msg = "File Size of " + name + ": " + test.length() + " Bytes";
@@ -195,7 +206,7 @@ public class MyModel extends CommonModel {
 						@Override
 						public Solution<Position> call() throws Exception {
 
-							return new BFS<Position>().search(new searchableMaze3d(new Maze3d(mazes.get(name))));
+							return new BFS<Position>().search(new searchableMaze3d(mazes.get(name)));
 
 						}
 
@@ -209,7 +220,7 @@ public class MyModel extends CommonModel {
 						public Solution<Position> call() throws Exception {
 
 							return new Astar<Position>(new MazeManDis())
-									.search(new searchableMaze3d(new Maze3d(mazes.get(name))));
+									.search(new searchableMaze3d(mazes.get(name)));
 
 						}
 
@@ -268,22 +279,33 @@ public class MyModel extends CommonModel {
 
 		threadPool.execute(new Runnable() {
 			public void run() {
-				while (true) {
-					System.out.println("*** test Thread running ***");
-					try {
-						Thread.sleep(2000);
-					} catch (InterruptedException e) {
-						System.out.println("test thread interrupted");
-						e.printStackTrace();
-						break;
-					}
+				scno("m", "THREAD started ! time: "+(System.currentTimeMillis()-starttime));
+				int c=0;
+				while (c!=1000000) {
+					c++;
+					c++;
+					c++;
+					c++;
+					c++;
+					c++;
+					c++;
+					
+					c--;
+					c--;
+					c--;
+					c--;
+					c--;
+					c--;
+					
+					
 				}
+				scno("m", "THREAD FINISHED ! time: "+(System.currentTimeMillis()-starttime));
 			}
 		});
 
 	}
 
-	public HashMap<String, byte[]> getMazes() {
+	public HashMap<String, Maze3d> getMazes() {
 		return mazes;
 	}
 
@@ -305,7 +327,7 @@ public class MyModel extends CommonModel {
 	 * the parameters whether the data passed is an error a message or some
 	 * other data it will set changed and notify the observers accordingly.
 	 * 
-	 * @param s
+	 * @param  s
 	 *            acts as the notification type
 	 * @param o
 	 *            acts as the data passed

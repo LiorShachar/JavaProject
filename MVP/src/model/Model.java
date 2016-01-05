@@ -2,6 +2,7 @@ package model;
 
 import java.util.HashMap;
 
+import algorithms.mazeGenerators.Maze3d;
 import algorithms.mazeGenerators.Position;
 import algorithms.search.Solution;
 
@@ -35,7 +36,7 @@ public interface Model {
 
 	void handleFileSize(String name);
 
-	 HashMap<String, byte[]> getMazes();
+	HashMap<String, Maze3d> getMazes();
 	
 	 void handleSolveMaze(String name,String algo);
 	

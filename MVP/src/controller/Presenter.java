@@ -90,7 +90,7 @@ public class Presenter implements Observer {
 
 			@Override
 			public void doCommand(String[] args) {
-				v.displayMaze(m.getMazes().get(args[1]));
+				v.displayMaze(m.getMazes().get(args[1]).toByteArray());
 
 			}
 		});
@@ -100,7 +100,7 @@ public class Presenter implements Observer {
 
 			@Override
 			public void doCommand(String[] args) {
-				v.displayCross(m.getMazes().get(args[7]), args[4], Integer.parseInt(args[5]));
+				v.displayCross(m.getMazes().get(args[7]).toByteArray(), args[4], Integer.parseInt(args[5]));
 
 			}
 		});
@@ -109,7 +109,7 @@ public class Presenter implements Observer {
 
 			@Override
 			public void doCommand(String[] args) {
-				m.handleSaveMaze(m.getMazes().get(args[2]), args[3]);
+				m.handleSaveMaze(m.getMazes().get(args[2]).toByteArray(), args[3]);
 
 			}
 		});
@@ -128,7 +128,7 @@ public class Presenter implements Observer {
 
 			@Override
 			public void doCommand(String[] args) {
-				v.printMsg("Maze size of " + args[2] + " is: " + m.getMazes().get(args[2]).length + " Bytes");
+				v.printMsg("Maze size of " + args[2] + " is: " + m.getMazes().get(args[2]).toByteArray().length + " Bytes");
 
 			}
 		});
@@ -185,7 +185,7 @@ public class Presenter implements Observer {
 			public void doCommand(String[] args) {
 
 				System.out
-						.println((new Maze3d(m.getMazes().get(args[0])).equals(new Maze3d(m.getMazes().get(args[2])))));
+						.println(m.getMazes().get(args[0]).equals(m.getMazes().get(args[2])));
 
 			}
 		});
