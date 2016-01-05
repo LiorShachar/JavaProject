@@ -37,14 +37,14 @@ public class MyDecompressorInputStream extends InputStream {
 	@Override
 	public int read() throws IOException {
 		try {
-			return in.readInt();
+			return in.read();
 		} catch (EOFException e) {
 			return -1;
 		}
 		
 	}
 
-	@Override
+	/*@Override
 	public int read(byte[] b) throws IOException {
 
 		int s = 0;
@@ -69,6 +69,11 @@ public class MyDecompressorInputStream extends InputStream {
 			}
 		}
 		in.close();return i;
+	}
+*/
+	@Override
+	public int read(byte[] b) throws IOException {
+		return in.read(b);
 	}
 
 }

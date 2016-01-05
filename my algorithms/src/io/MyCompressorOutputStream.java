@@ -32,20 +32,24 @@ import java.nio.ByteBuffer;
 
 public class MyCompressorOutputStream extends OutputStream {
 
-	private OutputStream out;
+	private DataOutputStream out;
 
 	public MyCompressorOutputStream(OutputStream out) {
-		this.out = out;
+		this.out = new DataOutputStream(out);
 	}
 
 	@Override
 	public void write(int b) throws IOException {
-		DataOutputStream dout = new DataOutputStream(this.out);
-				dout.writeInt(b);
-	
-
+		
+				 out.writeInt(b);
 	}
 
+	
+	public void write(byte b) throws IOException {
+		
+				 out.write(b);
+				
+	}
 	
 	
 	/**
@@ -54,13 +58,12 @@ public class MyCompressorOutputStream extends OutputStream {
 	 */
 	@Override
 	public void write(byte[] b) throws IOException {
-		DataOutputStream dout = new DataOutputStream(this.out);
-		int len = b.length; // might and probably will exceed 127 so we need to
-							// write it as int, and our overridden method write(int b)
-							// handles it.
+		
+		
+		int len = b.length; 
 	
-		int c=0;
-		int t;
+		byte c=0;
+		byte t;
 		
 		if (len > 1){
 			for (int i=0 ; i<len; i++){
@@ -83,7 +86,7 @@ public class MyCompressorOutputStream extends OutputStream {
 		
 	
 			
-			dout.close();
+			out.close();
 		}
 	
 	

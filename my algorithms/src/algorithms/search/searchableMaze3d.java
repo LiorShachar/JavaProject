@@ -30,6 +30,31 @@ public class searchableMaze3d implements Searchable<Position> {
 	
 	
 	
+@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((maze == null) ? 0 : maze.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		searchableMaze3d other = (searchableMaze3d) obj;
+		if (maze == null) {
+			if (other.maze != null)
+				return false;
+		} else if (!maze.equals(other.maze))
+			return false;
+		return true;
+	}
+
 public searchableMaze3d(Maze3d maze) {
 	this.maze=maze;
 

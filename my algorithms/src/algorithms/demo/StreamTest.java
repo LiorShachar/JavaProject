@@ -12,10 +12,11 @@ import algorithms.mazeGenerators.MyMaze3dGenerator;
 import io.MyCompressorOutputStream;
 import io.MyDecompressorInputStream;
 
+
 public class StreamTest {
 	public void run() throws IOException{
 		MyMaze3dGenerator creator = new MyMaze3dGenerator();
-		Maze3d maze = creator.generate(30 ,10, 10);
+		Maze3d maze = creator.generate(120 ,200, 10);
 	
 	// save it to a file
 	OutputStream out=new MyCompressorOutputStream(
@@ -34,8 +35,15 @@ public class StreamTest {
 	System.out.println(loaded.equals(maze));
 	
 	
+	for(int i=0;i<15;i++)
+	System.out.print(" "+b[i]);
+	System.out.println(maze.getxSize()+","+maze.getySize()+","+maze.getzSize()+","+maze.getGoalPosition().toString()+","+maze.getStartPosition().toString());
+	System.out.println("");
+	System.out.println("********************************");
 	
-	
+	for(int i=0;i<15;i++)
+		System.out.print(" "+o[i]);
+	System.out.println(loaded.getxSize()+","+loaded.getySize()+","+loaded.getzSize()+","+loaded.getGoalPosition().toString()+","+loaded.getStartPosition().toString());
 	
 	}
 	
