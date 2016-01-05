@@ -4,6 +4,9 @@ import java.io.DataInputStream;
 import java.io.EOFException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.ByteBuffer;
+
+import gnu.trove.list.array.TByteArrayList;
 
 /**
  * 
@@ -37,7 +40,9 @@ public class MyDecompressorInputStream extends InputStream {
 	@Override
 	public int read() throws IOException {
 		try {
+			
 			return in.read();
+			
 		} catch (EOFException e) {
 			return -1;
 		}
@@ -73,7 +78,26 @@ public class MyDecompressorInputStream extends InputStream {
 */
 	@Override
 	public int read(byte[] b) throws IOException {
-		return in.read(b);
+		 byte temp[]= new byte[b.length];
+		 byte val=0; // value of the byte read
+		 byte counter=0; // number of instances of the byte value
+		 int index=0; // the iterator on our destination arr
+		 int reader; // an int to get the return value from DataInputStream read method.
+		 while((reader=in.read())!=-1){ // while we are able to get the next data
+			 if(index%2==0){ //if we are on the even index we have the value, else we have the number of the instances
+			 val=(byte)reader; // val is casted since the return is int and we need a byte.
+			 }
+			 else{
+				counter=(byte)reader;
+			 for(int i=0;i<counter;index++)
+				 temp[index]=val;
+				 
+			 }
+				 
+			 
+			 
+		 }
+		 
 	}
 
 }
