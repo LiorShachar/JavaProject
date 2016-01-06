@@ -3,7 +3,9 @@ package model;
 import java.io.File;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
+import java.util.PriorityQueue;
 import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import algorithms.mazeGenerators.Maze3d;
 import algorithms.mazeGenerators.Position;
@@ -15,7 +17,7 @@ public class MyModelGui extends CommonModel implements Model {
 	private HashMap<String, Maze3d> mazes;
 	private HashMap<Maze3d, Solution<Position>> solutions;
 	
-	private LinkedHashMap<String, Object> noteDataMap; // the data which is sent to the presenter according to the notification
+	private PriorityQueue<String> notificationsDataQueue; // the data which is sent to the presenter according to the notification order
 	
 	
 	private ExecutorService threadPool;
@@ -25,6 +27,14 @@ public class MyModelGui extends CommonModel implements Model {
 	
 	
 	
+
+	public MyModelGui() {
+		
+		this.mazes = new HashMap<String, Maze3d>();
+		this.solutions = new HashMap<Maze3d, Solution<Position>>();
+		this.noteDataMap = new LinkedHashMap<String, Object>();
+		this.threadPool = Executors.newCachedThreadPool();
+	}
 
 	@Override
 	public void handleGenerate(String name, int y, int x, int z) {
@@ -107,7 +117,7 @@ public class MyModelGui extends CommonModel implements Model {
 	
 	
 	void notif(String comKey, Object Data) {
-		
+		noteDataMap.
 		
 
 	}

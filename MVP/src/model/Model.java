@@ -54,10 +54,10 @@ public interface Model {
 
 
 
-	 public Object getData(String string);
+	public Object getData(String string);
 
 
-
+	public String getMsg();
 	void handleKill();
 
 	void testThread();

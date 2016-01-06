@@ -194,6 +194,8 @@ public class MyModel extends CommonModel {
 	@Override
 	public void handleSolveMaze(String name, String algo) {
 		if (mazes.containsKey(name)) {
+			
+			if(!solutions.containsKey(mazes.get(name))){
 			scno("m", "Maze name found");
 			Future<Solution<Position>> futures = null;
 			if (algo.matches("[Bb][Ff][Ss]") || algo.matches("[Aa][Ss][Tt][Aa][Rr]")) {
@@ -236,14 +238,19 @@ public class MyModel extends CommonModel {
 					scno("e", "Cannot solve, the thread was unable to send solution");
 					e.printStackTrace();
 				}
-
+				
 			}
 
 			else {
 				scno("e", "Mo such algorithm");
 			}
 
-		} else {
+		}
+			else{
+				scno("m", "Solution for " + name + " is ready");
+			}	
+		}
+		else {
 			scno("e", "Maze name doesn't exist");
 			
 			
