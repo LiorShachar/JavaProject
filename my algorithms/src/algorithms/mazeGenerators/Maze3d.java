@@ -84,17 +84,18 @@ public class Maze3d implements MazeProblem {
 
 
 	public Maze3d(byte[] arr){
-		bytesToInt(ByteBuffer.wrap(arr, 0, 4).array());
+		ByteBuffer b = ByteBuffer.wrap(arr); // byte buffer allowes us to iterate over a byte array and get either an int or a single byte
 		
-		ySize=bytesToInt(ByteBuffer.wrap(arr, 0, 4).array());
-		xSize=bytesToInt(ByteBuffer.wrap(arr, 4, 4).array());
-		zSize=bytesToInt(ByteBuffer.wrap(arr, 8, 4).array());
+		ySize=b.getInt();
+		xSize=b.getInt();
+		zSize=b.getInt();
 		
-		StartPosition= new Position(bytesToInt(ByteBuffer.wrap(arr, 12, 4).array()),bytesToInt(ByteBuffer.wrap(arr, 16, 4).array()),bytesToInt(ByteBuffer.wrap(arr, 20, 4).array())) ;
-		GoalPosition= new Position(bytesToInt(ByteBuffer.wrap(arr, 24, 4).array()),bytesToInt(ByteBuffer.wrap(arr, 28, 4).array()),bytesToInt(ByteBuffer.wrap(arr, 32, 4).array())) ;
+		StartPosition= new Position(b.getInt(),b.getInt(),b.getInt()) ;
+		GoalPosition= new Position(b.getInt(),b.getInt(),b.getInt()) ;
 		
-		this.map = new int[ySize][xSize][zSize];
-		int itr = 36;
+		this.map = new int[ySize][xSize][zSize]; // we init the maze with our int values
+		
+		// now we use a loop to read the map which is represented by byte values.
 		
 		for (int i = 0; i < ySize; i++) {
 
@@ -102,8 +103,8 @@ public class Maze3d implements MazeProblem {
 
 				for (int k = 0; k < zSize; k++) {
 
-					this.map[i][j][k] = arr[itr];
-					itr++;
+					this.map[i][j][k] = (int)b.get();
+					
 
 				}
 
@@ -154,17 +155,17 @@ public class Maze3d implements MazeProblem {
 		for ( o=0; o < 4; o++)
 		{arr[24+o]=temparr[o];}
 		
-		temparr = intToBytes(this.getGoalPosition().getY());// init the array with the goal position x int
+		temparr = intToBytes(this.getGoalPosition().getX());// init the array with the goal position x int
 		for ( o=0; o < 4; o++)
 		{arr[28+o]=temparr[o];}
 		
-		temparr = intToBytes(this.getGoalPosition().getY());// init the array with the goal position z int
+		temparr = intToBytes(this.getGoalPosition().getZ());// init the array with the goal position z int
 		for ( o=0; o < 4; o++)
 		{arr[32+o]=temparr[o];}
 		
 	
 
-		int itr = 36; // maze map info starts from the 9th place on our array
+		int itr = 36; // maze map info starts from the 36th place on our array
 
 		for (int i = 0; i < ySize; i++) {
 

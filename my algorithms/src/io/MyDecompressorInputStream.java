@@ -77,19 +77,22 @@ public class MyDecompressorInputStream extends InputStream {
 	}
 */
 	@Override
-	public int read(byte[] b) throws IOException {
-		 byte temp[]= new byte[b.length];
+	public int read(byte[] temp) throws IOException {
+		 
 		 byte val=0; // value of the byte read
 		 byte counter=0; // number of instances of the byte value
 		 int index=0; // the iterator on our destination arr
+		 int fileindex=0; // an index of the file iterator
 		 int reader; // an int to get the return value from DataInputStream read method.
 		 while((reader=in.read())!=-1){ // while we are able to get the next data
-			 if(index%2==0){ //if we are on the even index we have the value, else we have the number of the instances
+			 if(fileindex%2==0){ //if we are on the even index we have the value, else (odd index) we have the number of the instances
 			 val=(byte)reader; // val is casted since the return is int and we need a byte.
+			 fileindex++;
 			 }
 			 else{
-				counter=(byte)reader;
-			 for(int i=0;i<counter;index++)
+				counter=(byte)reader; // we are on an odd index so counter get the value
+				fileindex++;
+			 for(int i=0;i<counter;index++,i++) // a loop that adds the same value * counter of times, while incrementing the destination array index each time.
 				 temp[index]=val;
 				 
 			 }
@@ -97,6 +100,7 @@ public class MyDecompressorInputStream extends InputStream {
 			 
 			 
 		 }
+		 return fileindex; // we return the amount of bytes we got from the file.
 		 
 	}
 

@@ -71,6 +71,11 @@ public class MyCompressorOutputStream extends OutputStream {
 			c=1;
 			while (i+1 < len && b[i+1]==b[i]){
 				i++;
+				if(c==120){
+					write(t);
+					write(c);
+					c=0;
+				}
 				c++;
 			}
 			write(t);
