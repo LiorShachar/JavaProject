@@ -29,6 +29,8 @@ public interface Model {
 	
 
 	void handleGenerate(String name, int y, int x, int z);
+	
+	void handleDir(String string);
 
 	void handleSaveMaze(byte[] maze, String path);
 
@@ -52,7 +54,7 @@ public interface Model {
 
 
 
-	 String getMsg();
+	 public Object getData(String string);
 
 
 
