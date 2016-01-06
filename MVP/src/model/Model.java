@@ -40,7 +40,7 @@ public interface Model {
 	
 	 void handleSolveMaze(String name,String algo);
 	
-	 HashMap<String, Solution<Position>> getSolutions();
+	 HashMap<Maze3d, Solution<Position>> getSolutions();
 
 	
 	

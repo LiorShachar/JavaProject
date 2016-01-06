@@ -45,7 +45,8 @@ import io.MyDecompressorInputStream;
 public class MyModel extends CommonModel {
 
 	private HashMap<String, Maze3d> mazes;
-	private HashMap<String, Solution<Position>> solutions;
+	private HashMap<Maze3d, Solution<Position>> solutions;
+	
 	
 	private ExecutorService threadPool;
 	
@@ -57,7 +58,7 @@ public class MyModel extends CommonModel {
 	public MyModel() {
 
 		mazes = new HashMap<String,Maze3d>();
-		solutions = new HashMap<String, Solution<Position>>();
+		solutions = new HashMap<Maze3d, Solution<Position>>();
 		threadPool = Executors.newCachedThreadPool();
 		
 		
@@ -134,7 +135,7 @@ public class MyModel extends CommonModel {
 		try {
 			// we need to know the array size, the compressed version of the
 			// maze have a pattern of (value,number of returns)
-			// so if we sum up all the values in the odd index places well get
+			// so if we sum up all the values in the odd index places we'll get
 			// the right size
 			DataInputStream reader = new DataInputStream(new FileInputStream(path));
 			int val = 0;
@@ -226,7 +227,7 @@ public class MyModel extends CommonModel {
 					});
 				}
 				try {
-					solutions.put(name, futures.get());
+					solutions.put(mazes.get(name), futures.get());
 					scno("m", "Solution for " + name + " is ready");
 				} catch (InterruptedException e) {
 					scno("e", "Cannot solve thread interrupted");
@@ -244,6 +245,8 @@ public class MyModel extends CommonModel {
 
 		} else {
 			scno("e", "Maze name doesn't exist");
+			
+			
 		}
 
 	}
@@ -308,7 +311,7 @@ public class MyModel extends CommonModel {
 		return mazes;
 	}
 
-	public HashMap<String, Solution<Position>> getSolutions() {
+	public HashMap<Maze3d, Solution<Position>> getSolutions() {
 		return solutions;
 	}
 
