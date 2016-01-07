@@ -4,6 +4,7 @@ import model.Model;
 import model.MyModel;
 import view.MyViewCLI;
 import view.View;
+import widgets.MazeWindow;
 
 public class Run {
 
@@ -14,11 +15,12 @@ public class Run {
 		System.out.println(" ");
 		
 		Presenter p = new Presenter();
-		MyViewCLI v = new MyViewCLI();  
+		//MyViewCLI v = new MyViewCLI();  
+		MazeWindow v=new MazeWindow("Maze Template", 800, 500);
 		MyModel m = new MyModel();
 		   p.setModel(m);
 		   p.setView(v);
-		   v.getCli().addObserver(v);
+		//   v.getCli().addObserver(v);
 		  v.addObserver(p);
 		  m.addObserver(p);
 		   v.start();

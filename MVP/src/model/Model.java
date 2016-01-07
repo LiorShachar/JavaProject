@@ -44,20 +44,9 @@ public interface Model {
 	
 	 HashMap<Maze3d, Solution<Position>> getSolutions();
 
-	
-	
-
-	 String getError();
-
-
-
-
-
-
 	public Object getData(String string);
 
-
-	public String getMsg();
+	
 	void handleKill();
 
 	void testThread();

@@ -46,7 +46,7 @@ public class MyModel extends CommonModel {
 
 	private HashMap<String, Maze3d> mazes;
 	private HashMap<Maze3d, Solution<Position>> solutions;
-	
+	private HashMap<String, Object> notificationData;
 	
 	private ExecutorService threadPool;
 	
@@ -322,19 +322,12 @@ public class MyModel extends CommonModel {
 		return solutions;
 	}
 
-	public String getError() {
-		return error;
-	}
 
-	public String getMsg() {
-		return msg;
-	}
 
 	/**
 	 * this method serves as an easy way to notify the observers with the
-	 * appropriate outcome in this case we want to save 3 lines by specifing in
-	 * the parameters whether the data passed is an error a message or some
-	 * other data it will set changed and notify the observers accordingly.
+	 * appropriate outcome in this case we want to specifiy in
+	 * the parameters what type of data we want the presenter to check.
 	 * 
 	 * @param  s
 	 *            acts as the notification type
@@ -342,26 +335,25 @@ public class MyModel extends CommonModel {
 	 *            acts as the data passed
 	 */
 	public void scno(String s, Object o) {
-		switch (s) {
-		case "m":
-			this.msg = (String) o;
-			if (this.msg != null) {
-				setChanged();
-				notifyObservers("msg");
-			}
-			break;
-		case "e":
-			this.error = (String) o;
-			if (this.error != null) {
-				setChanged();
-				notifyObservers("err");
-			}
-			break;
-		default:
-			System.out.println("unrecognized notification type, no changes were made");
+		
+		
 
 		}
 
+	@Override
+	public void handleDir(String string) {
+		// TODO Auto-generated method stub
+		
 	}
+
+	@Override
+	public Object getData(String string) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	
+
+	
 
 }

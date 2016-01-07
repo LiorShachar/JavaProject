@@ -11,6 +11,14 @@ import algorithms.mazeGenerators.Maze3d;
 import algorithms.mazeGenerators.Position;
 import algorithms.search.Solution;
 
+
+
+/**
+ * NEED TO HANDLE NOTIFICATIONS IN A HASH MAP
+ * **/
+
+
+
 public class MyModelGui extends CommonModel implements Model {
 	
 	
@@ -32,7 +40,7 @@ public class MyModelGui extends CommonModel implements Model {
 		
 		this.mazes = new HashMap<String, Maze3d>();
 		this.solutions = new HashMap<Maze3d, Solution<Position>>();
-		this.noteDataMap = new LinkedHashMap<String, Object>();
+		
 		this.threadPool = Executors.newCachedThreadPool();
 	}
 
@@ -47,8 +55,7 @@ public class MyModelGui extends CommonModel implements Model {
 		File lister = new File(string);
 		try {
 			String[] pathdetails = lister.list();
-			for (String s: pathdetails)
-				printMsg(s);
+			
 		} catch (NullPointerException e) {
 			printMsg("File or Directory not found");
 		}
@@ -91,11 +98,7 @@ public class MyModelGui extends CommonModel implements Model {
 		return null;
 	}
 
-	@Override
-	public String getError() {
-		// TODO Auto-generated method stub
-		return null;
-	}
+
 
 	@Override
 	public Object getData(String string) {
@@ -117,7 +120,7 @@ public class MyModelGui extends CommonModel implements Model {
 	
 	
 	void notif(String comKey, Object Data) {
-		noteDataMap.
+		// TODO Auto-generated method stub
 		
 
 	}

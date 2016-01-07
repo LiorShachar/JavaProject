@@ -31,7 +31,8 @@ public class Presenter implements Observer {
 
 	private Model m;
 	private View v;
-	HashMap<String, Command> commandCreator; // our command map
+	HashMap<String, Command> commandCreator; // our command map (usually for cli)
+	HashMap<String, Command> notifyCommandCreator; // our command map (for GUI)
 	
 	public Presenter(Model m, View v) {
 		super();
