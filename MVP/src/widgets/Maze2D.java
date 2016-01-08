@@ -3,9 +3,11 @@ package widgets;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.PaintEvent;
 import org.eclipse.swt.events.PaintListener;
 import org.eclipse.swt.graphics.Color;
+import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Canvas;
 import org.eclipse.swt.widgets.Composite;
 
@@ -19,7 +21,7 @@ public class Maze2D extends MazeDisplayer{
 	 public Maze2D(Composite parent,int style){
 	        super(parent, style);
 	        //TEST
-	        chr= new GameCharacter(0,2);
+	        
 	        
 	    	// set a white background   (red, green, blue)
 	    	setBackground(new Color(null, 255, 255, 255));
@@ -44,19 +46,38 @@ public class Maze2D extends MazeDisplayer{
 					              e.gc.fillRectangle(x,y,w,h);
 					          
 					          
-					          chr.paint(e,w, h);
+						        
+					          
 					      }
 					}
 			});
 	 }
 
 
+	 
+	 
+	 
+	public GameCharacter getChr() {
+		return chr;
+	}
+
+
+
+
+
+	public void setChr(GameCharacter chr) {
+		this.chr = chr;
+	}
+
+
+
+
+
 	@Override
 	public void setCharacterPosition(int row, int col) {
-		if(row>=0 && row<mazeData[0].length && col>=0 && col<mazeData.length && mazeData[row][col]==0){
 		this.chr.setX(col);
 		this.chr.setY(row);
-		}
+		moveCharacter(col,row);
 	}
 
 	@Override
@@ -85,7 +106,9 @@ public class Maze2D extends MazeDisplayer{
 
 
 	private void moveCharacter(int x,int y){
-		
+		if(x>=0 && x<mazeData[0].length && y>=0 && y<mazeData.length && mazeData[y][x]==0){
+			this.chr.setX(x);
+			this.chr.setY(y);
 			getDisplay().syncExec(new Runnable() {
 				
 				@Override
@@ -93,7 +116,11 @@ public class Maze2D extends MazeDisplayer{
 					redraw();
 				}
 			});
+			
+				
+			
 		}
 	
 	
+}
 }

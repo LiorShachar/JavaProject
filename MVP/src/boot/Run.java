@@ -41,7 +41,7 @@ public class Run {
 		  v.addObserver(p);
 		  m.addObserver(p);
 		  MyMaze3dGenerator gen = new MyMaze3dGenerator();
-		  Maze3d maze=gen.generate(5, 100, 100);
+		  Maze3d maze=gen.generate(10, 200, 200);
 		  MyCompressorOutputStream writer = null;
 		try {
 			writer = new MyCompressorOutputStream(new FileOutputStream("1.maz"));

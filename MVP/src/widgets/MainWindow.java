@@ -5,6 +5,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.KeyListener;
 import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -22,12 +23,12 @@ public class MainWindow extends BasicWindow {
 	
 	public MazeDisplayer MazeWidget;
 	public HashMap<String,Listener> listeners;
-	
+	KeyListener keylis;
 
-	public MainWindow(String title, int width, int height ,HashMap<String,Listener> lis) {
+	public MainWindow(String title, int width, int height ,HashMap<String,Listener> lis,KeyListener keylis) {
 		super(title, width, height);
 		listeners=lis;
-		
+		this.keylis=keylis;
 	}
 
 	
@@ -36,13 +37,15 @@ public class MainWindow extends BasicWindow {
 	void initWidgets() {
 		
 		////////////////////////////////////////////
-		//MazeWidget=new Maze2D(shell, SWT.BORDER);		
-		MazeWidget=new Maze3D(shell, SWT.BORDER);
+		MazeWidget=new Maze2D(shell, SWT.BORDER);		
+		//MazeWidget=new Maze3D(shell, SWT.BORDER);
 		MazeWidget.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true,true,1,2));
+		MazeWidget.addKeyListener(keylis);
+		MazeWidget.setVisible(false);
 		////////////////////////////////////////////
 		
 		
-		shell.setLayout(new GridLayout(3,false));
+		shell.setLayout(new GridLayout(2,false));
 		//***************************************************************** MAIN MENU BAR
         Menu menuBar = new Menu(shell, SWT.BAR);
       //***************************************************************** File Cascade

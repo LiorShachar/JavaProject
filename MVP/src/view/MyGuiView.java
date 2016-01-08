@@ -39,7 +39,8 @@ public class MyGuiView extends CommonView {
 		listeners= new HashMap<String,Listener>();
 		notifications=new HashMap<String,Object>();
 		initListeners();
-		mainGuiWindow= new MainWindow("Maze Game", 800, 500,listeners); ///////////////////// init the outside widget
+		mainGuiWindow= new MainWindow("Maze Game", 800, 500,listeners,keylis); ///////////////////// init the outside widget
+		
 		
 	}
 
@@ -56,10 +57,10 @@ public class MyGuiView extends CommonView {
 			
 			@Override
 			public void keyReleased(KeyEvent e) {
-				if (e.keyCode==SWT.ARROW_UP){}
-				else if(e.keyCode==SWT.ARROW_UP){}
-				else if(e.keyCode==SWT.ARROW_UP){}
-				else if(e.keyCode==SWT.ARROW_UP){}
+				if (e.keyCode==SWT.ARROW_UP){mainGuiWindow.MazeWidget.moveUp();}
+				else if(e.keyCode==SWT.ARROW_DOWN){mainGuiWindow.MazeWidget.moveDown();}
+				else if(e.keyCode==SWT.ARROW_LEFT){mainGuiWindow.MazeWidget.moveLeft();}
+				else if(e.keyCode==SWT.ARROW_RIGHT){mainGuiWindow.MazeWidget.moveRight();}
 				
 				
 				
@@ -121,7 +122,10 @@ public class MyGuiView extends CommonView {
 
 	@Override
 	public void printMsg(String s) {
-		// TODO Auto-generated method stub
+		MessageBox messageBox = new MessageBox(mainGuiWindow.getShell(), SWT.ICON_WORKING);
+		 messageBox.setMessage(s);
+		 messageBox.setText("Message");
+		 messageBox.open();
 
 	}
 
