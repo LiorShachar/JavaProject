@@ -32,5 +32,12 @@ public interface View {
 	void displayCross(byte[] arr,String by,int i);
 	void displaySolution(Solution<Position> s);
 	void showExit();
+	Object getData(String string);
+	
+	
+	
+	//////////////////////////////////////////// TEST
+	 void displayLoadedMaze(int[][] arr);
+	
 
 }

@@ -18,7 +18,7 @@ import algorithms.search.Solution;
  * **/
 
 
-
+/*
 public class MyModelGui extends CommonModel implements Model {
 	
 	
@@ -127,3 +127,4 @@ public class MyModelGui extends CommonModel implements Model {
 	
 
 }
+*/

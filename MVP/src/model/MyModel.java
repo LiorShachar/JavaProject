@@ -46,7 +46,7 @@ public class MyModel extends CommonModel {
 
 	private HashMap<String, Maze3d> mazes;
 	private HashMap<Maze3d, Solution<Position>> solutions;
-	private HashMap<String, Object> notificationData;
+	private HashMap<String, Object> notifications;
 	
 	private ExecutorService threadPool;
 	
@@ -60,7 +60,7 @@ public class MyModel extends CommonModel {
 		mazes = new HashMap<String,Maze3d>();
 		solutions = new HashMap<Maze3d, Solution<Position>>();
 		threadPool = Executors.newCachedThreadPool();
-		
+		notifications=new HashMap<String, Object>();
 		
 		
 	}
@@ -155,14 +155,10 @@ public class MyModel extends CommonModel {
 			comp.read(arr);
 			comp.close();
 			mazes.put(name, new Maze3d(arr));
-			msg = "Loading completed successfuly";
-			setChanged();
-			notifyObservers("msg");
+			scno("loaded",name);
 
 		} catch (IOException e) {
-			error = ("error: could not load from the file specified");
-			setChanged();
-			notifyObservers("err");
+			scno("error","loading maze failed");
 		}
 
 	}
@@ -334,10 +330,11 @@ public class MyModel extends CommonModel {
 	 * @param o
 	 *            acts as the data passed
 	 */
-	public void scno(String s, Object o) {
-		
-		
-
+	 void scno(String type, Object data) {
+			notifications.put(type, data);
+			setChanged();
+			notifyObservers(type);
+			
 		}
 
 	@Override
@@ -348,8 +345,7 @@ public class MyModel extends CommonModel {
 
 	@Override
 	public Object getData(String string) {
-		// TODO Auto-generated method stub
-		return null;
+		 return notifications.get(string);
 	}
 
 	

@@ -293,6 +293,12 @@ public void update(Observable o, Object arg) {
 	
 }
 
+@Override
+public Object getData(String string) {
+	// TODO Auto-generated method stub
+	return null;
+}
+
 
 
 

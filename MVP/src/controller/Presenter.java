@@ -31,9 +31,9 @@ public class Presenter implements Observer {
 
 	private Model m;
 	private View v;
-	HashMap<String, Command> commandCreator; // our command map (usually for cli)
-	HashMap<String, Command> notifyCommandCreator; // our command map (for GUI)
-	
+	HashMap<String, Command> commandCreator; // our command map (usually for
+												// cli)
+
 	public Presenter(Model m, View v) {
 		super();
 		this.m = m;
@@ -129,7 +129,8 @@ public class Presenter implements Observer {
 
 			@Override
 			public void doCommand(String[] args) {
-				v.printMsg("Maze size of " + args[2] + " is: " + m.getMazes().get(args[2]).toByteArray().length + " Bytes");
+				v.printMsg("Maze size of " + args[2] + " is: " + m.getMazes().get(args[2]).toByteArray().length
+						+ " Bytes");
 
 			}
 		});
@@ -185,8 +186,7 @@ public class Presenter implements Observer {
 			@Override
 			public void doCommand(String[] args) {
 
-				System.out
-						.println(m.getMazes().get(args[0]).equals(m.getMazes().get(args[2])));
+				System.out.println(m.getMazes().get(args[0]).equals(m.getMazes().get(args[2])));
 
 			}
 		});
@@ -260,42 +260,33 @@ public class Presenter implements Observer {
 
 	@Override
 	public void update(Observable arg0, Object arg1) {
-		Set<String> keys=commandCreator.keySet();
-		Command command;
-		
-		if (arg0 == v) {
+		String note = (String)arg1;
+		if (arg0==v){
+			switch (note){
+			case "loadfrom":
+				m.handleLoadMaze((String)v.getData(note), "lior");
+				
+				break;
 			
-			String input = v.getTodo();
-			for (String s : keys) {
-				if (input.matches(s)) {
-					String[] args = input.split(" ");
-					command = commandCreator.get(s);
-					command.doCommand(args);
-				}
+
 			}
-		}
 			
-				else if (arg0 == m) {
-					
-					String input = (String) arg1;
-					switch (input){
-					case "msg":
-							input = m.getMsg();
-							v.printMsg(input);
-							break;
-					case "err":
-						input = m.getError();
-						v.printMsg(input);
-						break;
-					default :
-						break;
-							
-
-				}
-			}
-
+			
+			
+			
 		}
-	
+		else if(arg0==m){
+			switch (note){
+			case "loaded":
+				v.displayLoadedMaze(m.getMazes().get((String)m.getData(note)).getCrossSectionByY(1));
+				
+				break;
+			
+
+			}
+			
+		}
+
+	}
 
 }
-
