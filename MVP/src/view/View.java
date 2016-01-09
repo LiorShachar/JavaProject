@@ -37,7 +37,7 @@ public interface View {
 	
 	
 	//////////////////////////////////////////// TEST
-	 void displayLoadedMaze(int[][] arr);
+	 void displayLoadedMaze(String s);
 	
 
 }

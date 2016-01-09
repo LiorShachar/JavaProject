@@ -300,7 +300,7 @@ public Object getData(String string) {
 }
 
 @Override
-public void displayLoadedMaze(int[][] arr) {
+public void displayLoadedMaze(String s) {
 	// TODO Auto-generated method stub
 	
 }

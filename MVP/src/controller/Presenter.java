@@ -278,8 +278,7 @@ public class Presenter implements Observer {
 		else if(arg0==m){
 			switch (note){
 			case "loaded":
-				v.displayLoadedMaze(m.getMazes().get((String)m.getData(note)).getCrossSectionByY(1));
-				
+				v.displayLoadedMaze((String)m.getData(note));
 				break;
 			
 

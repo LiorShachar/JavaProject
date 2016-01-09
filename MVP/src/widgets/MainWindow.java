@@ -9,7 +9,9 @@ import org.eclipse.swt.events.KeyListener;
 import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Canvas;
+import org.eclipse.swt.widgets.List;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MenuItem;
@@ -25,6 +27,9 @@ public class MainWindow extends BasicWindow {
 	public HashMap<String,Listener> listeners;
 	KeyListener keylis;
 
+	List l;
+	
+	
 	public MainWindow(String title, int width, int height ,HashMap<String,Listener> lis,KeyListener keylis) {
 		super(title, width, height);
 		listeners=lis;
@@ -35,15 +40,16 @@ public class MainWindow extends BasicWindow {
 
 	@Override
 	void initWidgets() {
-		
-		////////////////////////////////////////////
+		/*
+		//////////////////////////////////////////// INIT THE MAZE WIDGET AND THE GAME CHARCTER
 		MazeWidget=new Maze2D(shell, SWT.BORDER);		
 		//MazeWidget=new Maze3D(shell, SWT.BORDER);
 		MazeWidget.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true,true,1,2));
 		MazeWidget.addKeyListener(keylis);
-		MazeWidget.setVisible(false);
+		MazeWidget.setVisible(true);
+		MazeWidget.setCharacter(new GameCharacter(MazeWidget, SWT.None, 0, 2, 1, 1));
 		////////////////////////////////////////////
-		
+		*/
 		
 		shell.setLayout(new GridLayout(2,false));
 		//***************************************************************** MAIN MENU BAR
@@ -101,12 +107,25 @@ public class MainWindow extends BasicWindow {
         aboutItem.addListener(SWT.Selection ,listeners.get("about"));
       //*****************************************************************
         
+      //*****************************************************************//Start Button
+        Button startButton=new Button(shell, SWT.PUSH);
+		startButton.setText("Start");
+		startButton.setLayoutData(new GridData(SWT.FILL, SWT.None, false, false, 1, 1));
+		startButton.addListener(SWT.Selection,listeners.get("openmazewin"));
       //*****************************************************************
+		
       //*****************************************************************
+		l = new List(shell, SWT.MULTI | SWT.BORDER  );
+	    l.setBounds(50, 50, 75, 75);
       //*****************************************************************
-      //*****************************************************************
-        MazeWidget.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true,true,1,2));
+
         shell.setMenuBar(menuBar);
+        
 	}
+	
+	public void ListAdd(String s){
+		l.add(s);
+	}
+	
 
 }

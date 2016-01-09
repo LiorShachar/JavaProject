@@ -7,14 +7,24 @@ import java.util.TimerTask;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.events.KeyListener;
+import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.events.SelectionListener;
+import org.eclipse.swt.layout.GridData;
+import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.layout.RowLayout;
+import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.FileDialog;
+import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.MessageBox;
+import org.eclipse.swt.widgets.Shell;
+import org.eclipse.swt.widgets.Text;
 
 import algorithms.mazeGenerators.Position;
 import algorithms.search.Solution;
 import widgets.BasicWindow;
+import widgets.ChildWindow;
 import widgets.MainWindow;
 import widgets.MazeDisplayer;
 
@@ -27,7 +37,7 @@ public class MyGuiView extends CommonView {
 	Timer timer;
 	TimerTask task;
 	HashMap<String,Object> notifications;
-	
+	public String temp; // a temporary string to pass arguements between temporary events,listeners etc
 	
 	
 	
@@ -101,14 +111,66 @@ public class MyGuiView extends CommonView {
 			        String[] filterExt = { "*.maz", "*.*" };
 			        fd.setFilterExtensions(filterExt);
 			        String selected = fd.open();
+			        
+			        Shell dialog =new Shell(mainGuiWindow.getShell(), SWT.DIALOG_TRIM | SWT.APPLICATION_MODAL);
+			        
+			        dialog.setLayout(new GridLayout(3, false));
+			        dialog.setSize(400, 100);
+			        
+			        
+			        Label messageLabel = new Label(dialog, SWT.BORDER);
+			        messageLabel.setText("Please Choose a name for the loaded maze");
+			        messageLabel.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 2, 2));
+			        Text txt= new Text(dialog, SWT.CENTER | SWT.BORDER);
+			        Button okButton=new Button(dialog, SWT.PUSH);
+					okButton.setText("Ok");
+					okButton.setLayoutData(new GridData(SWT.None, SWT.None, false, false, 1, 1));
+					
+					okButton.addSelectionListener(new SelectionListener() {
+						
+						@Override
+						public void widgetSelected(SelectionEvent e) {
+							temp=txt.getText();
+							dialog.close();
+							
+						}
+						
+						@Override
+						public void widgetDefaultSelected(SelectionEvent e) {
+							
+							
+						}
+					});
+					
+			        String args[]={sel}
+			        dialog.open();
 			        scno("loadfrom",selected);
 
 			 }
 		}); 
 		
+		//***************************************************************************************************************
+	
+	
+			listeners.put("openmazewin",new Listener() 
+			{
+				 public void handleEvent(Event event) 
+				 {
+					/*new Thread(new Runnable() {
+						
+						@Override
+						public void run() {
+							ChildWindow another= new ChildWindow("Maze Game", 800, 500,listeners,keylis);
+							another.run();
+							
+						}
+					}).start();
+					 */
+				 }
+			}); 
+			
 
-	}
-
+		}
 	
 	
 	
@@ -138,9 +200,9 @@ public class MyGuiView extends CommonView {
 	
 	
 	///////////////////////////////////////////////////////////////////TEST
-	public void displayLoadedMaze(int[][] arr) {
-		mainGuiWindow.MazeWidget.setMazeData(arr);
-		mainGuiWindow.MazeWidget.redraw();
+	public void displayLoadedMaze(String s) {
+		mainGuiWindow.ListAdd(s);
+
 	}
 ///////////////////////////////////////////////////////////////////TEST
 	

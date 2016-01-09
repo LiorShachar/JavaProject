@@ -26,8 +26,7 @@ public class GameCharacter extends Canvas{
 				@Override
 				public void paintControl(PaintEvent e) {
 					
-					e.gc.setForeground(new Color(null,255,0,0));
-					e.gc.drawOval(x*w,y*h, w, h);
+					paint(e,w,h);
 					      
 					}
 			});
@@ -35,7 +34,11 @@ public class GameCharacter extends Canvas{
 
 		   
 		   
-		 
+		   public void paint(PaintEvent e,int w, int h){
+		        
+			   e.gc.setForeground(new Color(null,255,0,0));
+				e.gc.drawOval(x*w,y*h, w, h);
+			}
 		   
 		
 

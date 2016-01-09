@@ -46,9 +46,14 @@ public class Maze2D extends MazeDisplayer{
 					              e.gc.fillRectangle(x,y,w,h);
 					          
 					          
+					          
+					         
 						        
 					          
 					      }
+					   chr.setW(w);
+					   chr.setH(h);
+					   
 					}
 			});
 	 }
@@ -59,15 +64,14 @@ public class Maze2D extends MazeDisplayer{
 	 
 	public GameCharacter getChr() {
 		return chr;
+		
 	}
 
 
 
 
 
-	public void setChr(GameCharacter chr) {
-		this.chr = chr;
-	}
+
 
 
 
@@ -75,9 +79,8 @@ public class Maze2D extends MazeDisplayer{
 
 	@Override
 	public void setCharacterPosition(int row, int col) {
-		this.chr.setX(col);
-		this.chr.setY(row);
-		moveCharacter(col,row);
+		
+		moveCharacter(col,row); //this method isnt really needed although it gets the parameters in the opposite direction so we have a chance to fix it
 	}
 
 	@Override
@@ -109,18 +112,40 @@ public class Maze2D extends MazeDisplayer{
 		if(x>=0 && x<mazeData[0].length && y>=0 && y<mazeData.length && mazeData[y][x]==0){
 			this.chr.setX(x);
 			this.chr.setY(y);
+			redraw();
+			/*
 			getDisplay().syncExec(new Runnable() {
 				
 				@Override
 				public void run() {
 					redraw();
+					
 				}
 			});
-			
+			*/
 				
 			
 		}
 	
 	
 }
+
+
+
+
+
+	@Override
+	public void setCharacter(GameCharacter chr) {
+		this.chr = chr;
+		int width=getSize().x;
+		int height=getSize().y;
+
+		int w=width/mazeData[0].length;
+		int h=height/mazeData.length;
+		
+		this.chr.setW(w);
+		this.chr.setH(h);
+		
+		
+	}
 }

@@ -8,6 +8,7 @@ import org.eclipse.swt.SWT;
 import algorithms.mazeGenerators.Maze3d;
 import algorithms.mazeGenerators.MyMaze3dGenerator;
 import controller.Presenter;
+
 import io.MyCompressorOutputStream;
 import model.Model;
 import model.MyModel;
@@ -61,7 +62,9 @@ public class Run {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
+			
 		   v.start();
+		   
 		   
 
 

@@ -41,5 +41,6 @@ public abstract class MazeDisplayer extends Canvas{
 	public abstract  void moveLeft();
 
 	public  abstract void moveRight();
-
+	
+	public abstract  void setCharacter(GameCharacter chr);
 }

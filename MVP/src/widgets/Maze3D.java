@@ -137,5 +137,10 @@ public class Maze3D extends MazeDisplayer {
 		characterY=row;
 		moveCharacter(col,row);
 	}
+	@Override
+	public void setCharacter(GameCharacter chr) {
+		// TODO Auto-generated method stub
+		
+	}
 
 }

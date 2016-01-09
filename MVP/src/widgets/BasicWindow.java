@@ -19,10 +19,13 @@ public abstract class BasicWindow implements Runnable{
 	}
  	
  	abstract void initWidgets();
+ 	
  	public Shell getShell(){
  		return this.shell;
  	}
- 	
+ 	public Display getDisplay(){
+ 		return this.display;
+ 	}
  	
  	
  	
