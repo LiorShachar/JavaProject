@@ -260,30 +260,34 @@ public class Presenter implements Observer {
 
 	@Override
 	public void update(Observable arg0, Object arg1) {
-		String note = (String)arg1;
-		if (arg0==v){
-			switch (note){
+		String note = (String) arg1;
+		if (arg0 == v) {
+			switch (note) {
 			case "loadfrom":
-				String param[]=(String[])v.getData(note);
+				String param[] = (String[]) v.getData(note);
 				m.handleLoadMaze(param[0], param[1]);
 				break;
-			
-
-			}
-			
-			
-			
-			
-		}
-		else if(arg0==m){
-			switch (note){
-			case "loaded":
-				v.displayLoadedMaze((String)m.getData(note));
+			case "generateDetails":
+				String gendetails[] = (String[]) v.getData(note);
+				m.handleGenerate(gendetails[0], Integer.parseInt(gendetails[1]), Integer.parseInt(gendetails[2]),
+						Integer.parseInt(gendetails[3]));
 				break;
-			
 
 			}
-			
+
+		} else if (arg0 == m) {
+			switch (note) {
+			case "loaded":
+				v.displayLoadedMaze((String) m.getData(note));
+				break;
+			case "error":
+				v.printMsg((String)m.getData(note));
+				break;
+			case "usermsg":
+			v.printMsg((String)m.getData(note));
+			break;
+			}
+
 		}
 
 	}

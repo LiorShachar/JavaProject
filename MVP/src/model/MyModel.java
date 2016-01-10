@@ -74,7 +74,7 @@ public class MyModel extends CommonModel {
 	public void handleGenerate(String name, int y, int x, int z) {
 
 		if (!this.mazes.containsKey(name)) {
-			scno("m", "**generating maze**");
+			
 			
 			
 			Future<Maze3d> futurem = threadPool.submit(new Callable<Maze3d>() {
@@ -90,17 +90,17 @@ public class MyModel extends CommonModel {
 			try {
 				mazes.put(name, futurem.get());
 				
-				scno("m", "**maze " + name + " is ready**");
+				scno("loaded", name);
 			} catch (InterruptedException e) {
-				scno("e", " thread interrupted, maze generation aborted");
+				scno("error", " thread interrupted, maze generation aborted");
 				e.printStackTrace();
 			} catch (ExecutionException e) {
-				scno("e", " execution problem, maze generation aborted");
+				scno("error", " thread execution problem, maze generation aborted");
 				e.printStackTrace();
 			}
 
 		} else {
-			scno("e", "**Name already exists, please use a valid name**");
+			scno("error", "Name already exists, please use a valid name");
 		}
 	}
 
@@ -132,6 +132,7 @@ public class MyModel extends CommonModel {
 
 	@Override
 	public void handleLoadMaze(String path, String name) {
+		if (!this.mazes.containsKey(name)) {
 		try {
 			// we need to know the array size, the compressed version of the
 			// maze have a pattern of (value,number of returns)
@@ -160,7 +161,11 @@ public class MyModel extends CommonModel {
 		} catch (IOException e) {
 			scno("error","loading maze failed");
 		}
-
+		
+		}
+		else
+			scno("error", "Name already exists, please use a valid name");
+		
 	}
 
 	/**

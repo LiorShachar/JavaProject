@@ -30,9 +30,9 @@ public class MainWindow extends BasicWindow {
 	KeyListener keylis;
 
 	List l;
-	Text nametxt,heighttxt,widthtxt,levelstxt;
+	public Text nametxt,heighttxt,widthtxt,levelstxt;
 	Label genlbl,mazelistlbl,namelbl,heightlbl,widthlbl,levelslbl;
-	Button playButton;
+	Button playButton,genButton;
 	
 	
 	
@@ -127,13 +127,13 @@ public class MainWindow extends BasicWindow {
         
       //*****************************************************************//"maze list" label
         mazelistlbl = new Label(shell,SWT.None);
-        mazelistlbl.setText("Maze List");
+        mazelistlbl.setText("Maze list");
         mazelistlbl.setLayoutData(new GridData(SWT.None, SWT.None, false,false, 3, 1));
         //*****************************************************************//
         
         //*****************************************************************//"name" label
         namelbl = new Label(shell,SWT.BORDER);
-        namelbl.setText("Maze Name");
+        namelbl.setText("Maze name");
         namelbl.setLayoutData(new GridData(SWT.None, SWT.None, false,false, 1, 1));
         
       //*****************************************************************//
@@ -184,7 +184,7 @@ public class MainWindow extends BasicWindow {
 	    
      //*****************************************************************//levels label
        levelslbl = new Label(shell,SWT.BORDER);
-       levelslbl.setText("levels");
+       levelslbl.setText("Levels");
        levelslbl.setLayoutData(new GridData(SWT.None, SWT.None, false,false, 1, 1));
        
      //*****************************************************************//
@@ -195,7 +195,13 @@ public class MainWindow extends BasicWindow {
       
        //*****************************************************************//
         
-       
+     //*****************************************************************//Generate Button
+       genButton=new Button(shell, SWT.PUSH);
+		genButton.setText("Generate!");
+		genButton.setLayoutData(new GridData(SWT.None, SWT.None, false,false, 1, 1));
+		genButton.addListener(SWT.Selection,listeners.get("generateButton"));
+		
+     //*****************************************************************
         
 
         shell.setMenuBar(menuBar);
