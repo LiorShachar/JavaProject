@@ -11,11 +11,13 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Canvas;
+import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.List;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.widgets.Shell;
+import org.eclipse.swt.widgets.Text;
 
 import algorithms.mazeGenerators.Position;
 import algorithms.search.Solution;
@@ -28,6 +30,11 @@ public class MainWindow extends BasicWindow {
 	KeyListener keylis;
 
 	List l;
+	Text nametxt,heighttxt,widthtxt,levelstxt;
+	Label genlbl,mazelistlbl,namelbl,heightlbl,widthlbl,levelslbl;
+	Button playButton;
+	
+	
 	
 	
 	public MainWindow(String title, int width, int height ,HashMap<String,Listener> lis,KeyListener keylis) {
@@ -51,7 +58,7 @@ public class MainWindow extends BasicWindow {
 		////////////////////////////////////////////
 		*/
 		
-		shell.setLayout(new GridLayout(2,false));
+		shell.setLayout(new GridLayout(5,false));
 		//***************************************************************** MAIN MENU BAR
         Menu menuBar = new Menu(shell, SWT.BAR);
       //***************************************************************** File Cascade
@@ -107,19 +114,92 @@ public class MainWindow extends BasicWindow {
         aboutItem.addListener(SWT.Selection ,listeners.get("about"));
       //*****************************************************************
         
-      //*****************************************************************//Start Button
-        Button startButton=new Button(shell, SWT.PUSH);
-		startButton.setText("Start");
-		startButton.setLayoutData(new GridData(SWT.FILL, SWT.None, false, false, 1, 1));
-		startButton.addListener(SWT.Selection,listeners.get("openmazewin"));
+     
+        
+      //*****************************************************************//"generate a maze" label
+        genlbl = new Label(shell,SWT.None);
+        genlbl.setText("Generate a new maze");
+        genlbl.setBounds(shell.getClientArea());
+        genlbl.setLayoutData(new GridData(SWT.None, SWT.None, true,false, 2, 1));
+        
+      //*****************************************************************//
+        
+        
+      //*****************************************************************//"maze list" label
+        mazelistlbl = new Label(shell,SWT.None);
+        mazelistlbl.setText("Maze List");
+        mazelistlbl.setLayoutData(new GridData(SWT.None, SWT.None, false,false, 3, 1));
+        //*****************************************************************//
+        
+        //*****************************************************************//"name" label
+        namelbl = new Label(shell,SWT.BORDER);
+        namelbl.setText("Maze Name");
+        namelbl.setLayoutData(new GridData(SWT.None, SWT.None, false,false, 1, 1));
+        
+      //*****************************************************************//
+        
+        //*****************************************************************//"maze name" text
+       nametxt = new Text(shell, SWT.SINGLE | SWT.BORDER);
+       nametxt.setLayoutData(new GridData(SWT.None, SWT.None, false,false, 1, 1));
+       
+        //*****************************************************************//
+
+       //*****************************************************************// Maze List
+ 		l = new List(shell, SWT.MULTI | SWT.BORDER  );
+ 	    l.setLayoutData(new GridData(SWT.None, SWT.None, false,true, 1, 4));
+       //*****************************************************************
+       
+      //*****************************************************************//Play Button
+        playButton=new Button(shell, SWT.PUSH);
+		playButton.setText("Play");
+		playButton.setLayoutData(new GridData(SWT.None, SWT.None, false,false, 2, 4));
+		playButton.addListener(SWT.Selection,listeners.get("openmazewin"));
       //*****************************************************************
 		
-      //*****************************************************************
-		l = new List(shell, SWT.MULTI | SWT.BORDER  );
-	    l.setBounds(50, 50, 75, 75);
-      //*****************************************************************
+		//*****************************************************************//"height" label
+        heightlbl = new Label(shell,SWT.BORDER);
+        heightlbl.setText("Height(in cells)");
+        heightlbl.setLayoutData(new GridData(SWT.None, SWT.None, false,false, 1, 1));
+        
+      //*****************************************************************//
+        
+        //*****************************************************************//"height" text
+        heighttxt = new Text(shell, SWT.SINGLE | SWT.BORDER);
+       heighttxt.setLayoutData(new GridData(SWT.None, SWT.None, false,false, 1, 1));
+       
+        //*****************************************************************//
+       
+     //*****************************************************************//width label
+       widthlbl = new Label(shell,SWT.BORDER);
+       widthlbl.setText("Width(in cells)");
+       widthlbl.setLayoutData(new GridData(SWT.None, SWT.None, false,false, 1, 1));
+       
+     //*****************************************************************//
+       
+       //*****************************************************************//width text
+       widthtxt = new Text(shell, SWT.SINGLE | SWT.BORDER);
+       widthtxt.setLayoutData(new GridData(SWT.None, SWT.None, false,false, 1, 1));
+      
+       //*****************************************************************//
+	    
+     //*****************************************************************//levels label
+       levelslbl = new Label(shell,SWT.BORDER);
+       levelslbl.setText("levels");
+       levelslbl.setLayoutData(new GridData(SWT.None, SWT.None, false,false, 1, 1));
+       
+     //*****************************************************************//
+       
+       //*****************************************************************//levels text
+       levelstxt = new Text(shell, SWT.SINGLE | SWT.BORDER);
+       levelstxt.setLayoutData(new GridData(SWT.None, SWT.None, false,false, 1, 1));
+      
+       //*****************************************************************//
+        
+       
+        
 
         shell.setMenuBar(menuBar);
+        shell.pack();
         
 	}
 	

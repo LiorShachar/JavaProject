@@ -49,7 +49,7 @@ public class MyGuiView extends CommonView {
 		listeners= new HashMap<String,Listener>();
 		notifications=new HashMap<String,Object>();
 		initListeners();
-		mainGuiWindow= new MainWindow("Maze Game", 800, 500,listeners,keylis); ///////////////////// init the outside widget
+		mainGuiWindow= new MainWindow("Maze Game", 250,250,listeners,keylis); ///////////////////// init the outside widget
 		
 		
 	}
@@ -131,6 +131,8 @@ public class MyGuiView extends CommonView {
 						@Override
 						public void widgetSelected(SelectionEvent e) {
 							temp=txt.getText();
+							String args[]= {selected,temp};
+							scno("loadfrom",args);
 							dialog.close();
 							
 						}
@@ -142,9 +144,9 @@ public class MyGuiView extends CommonView {
 						}
 					});
 					
-			        String args[]={sel}
+			        
 			        dialog.open();
-			        scno("loadfrom",selected);
+			        
 
 			 }
 		}); 

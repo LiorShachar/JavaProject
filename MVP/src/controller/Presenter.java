@@ -264,8 +264,8 @@ public class Presenter implements Observer {
 		if (arg0==v){
 			switch (note){
 			case "loadfrom":
-				m.handleLoadMaze((String)v.getData(note), "lior");
-				
+				String param[]=(String[])v.getData(note);
+				m.handleLoadMaze(param[0], param[1]);
 				break;
 			
 
