@@ -13,6 +13,8 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 
+import org.eclipse.swt.SWT;
+
 import algorithms.mazeGenerators.Maze3d;
 import algorithms.mazeGenerators.MyMaze3dGenerator;
 import algorithms.mazeGenerators.Position;
@@ -50,8 +52,7 @@ public class MyModel extends CommonModel {
 	
 	private ExecutorService threadPool;
 	
-	private String error;
-	private String msg;
+	
 	
 	
 
@@ -113,13 +114,9 @@ public class MyModel extends CommonModel {
 			MyCompressorOutputStream writer = new MyCompressorOutputStream(new FileOutputStream(path));
 			writer.write(maze);
 			writer.close();
-			msg = "**Save completed successfuly**";
-			setChanged();
-			notifyObservers("msg");
+			scno("msg", "Save completed successfuly");
 		} catch (IOException e) {
-			error = "error: could not save";
-			setChanged();
-			notifyObservers("err");
+			scno("error", "There was a problem saving the maze");
 			e.printStackTrace();
 		}
 
@@ -177,10 +174,7 @@ public class MyModel extends CommonModel {
 	public void handleFileSize(String name) {
 		handleSaveMaze(mazes.get(name).toByteArray(), "testfile.maz");
 		File test = new File("testfile.maz");
-
-		msg = "File Size of " + name + ": " + test.length() + " Bytes";
-		setChanged();
-		notifyObservers("msg");
+		scno("msg", "File Size of " + name + ": " + test.length() + " Bytes");
 		test.delete();
 
 	}
@@ -347,10 +341,20 @@ public class MyModel extends CommonModel {
 		// TODO Auto-generated method stub
 		
 	}
-
+	@Override
+	public Object getMazeByName(String string) {
+		 return mazes.get(string);
+	}
+	
 	@Override
 	public Object getData(String string) {
 		 return notifications.get(string);
+	}
+
+	@Override
+	public void handleMazeSize(String name) {
+		scno("msg","Maze size in memory: "+mazes.get(name).toByteArray().length+"Bytes");
+		
 	}
 
 	

@@ -29,7 +29,7 @@ public class MainWindow extends BasicWindow {
 	public HashMap<String,Listener> listeners;
 	KeyListener keylis;
 
-	List l;
+	public List l;
 	public Text nametxt,heighttxt,widthtxt,levelstxt;
 	Label genlbl,mazelistlbl,namelbl,heightlbl,widthlbl,levelslbl;
 	Button playButton,genButton;
@@ -89,17 +89,13 @@ public class MainWindow extends BasicWindow {
         Menu OptionsMenu = new Menu(shell, SWT.DROP_DOWN);
         cascadeOptionsMenu.setMenu(OptionsMenu);
       //*****************************************************************
-        MenuItem generateItem = new MenuItem(OptionsMenu, SWT.PUSH);
-        generateItem.setText("Generate a new maze");
-      //*****************************************************************
-        MenuItem solutionItem = new MenuItem(OptionsMenu, SWT.PUSH);
-        solutionItem.setText("Solve the maze for me!");
-      //*****************************************************************
         MenuItem fileSizeItem = new MenuItem(OptionsMenu, SWT.PUSH);
         fileSizeItem.setText("Maze file size details");
+        fileSizeItem.addListener(SWT.Selection, listeners.get("FileSize"));
       //*****************************************************************
         MenuItem mazeSizeItem = new MenuItem(OptionsMenu, SWT.PUSH);
         mazeSizeItem.setText("Maze memory size details");
+        mazeSizeItem.addListener(SWT.Selection, listeners.get("MazeSize"));
       //*****************************************************************
         
         
@@ -153,7 +149,7 @@ public class MainWindow extends BasicWindow {
         playButton=new Button(shell, SWT.PUSH);
 		playButton.setText("Play");
 		playButton.setLayoutData(new GridData(SWT.None, SWT.None, false,false, 2, 4));
-		playButton.addListener(SWT.Selection,listeners.get("openmazewin"));
+		playButton.addListener(SWT.Selection,listeners.get("mazewindow"));
       //*****************************************************************
 		
 		//*****************************************************************//"height" label

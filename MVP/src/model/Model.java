@@ -37,6 +37,7 @@ public interface Model {
 	void handleLoadMaze(String path, String name);
 
 	void handleFileSize(String name);
+	void handleMazeSize(String name);
 
 	HashMap<String, Maze3d> getMazes();
 	
@@ -50,4 +51,6 @@ public interface Model {
 	void handleKill();
 
 	void testThread();
+
+	Object getMazeByName(String string);
 }

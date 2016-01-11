@@ -25,9 +25,11 @@ public class Maze3D extends MazeDisplayer {
         int[] b={r[0],r[1],r[2],r[3],f[2],f[3],f[0],f[1]};
         e.gc.drawPolygon(b);
         int[] fr={r[6],r[7],r[4],r[5],f[4],f[5],f[6],f[7]};
-        e.gc.drawPolygon(fr);
         
+        e.gc.setBackground(new Color(null, 0, 0, 255));
+        e.gc.drawPolygon(fr);
         e.gc.fillPolygon(r);
+        
 		
 	}
 	public Maze3D(Composite parent, int style) {

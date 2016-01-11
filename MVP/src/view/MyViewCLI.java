@@ -104,14 +104,14 @@ public class MyViewCLI extends CommonView implements View,Observer {
  */
 
 	@Override
-	public void list(String string) {
+	public void showList(String string) {
 		File lister = new File(string);
 		try {
 			String[] pathdetails = lister.list();
 			for (String s: pathdetails)
-				printMsg(s);
+				showMsg(s);
 		} catch (NullPointerException e) {
-			printMsg("File or Directory not found");
+			showMsg("File or Directory not found");
 		}
 		
 		
@@ -123,7 +123,7 @@ public class MyViewCLI extends CommonView implements View,Observer {
 	 * prints the string provided using the scanner in the cli, so the view will interact with the user the way he chose.
 	 */
 	@Override
-public void printMsg(String s) {
+public void showMsg(String s) {
 	cli.getOut().println(s);
 	cli.getOut().flush();
 	
@@ -139,7 +139,7 @@ public void printMsg(String s) {
  */
 
 @Override
-public void displayMaze(byte[] arr) {
+public void showMaze(byte[] arr) {
 	Maze3d maze = new Maze3d(arr);
 	int levels = maze.getySize();
 	int lvl=0;
@@ -168,7 +168,7 @@ public void displayMaze(byte[] arr) {
  */
 
 @Override
-public void displayCross(byte[] arr, String by, int index) {
+public void showCross(byte[] arr, String by, int index) {
 	Maze3d maze = new Maze3d(arr);
 	
 	int[][] twodi;
@@ -274,10 +274,10 @@ public void displayCross(byte[] arr, String by, int index) {
  */
 
 @Override
-public void displaySolution(Solution<Position> s) {
+public void showSolution(Solution<Position> s) {
 	ArrayList<State<Position>> sol= s.getSolution();
 	for (State<Position> p : sol)
-		printMsg(p.toString());
+		showMsg(p.toString());
 	
 }
 
@@ -301,6 +301,12 @@ public Object getData(String string) {
 
 @Override
 public void displayLoadedMaze(String s) {
+	// TODO Auto-generated method stub
+	
+}
+
+@Override
+public void showError(String s) {
 	// TODO Auto-generated method stub
 	
 }

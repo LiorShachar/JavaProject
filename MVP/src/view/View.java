@@ -24,13 +24,14 @@ import algorithms.search.Solution;
 */
 
 public interface View {
-	   void start();
-	void list(String string);
-	void printMsg(String s);
+	  void start();
+	void showList(String string);
+	void showMsg(String s);
+	void showError(String s);
 	String getTodo();
-	void displayMaze(byte[] arr);
-	void displayCross(byte[] arr,String by,int i);
-	void displaySolution(Solution<Position> s);
+	void showMaze(byte[] arr);
+	void showCross(byte[] arr,String by,int i);
+	void showSolution(Solution<Position> s);
 	void showExit();
 	Object getData(String string);
 	

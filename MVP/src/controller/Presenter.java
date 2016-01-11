@@ -70,7 +70,7 @@ public class Presenter implements Observer {
 
 			@Override
 			public void doCommand(String[] args) {
-				v.list(args[1]);
+				v.showList(args[1]);
 			}
 		});
 
@@ -91,7 +91,7 @@ public class Presenter implements Observer {
 
 			@Override
 			public void doCommand(String[] args) {
-				v.displayMaze(m.getMazes().get(args[1]).toByteArray());
+				v.showMaze(m.getMazes().get(args[1]).toByteArray());
 
 			}
 		});
@@ -101,7 +101,7 @@ public class Presenter implements Observer {
 
 			@Override
 			public void doCommand(String[] args) {
-				v.displayCross(m.getMazes().get(args[7]).toByteArray(), args[4], Integer.parseInt(args[5]));
+				v.showCross(m.getMazes().get(args[7]).toByteArray(), args[4], Integer.parseInt(args[5]));
 
 			}
 		});
@@ -129,7 +129,7 @@ public class Presenter implements Observer {
 
 			@Override
 			public void doCommand(String[] args) {
-				v.printMsg("Maze size of " + args[2] + " is: " + m.getMazes().get(args[2]).toByteArray().length
+				v.showMsg("Maze size of " + args[2] + " is: " + m.getMazes().get(args[2]).toByteArray().length
 						+ " Bytes");
 
 			}
@@ -160,7 +160,7 @@ public class Presenter implements Observer {
 			public void doCommand(String[] args) {
 
 				if (m.getSolutions().containsKey(args[2])) {
-					v.displaySolution(m.getSolutions().get(args[2]));
+					v.showSolution(m.getSolutions().get(args[2]));
 				} else {
 					toView("no solution found for this maze");
 				}
@@ -254,7 +254,7 @@ public class Presenter implements Observer {
 	}
 
 	public void toView(String s) {
-		v.printMsg(s);
+		v.showMsg(s);
 
 	}
 
@@ -272,6 +272,25 @@ public class Presenter implements Observer {
 				m.handleGenerate(gendetails[0], Integer.parseInt(gendetails[1]), Integer.parseInt(gendetails[2]),
 						Integer.parseInt(gendetails[3]));
 				break;
+			case "MazeSizeRequest":
+				String mname = (String) v.getData(note);
+				m.handleMazeSize(mname);
+				break;
+			case "FileSizeRequest":
+				String fmname = (String) v.getData(note);
+				m.handleFileSize(fmname);
+				break;
+				
+			case "initMazeWidgetRequest":
+				String mazetoinit = (String) v.getData(note);
+				v.showCross(((Maze3d)m.getMazeByName(mazetoinit)).toByteArray(),"y", 1);
+				break;
+			case "error":
+				v.showError((String)v.getData(note));
+				break;
+			case "msg":
+			v.showMsg((String)v.getData(note));
+			break;
 
 			}
 
@@ -281,10 +300,10 @@ public class Presenter implements Observer {
 				v.displayLoadedMaze((String) m.getData(note));
 				break;
 			case "error":
-				v.printMsg((String)m.getData(note));
+				v.showError((String)m.getData(note));
 				break;
-			case "usermsg":
-			v.printMsg((String)m.getData(note));
+			case "msg":
+			v.showMsg((String)m.getData(note));
 			break;
 			}
 
