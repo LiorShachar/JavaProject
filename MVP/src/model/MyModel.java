@@ -343,7 +343,12 @@ public class MyModel extends CommonModel {
 	}
 	@Override
 	public Object getMazeByName(String string) {
+		if(mazes.containsKey(string))
 		 return mazes.get(string);
+		else{
+			scno("error", "cant save maze");
+		return null;
+		}
 	}
 	
 	@Override

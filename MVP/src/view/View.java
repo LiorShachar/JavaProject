@@ -3,6 +3,7 @@ package view;
 import algorithms.mazeGenerators.Position;
 import algorithms.search.Solution;
 
+
 /**
 *
 * 
@@ -35,6 +36,9 @@ public interface View {
 	void showExit();
 	Object getData(String string);
 	
+	
+	/////////////////////////////////////////////
+	void startGame(String name,int levels,int y,int x,int z);
 	
 	
 	//////////////////////////////////////////// TEST

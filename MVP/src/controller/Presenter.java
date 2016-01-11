@@ -6,6 +6,7 @@ import java.util.Observer;
 import java.util.Set;
 
 import algorithms.mazeGenerators.Maze3d;
+import algorithms.mazeGenerators.Position;
 import model.Model;
 import view.View;
 
@@ -283,13 +284,48 @@ public class Presenter implements Observer {
 				
 			case "initMazeWidgetRequest":
 				String mazetoinit = (String) v.getData(note);
-				v.showCross(((Maze3d)m.getMazeByName(mazetoinit)).toByteArray(),"y", 1);
+				Maze3d maze = (Maze3d)m.getMazeByName(mazetoinit);
+				int startlevel = maze.getStartPosition().getY();
+				int levels = maze.getySize();
+				int startY = maze.getStartPosition().getZ();
+				int startX = maze.getStartPosition().getX();
+				v.startGame(mazetoinit,levels,startlevel, startX, startY);
+				v.showCross(maze.toByteArray(), "y", startlevel);
 				break;
+				
+			case "RequestUp":
+				Object[] objs= (Object[]) v.getData(note);
+				Maze3d upmaze = (Maze3d)m.getMazeByName((String)objs[1]);
+				Position pos = (Position)objs[0];
+				if(upmaze.getCell(new Position(pos.getY()+1,pos.getZ(),pos.getX()))==0)
+				v.showCross(upmaze.toByteArray(), "y",pos.getY()+1);
+				
+				break;
+				
+			case "RequestDown":
+				Object[] dobjs= (Object[]) v.getData(note);
+				Maze3d dupmaze = (Maze3d)m.getMazeByName((String)dobjs[1]);
+				Position dpos = (Position)dobjs[0];
+				if(dupmaze.getCell(new Position(dpos.getY()-1,dpos.getZ(),dpos.getX()))==0)
+				v.showCross(dupmaze.toByteArray(), "y",dpos.getY()-1);
+				
+				break;
+				
 			case "error":
 				v.showError((String)v.getData(note));
 				break;
 			case "msg":
 			v.showMsg((String)v.getData(note));
+			break;
+			
+			case "PathToSaveMaze":
+				String savedetails[]=(String[])v.getData(note);
+				
+				Maze3d lol = (Maze3d)m.getMazeByName(savedetails[0]); // gets the maze from the model
+				byte b[];
+				b=lol.toByteArray(); // turn the maze into a byte array
+				 
+				m.handleSaveMaze(b, savedetails[1]);
 			break;
 
 			}

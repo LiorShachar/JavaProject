@@ -144,5 +144,46 @@ public class Maze3D extends MazeDisplayer {
 		// TODO Auto-generated method stub
 		
 	}
+	@Override
+	public void lvlUp() {
+		// TODO Auto-generated method stub
+		
+	}
+	@Override
+	public void lvlDown() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void setCurLvl(int l) {
+		// TODO Auto-generated method stub
+		
+	}
+	@Override
+	public void setLevels(int l) {
+		// TODO Auto-generated method stub
+		
+	}
+	@Override
+	public int getCharacterPositionX() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+	@Override
+	public int getCharacterPositionY() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+	@Override
+	public int getCurLvl() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+	@Override
+	public int getLevels() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
 
 }

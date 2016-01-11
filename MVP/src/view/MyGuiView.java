@@ -79,6 +79,16 @@ public class MyGuiView extends CommonView {
 				} else if (e.keyCode == SWT.ARROW_RIGHT) {
 					mazeWin.moveRight();
 				}
+				else if (e.keyCode == SWT.PAGE_UP) {
+					Object objs[]={new Position(mazeWin.getCurLvl(), mazeWin.getCharacterPositionX(), mazeWin.getCharacterPositionY()),mazeWin.getMazeName()};
+					scno("RequestUp",objs );
+				}
+				else if (e.keyCode == SWT.PAGE_DOWN) {
+					Object objs[]={new Position(mazeWin.getCurLvl(), mazeWin.getCharacterPositionX(), mazeWin.getCharacterPositionY()),mazeWin.getMazeName()};
+					scno("RequestDown",objs );
+					
+					
+				}
 
 			}
 
@@ -109,7 +119,7 @@ public class MyGuiView extends CommonView {
 				String[] filterExt = { "*.maz", "*.*" };
 				fd.setFilterExtensions(filterExt);
 				String selected = fd.open();
-				
+
 				Shell dialog = new Shell(mainGuiWindow.getShell(), SWT.DIALOG_TRIM | SWT.APPLICATION_MODAL);
 
 				dialog.setLayout(new GridLayout(3, false));
@@ -128,14 +138,13 @@ public class MyGuiView extends CommonView {
 					@Override
 					public void widgetSelected(SelectionEvent e) {
 						temp = txt.getText();
-						if (temp.matches("([A-Za-z0-9])\\w+")){
-						String args[] = { selected, temp };
-						scno("loadfrom", args);
-						dialog.close();
-						}
-						else
+						if (temp.matches("([A-Za-z0-9])\\w+")) {
+							String args[] = { selected, temp };
+							scno("loadfrom", args);
+							dialog.close();
+						} else
 							showError("Invalid name");
-						
+
 					}
 
 					@Override
@@ -143,8 +152,8 @@ public class MyGuiView extends CommonView {
 
 					}
 				});
-				if(selected!=null)
-				dialog.open();
+				if (selected != null)
+					dialog.open();
 
 			}
 		});
@@ -166,24 +175,24 @@ public class MyGuiView extends CommonView {
 		});
 		// ***************************************************************************************************************
 
-				listeners.put("mazewindow", new Listener() {
-					public void handleEvent(Event event) {
-						if(mainGuiWindow.l.getSelection().length>0){
-							Shell mazeshell=new Shell(mainGuiWindow.getDisplay());
-							mazeshell.setLayout(new GridLayout(5,false));
-							mazeWin= new Maze3D(mazeshell,SWT.BORDER);
-							mazeWin.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true,true,1,2));
-							//mazeWin.setCharacter(new GameCharacter(mazeWin, SWT.None, 0, 2, 1, 1));
-							mazeWin.addKeyListener(keylis);
-							mazeshell.pack();
-							mazeshell.open();
-							String selected=mainGuiWindow.l.getSelection()[0];
-							scno("initMazeWidgetRequest",selected);
-							}
-							else
-								scno("error","no maze selected");
-					}
-				});
+		listeners.put("mazewindow", new Listener() {
+			public void handleEvent(Event event) {
+				if (mainGuiWindow.l.getSelection().length > 0) {
+					Shell mazeshell = new Shell(mainGuiWindow.getDisplay());
+					mazeshell.setLayout(new GridLayout(5, false));
+					mazeWin = new Maze2D(mazeshell, SWT.BORDER);
+					mazeWin.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 2));
+					 mazeWin.setCharacter(new GameCharacter(mazeWin, SWT.None,
+					 0, 2, 1, 1));
+					mazeWin.addKeyListener(keylis);
+					mazeshell.pack();
+					mazeshell.open();
+					String selected = mainGuiWindow.l.getSelection()[0];
+					scno("initMazeWidgetRequest", selected);
+				} else
+					scno("error", "no maze selected");
+			}
+		});
 		// ***************************************************************************************************************
 		listeners.put("generateButton", new Listener() {
 			public void handleEvent(Event event) {
@@ -194,40 +203,55 @@ public class MyGuiView extends CommonView {
 					String param[] = { mainGuiWindow.nametxt.getText(), mainGuiWindow.levelstxt.getText(),
 							mainGuiWindow.heighttxt.getText(), mainGuiWindow.widthtxt.getText() };
 					scno("generateDetails", param);
-				}
-				else
+				} else
 					showError("Invalid Values");
 
 			}
 		});
 
-	
-
-	// ***************************************************************************************************************
-	listeners.put("MazeSize", new Listener() {
-		public void handleEvent(Event event) {
-			if(mainGuiWindow.l.getSelection().length>0){
-			String selected=mainGuiWindow.l.getSelection()[0];
-			scno("MazeSizeRequest",selected);
+		// ***************************************************************************************************************
+		listeners.put("MazeSize", new Listener() {
+			public void handleEvent(Event event) {
+				if (mainGuiWindow.l.getSelection().length > 0) {
+					String selected = mainGuiWindow.l.getSelection()[0];
+					scno("MazeSizeRequest", selected);
+				} else
+					scno("error", "no maze selected");
 			}
-			else
-				scno("error","no maze selected");
-		}
-	});
-	// ***************************************************************************************************************
-	listeners.put("FileSize", new Listener() {
-		public void handleEvent(Event event) {
-			if(mainGuiWindow.l.getSelection().length>0){
-			String selected=mainGuiWindow.l.getSelection()[0];
-			scno("FileSizeRequest",selected);
+		});
+		// ***************************************************************************************************************
+		listeners.put("FileSize", new Listener() {
+			public void handleEvent(Event event) {
+				if (mainGuiWindow.l.getSelection().length > 0) {
+					String selected = mainGuiWindow.l.getSelection()[0];
+					scno("FileSizeRequest", selected);
+				} else
+					scno("error", "no maze selected");
 			}
-			else
-				scno("error","no maze selected");
-		}
-	});
-	// ***************************************************************************************************************
+		});
+		// ***************************************************************************************************************
+		listeners.put("SaveToFile", new Listener() {
+			public void handleEvent(Event event) {
+				FileDialog savedialog = new FileDialog(mainGuiWindow.getShell(), SWT.SAVE);
+				savedialog.setFilterNames(new String[] { "Maze Files", "All Files (*.*)" });
+				savedialog.setFilterExtensions(new String[] { "*.maz", "*.*" }); // Windows
+				// wild
+				// cards
+				savedialog.setFilterPath("c:\\"); // Windows path
+				savedialog.setFileName("newMaze.maz");
+				if(mainGuiWindow.l.getSelection().length > 0){
+				String filepath = savedialog.open();
+				if (filepath!=null){
+					String saveparams[]={mainGuiWindow.l.getSelection()[0],filepath};
+					scno("PathToSaveMaze",saveparams );
+				}
+				}
+				else
+					scno("error", "no maze selected");
+			}
+		});
+		// ***************************************************************************************************************
 	}
-	
 
 	@Override
 	public void showList(String string) {
@@ -264,9 +288,10 @@ public class MyGuiView extends CommonView {
 
 	@Override
 	public void showCross(byte[] arr, String by, int i) {
-		Maze3d maze=new Maze3d(arr);
-		if(this.mazeWin!=null){
-			switch (by){
+		Maze3d maze = new Maze3d(arr);
+		if (this.mazeWin != null) {
+			mazeWin.setCurLvl(i);
+			switch (by) {
 			case "x":
 				mazeWin.setMazeData(maze.getCrossSectionByX(i));
 				break;
@@ -286,7 +311,7 @@ public class MyGuiView extends CommonView {
 				mazeWin.setMazeData(maze.getCrossSectionByZ(i));
 				break;
 			}
-			
+
 		}
 
 	}
@@ -321,6 +346,15 @@ public class MyGuiView extends CommonView {
 		messageBox.setMessage(s);
 		messageBox.setText("Error!");
 		messageBox.open();
+
+	}
+
+	@Override
+	public void startGame(String name,int levels,int lvl, int row, int col) {
+		mazeWin.setMazeName(name);
+		mazeWin.setCharacterPosition(row, col);
+		mazeWin.setCurLvl(lvl);
+		mazeWin.setLevels(levels);
 		
 	}
 

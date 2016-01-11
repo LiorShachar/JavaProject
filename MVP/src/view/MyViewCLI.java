@@ -311,6 +311,12 @@ public void showError(String s) {
 	
 }
 
+@Override
+public void startGame(String name,int levels, int y, int x, int z) {
+	// TODO Auto-generated method stub
+	
+}
+
 
 
 

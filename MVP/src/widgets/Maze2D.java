@@ -29,9 +29,13 @@ public class Maze2D extends MazeDisplayer{
 				
 				@Override
 				public void paintControl(PaintEvent e) {
+					
+					
 					   e.gc.setForeground(new Color(null,0,0,0));
 					   e.gc.setBackground(new Color(null,0,0,0));
 
+					   e.gc.drawString("Level: "+getCurLvl(), 0,0);
+					   
 					   int width=getSize().x;
 					   int height=getSize().y;
 
@@ -53,6 +57,9 @@ public class Maze2D extends MazeDisplayer{
 					      }
 					   chr.setW(w);
 					   chr.setH(h);
+					   e.gc.setForeground(new Color(null,0,0,255));
+					   e.gc.drawString("Level: "+getCurLvl(), 0,0);
+					   e.gc.drawString("Position: "+getCharacterPositionX()+","+getCharacterPositionY(), 0,20);
 					   
 					}
 			});
@@ -78,33 +85,35 @@ public class Maze2D extends MazeDisplayer{
 
 
 	@Override
-	public void setCharacterPosition(int row, int col) {
+	public void setCharacterPosition(int row, int col) { ////// we opposite the direction because the user see the maze differently
+		this.chr.setX(col);
+		this.chr.setY(row);
+		redraw();
 		
-		moveCharacter(col,row); //this method isnt really needed although it gets the parameters in the opposite direction so we have a chance to fix it
 	}
 
 	@Override
 	public void moveUp() {
 		
-		setCharacterPosition(chr.getY()-1, chr.getX());
+		moveCharacter( chr.getX(),chr.getY()-1);
 	}
 
 	@Override
 	public void moveDown() {
 		
-		setCharacterPosition(chr.getY()+1, chr.getX());
+		moveCharacter(chr.getX(),chr.getY()+1 );
 	}
 
 	@Override
 	public void moveLeft() {
 		
-		setCharacterPosition(chr.getY(), chr.getX()-1);
+		moveCharacter(chr.getX()-1,chr.getY());
 	}
 
 	@Override
 	public void moveRight() {
 		
-		setCharacterPosition(chr.getY(), chr.getX()+1);
+		moveCharacter(chr.getX()+1,chr.getY() );
 	}
 
 
@@ -147,5 +156,84 @@ public class Maze2D extends MazeDisplayer{
 		this.chr.setH(h);
 		
 		
+	}
+
+
+
+
+
+	@Override
+	public void lvlUp() {
+		curlvl++;
+		redraw();
+	}
+
+
+
+
+
+	@Override
+	public void lvlDown() {
+		curlvl--;
+		redraw();
+	}
+
+
+
+
+
+	@Override
+	public void setLevels(int l) {
+		this.levels=l;
+		
+	}
+
+
+
+
+
+	@Override
+	public void setCurLvl(int l) {
+		this.curlvl=l;
+		redraw();
+		
+	}
+
+
+
+
+
+	@Override
+	public int getCharacterPositionX() {
+		return chr.getX();
+	}
+
+
+
+
+
+	@Override
+	public int getCharacterPositionY() {
+		return chr.getY();
+	}
+
+
+
+
+
+	@Override
+	public int getCurLvl() {
+		
+		return this.curlvl;
+	}
+
+
+
+
+
+	@Override
+	public int getLevels() {
+		
+		return this.levels;
 	}
 }

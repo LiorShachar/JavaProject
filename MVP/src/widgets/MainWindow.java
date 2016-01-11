@@ -77,6 +77,7 @@ public class MainWindow extends BasicWindow {
       //*****************************************************************
         MenuItem saveItem = new MenuItem(fileMenu, SWT.PUSH);
         saveItem.setText("Save");
+        saveItem.addListener(SWT.Selection ,listeners.get("SaveToFile"));
       //*****************************************************************  
         MenuItem exitItem = new MenuItem(fileMenu, SWT.PUSH);
         exitItem.setText("&Exit");
