@@ -6,6 +6,7 @@ import java.util.TimerTask;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.KeyListener;
+import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -32,7 +33,7 @@ public class MainWindow extends BasicWindow {
 	public List l;
 	public Text nametxt,heighttxt,widthtxt,levelstxt;
 	Label genlbl,mazelistlbl,namelbl,heightlbl,widthlbl,levelslbl;
-	Button playButton,genButton;
+	public Button playButton,genButton,solveButton;
 	
 	
 	
@@ -150,6 +151,20 @@ public class MainWindow extends BasicWindow {
         playButton=new Button(shell, SWT.PUSH);
 		playButton.setText("Play");
 		playButton.setLayoutData(new GridData(SWT.None, SWT.None, false,false, 2, 4));
+		playButton.addSelectionListener(new SelectionListener() {
+			
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				solveButton.setEnabled(true);
+				
+			}
+			
+			@Override
+			public void widgetDefaultSelected(SelectionEvent e) {
+				
+				
+			}
+		});
 		playButton.addListener(SWT.Selection,listeners.get("mazewindow"));
       //*****************************************************************
 		
@@ -199,6 +214,16 @@ public class MainWindow extends BasicWindow {
 		genButton.addListener(SWT.Selection,listeners.get("generateButton"));
 		
      //*****************************************************************
+		
+	     //*****************************************************************//Solve Button
+	       solveButton=new Button(shell, SWT.PUSH);
+			solveButton.setText("Solve the maze for me!");
+			solveButton.setLayoutData(new GridData(SWT.None, SWT.None, false,false, 1, 1));
+			solveButton.addListener(SWT.Selection,listeners.get("solveButton"));
+			solveButton.setEnabled(false); // only when there's a playable maze the option should be enabled
+	     //*****************************************************************
+		
+		
         
 
         shell.setMenuBar(menuBar);

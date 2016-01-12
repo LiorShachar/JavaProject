@@ -1,5 +1,6 @@
 package view;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -24,6 +25,7 @@ import org.eclipse.swt.widgets.Text;
 import algorithms.mazeGenerators.Maze3d;
 import algorithms.mazeGenerators.Position;
 import algorithms.search.Solution;
+import algorithms.search.State;
 import widgets.BasicWindow;
 import widgets.ChildWindow;
 import widgets.GameCharacter;
@@ -40,6 +42,7 @@ public class MyGuiView extends CommonView {
 	KeyListener keylis;
 	Timer timer;
 	TimerTask task;
+	Position current;
 	HashMap<String, Object> notifications;
 	public String temp; // a temporary string to pass arguements between
 						// temporary events,listeners etc
@@ -78,16 +81,15 @@ public class MyGuiView extends CommonView {
 					mazeWin.moveLeft();
 				} else if (e.keyCode == SWT.ARROW_RIGHT) {
 					mazeWin.moveRight();
-				}
-				else if (e.keyCode == SWT.PAGE_UP) {
-					Object objs[]={new Position(mazeWin.getCurLvl(), mazeWin.getCharacterPositionX(), mazeWin.getCharacterPositionY()),mazeWin.getMazeName()};
-					scno("RequestUp",objs );
-				}
-				else if (e.keyCode == SWT.PAGE_DOWN) {
-					Object objs[]={new Position(mazeWin.getCurLvl(), mazeWin.getCharacterPositionX(), mazeWin.getCharacterPositionY()),mazeWin.getMazeName()};
-					scno("RequestDown",objs );
-					
-					
+				} else if (e.keyCode == SWT.PAGE_UP) {
+					Object objs[] = { new Position(mazeWin.getCurLvl(), mazeWin.getCharacterPositionX(),
+							mazeWin.getCharacterPositionY()), mazeWin.getMazeName() };
+					scno("RequestUp", objs);
+				} else if (e.keyCode == SWT.PAGE_DOWN) {
+					Object objs[] = { new Position(mazeWin.getCurLvl(), mazeWin.getCharacterPositionX(),
+							mazeWin.getCharacterPositionY()), mazeWin.getMazeName() };
+					scno("RequestDown", objs);
+
 				}
 
 			}
@@ -182,15 +184,16 @@ public class MyGuiView extends CommonView {
 					mazeshell.setLayout(new GridLayout(5, false));
 					mazeWin = new Maze2D(mazeshell, SWT.BORDER);
 					mazeWin.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 2));
-					 mazeWin.setCharacter(new GameCharacter(mazeWin, SWT.None,
-					 0, 2, 1, 1));
+					mazeWin.setCharacter(new GameCharacter(mazeWin, SWT.None, 0, 2, 1, 1));
 					mazeWin.addKeyListener(keylis);
 					mazeshell.pack();
 					mazeshell.open();
 					String selected = mainGuiWindow.l.getSelection()[0];
 					scno("initMazeWidgetRequest", selected);
-				} else
+				} else {
 					scno("error", "no maze selected");
+					mainGuiWindow.solveButton.setEnabled(false);
+				}
 			}
 		});
 		// ***************************************************************************************************************
@@ -239,15 +242,25 @@ public class MyGuiView extends CommonView {
 				// cards
 				savedialog.setFilterPath("c:\\"); // Windows path
 				savedialog.setFileName("newMaze.maz");
-				if(mainGuiWindow.l.getSelection().length > 0){
-				String filepath = savedialog.open();
-				if (filepath!=null){
-					String saveparams[]={mainGuiWindow.l.getSelection()[0],filepath};
-					scno("PathToSaveMaze",saveparams );
-				}
-				}
-				else
+				if (mainGuiWindow.l.getSelection().length > 0) {
+					String filepath = savedialog.open();
+					if (filepath != null) {
+						String saveparams[] = { mainGuiWindow.l.getSelection()[0], filepath };
+						scno("PathToSaveMaze", saveparams);
+					}
+				} else
 					scno("error", "no maze selected");
+			}
+		});
+		// ***************************************************************************************************************
+		listeners.put("solveButton", new Listener() {
+			public void handleEvent(Event event) {
+				int x = mazeWin.getCharacterPositionY();
+				int z = mazeWin.getCharacterPositionX();
+				int y = mazeWin.getCurLvl();
+				String solvename = mazeWin.getMazeName();
+				Object solvedetails[] = { new Position(y, x, z), solvename };
+				scno("solveRequest", solvedetails);
 			}
 		});
 		// ***************************************************************************************************************
@@ -318,7 +331,93 @@ public class MyGuiView extends CommonView {
 
 	@Override
 	public void showSolution(Solution<Position> s) {
-		// TODO Auto-generated method stub
+		MyViewCLI oview= new MyViewCLI();
+		oview.showSolution(s);
+		ArrayList<State<Position>> states = s.getSolution(); // an arraylist of
+																// states to get
+																// from our
+																// solution
+		//
+		System.out.println(s.getSolution().size());
+
+		mazeWin.setFocus();
+		
+		/**
+		 * 
+		 * 
+		 * PROBLEM WITH THE DELAY NEED TO FIND A BETTER SOLUTION
+		 * 
+		 * 
+		 * 
+		 * 
+		 * 
+		 * **/
+		for (State<Position> state : states) { // for every state in the
+												// solution extract the position
+												// from the
+												// states array and compare it
+												// with a relative position,
+												// that way the view knows how
+												// to present the position(same
+												// function as a key pressed)
+			
+			   
+			timer= new Timer();
+			task = new TimerTask() {
+
+				@Override
+				public void run() {
+
+					mainGuiWindow.getDisplay().syncExec(new Runnable() {
+
+						@Override
+						public void run() {
+							 current = new Position(mazeWin.getCurLvl(), mazeWin.getCharacterPositionY(),
+									mazeWin.getCharacterPositionX());
+							if (current.up().equals(state.getState())) {// if
+																		// the
+																		// next
+																		// step
+																		// in
+								// the solution is to
+								// lvl up
+								Object objs[] = { new Position(mazeWin.getCurLvl(), mazeWin.getCharacterPositionY(),
+										mazeWin.getCharacterPositionX()), mazeWin.getMazeName() };
+								scno("RequestUp", objs);
+							} else if (current.down().equals(state.getState()))// if
+																				// the
+																				// next
+																				// step
+																				// is
+																				// to
+																				// level
+																				// down
+							{
+								Object objs[] = { new Position(mazeWin.getCurLvl(), mazeWin.getCharacterPositionY(),
+										mazeWin.getCharacterPositionX()), mazeWin.getMazeName() };
+								scno("RequestDown", objs);
+							} else if (current.forward().equals(state.getState())) {
+								mazeWin.moveRight();
+							} // if the next step is to move right
+							else if (current.backward().equals(state.getState())) {
+								mazeWin.moveLeft();
+							} // if the next step is to move left
+							else if (current.right().equals(state.getState())) {
+								mazeWin.moveDown();
+							} // if the next step is to move down
+							else if (current.left().equals(state.getState())) {
+								mazeWin.moveUp();
+							} // if the next step is to move up
+							timer.cancel();
+						}
+					});
+				}
+			};
+			timer.schedule(task, 20);
+			
+			
+
+		}
 
 	}
 
@@ -350,12 +449,12 @@ public class MyGuiView extends CommonView {
 	}
 
 	@Override
-	public void startGame(String name,int levels,int lvl, int row, int col) {
+	public void startGame(String name, int levels, int lvl, int row, int col) {
 		mazeWin.setMazeName(name);
 		mazeWin.setCharacterPosition(row, col);
 		mazeWin.setCurLvl(lvl);
 		mazeWin.setLevels(levels);
-		
+
 	}
 
 }

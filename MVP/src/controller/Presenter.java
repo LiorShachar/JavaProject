@@ -297,7 +297,7 @@ public class Presenter implements Observer {
 				Object[] objs= (Object[]) v.getData(note);
 				Maze3d upmaze = (Maze3d)m.getMazeByName((String)objs[1]);
 				Position pos = (Position)objs[0];
-				if(upmaze.getCell(new Position(pos.getY()+1,pos.getZ(),pos.getX()))==0)
+				if(upmaze.getCell(new Position(pos.getY()+1,pos.getX(),pos.getZ()))==0)
 				v.showCross(upmaze.toByteArray(), "y",pos.getY()+1);
 				
 				break;
@@ -306,7 +306,7 @@ public class Presenter implements Observer {
 				Object[] dobjs= (Object[]) v.getData(note);
 				Maze3d dupmaze = (Maze3d)m.getMazeByName((String)dobjs[1]);
 				Position dpos = (Position)dobjs[0];
-				if(dupmaze.getCell(new Position(dpos.getY()-1,dpos.getZ(),dpos.getX()))==0)
+				if(dupmaze.getCell(new Position(dpos.getY()-1,dpos.getX(),dpos.getZ()))==0)
 				v.showCross(dupmaze.toByteArray(), "y",dpos.getY()-1);
 				
 				break;
@@ -327,7 +327,16 @@ public class Presenter implements Observer {
 				 
 				m.handleSaveMaze(b, savedetails[1]);
 			break;
-
+			
+			case "solveRequest":
+				Object solvedetails[]=(Object[])v.getData(note);
+				Maze3d solvetarget = (Maze3d)m.getMazeByName((String)solvedetails[1]); // gets the maze from the model
+				m.handleUpdateStartPosition((Position)solvedetails[0],(String)solvedetails[1]);
+				m.handleSolveMaze((String)solvedetails[1], "bfs");
+				
+				
+			break;
+			
 			}
 
 		} else if (arg0 == m) {
@@ -341,6 +350,12 @@ public class Presenter implements Observer {
 			case "msg":
 			v.showMsg((String)m.getData(note));
 			break;
+			
+			
+			case "solutionReady":
+				String mazeSolved =(String)m.getData(note);
+				v.showSolution(m.getSolutionFor(mazeSolved));
+				break;
 			}
 
 		}

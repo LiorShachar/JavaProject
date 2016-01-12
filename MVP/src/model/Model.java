@@ -33,12 +33,12 @@ public interface Model {
 	void handleDir(String string);
 
 	void handleSaveMaze(byte[] maze, String path);
-
+	void handleUpdateStartPosition (Position p,String name);
 	void handleLoadMaze(String path, String name);
 
 	void handleFileSize(String name);
 	void handleMazeSize(String name);
-
+	 Solution<Position> getSolutionFor(String name);
 	HashMap<String, Maze3d> getMazes();
 	
 	 void handleSolveMaze(String name,String algo);

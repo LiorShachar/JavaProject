@@ -185,17 +185,31 @@ public class MyModel extends CommonModel {
 	 * 	
 	 *  
 	 */
-	 
+	@Override
+	public void handleUpdateStartPosition (Position p,String name){
+		
+		Maze3d tempmaze = mazes.get(name);
+		if(tempmaze!=null){
+		tempmaze.setStartPosition(p);
+		mazes.put(name, tempmaze);
+		}
+		else
+			scno("error","there was a problem updating the maze location (maze not found)");
+		
+	}
+	
+	
+	
 	@Override
 	public void handleSolveMaze(String name, String algo) {
 		if (mazes.containsKey(name)) {
 			
 			if(!solutions.containsKey(mazes.get(name))){
-			scno("m", "Maze name found");
+			
 			Future<Solution<Position>> futures = null;
 			if (algo.matches("[Bb][Ff][Ss]") || algo.matches("[Aa][Ss][Tt][Aa][Rr]")) {
 
-				scno("m", "Solving " + name + " using " + algo);
+				scno("msg", "Solving " + name + " using " + algo);
 				if (algo.matches("[Bb][Ff][Ss]")) {
 
 					futures = threadPool.submit(new Callable<Solution<Position>>() {
@@ -225,28 +239,28 @@ public class MyModel extends CommonModel {
 				}
 				try {
 					solutions.put(mazes.get(name), futures.get());
-					scno("m", "Solution for " + name + " is ready");
+					scno("solutionReady",name);
 				} catch (InterruptedException e) {
-					scno("e", "Cannot solve thread interrupted");
+					scno("error", "Cannot solve thread interrupted");
 					e.printStackTrace();
 				} catch (ExecutionException e) {
-					scno("e", "Cannot solve, the thread was unable to send solution");
+					scno("error", "Cannot solve, the thread was unable to send solution");
 					e.printStackTrace();
 				}
 				
 			}
 
 			else {
-				scno("e", "Mo such algorithm");
+				scno("error", "Mo such algorithm");
 			}
 
 		}
 			else{
-				scno("m", "Solution for " + name + " is ready");
+				scno("solutionReady",name);
 			}	
 		}
 		else {
-			scno("e", "Maze name doesn't exist");
+			scno("error", "Maze name doesn't exist");
 			
 			
 		}
@@ -315,6 +329,19 @@ public class MyModel extends CommonModel {
 
 	public HashMap<Maze3d, Solution<Position>> getSolutions() {
 		return solutions;
+	}
+
+	@Override
+	public Solution<Position> getSolutionFor(String name) {
+		Maze3d maze= (Maze3d)getMazeByName(name);
+		if(maze!=null){
+			if(solutions.containsKey(maze)){
+				return solutions.get(maze);
+			}
+			scno("error", "no solution for this maze");
+		}
+		scno("error", "Maze name doesn't exist");
+		return null;
 	}
 
 
