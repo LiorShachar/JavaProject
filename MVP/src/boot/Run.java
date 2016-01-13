@@ -12,7 +12,8 @@ import controller.Presenter;
 import io.MyCompressorOutputStream;
 import model.Model;
 import model.MyModel;
-import view.MyGuiView;
+import view.testguiview;
+import view.GuiWindowView;
 import view.MyViewCLI;
 import view.View;
 import widgets.MainWindow;
@@ -34,7 +35,8 @@ public class Run {
 		//MyViewCLI v = new MyViewCLI();  
 		//MazeWindow v=new MazeWindow("Maze Template", 800, 500);
 		
-		MyGuiView v = new MyGuiView();
+	//	testguiview v = new testguiview();
+		GuiWindowView v = new GuiWindowView("My View", 800,500);
 		MyModel m = new MyModel();
 		   p.setModel(m);
 		   p.setView(v);

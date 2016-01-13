@@ -8,6 +8,8 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Listener;
 
+import view.BasicWindow;
+
 public abstract class ChildWindow extends BasicWindow {
 	
 	

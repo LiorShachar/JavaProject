@@ -22,6 +22,7 @@ import org.eclipse.swt.widgets.Text;
 
 import algorithms.mazeGenerators.Position;
 import algorithms.search.Solution;
+import view.BasicWindow;
 
 public class MainWindow extends BasicWindow {
 	

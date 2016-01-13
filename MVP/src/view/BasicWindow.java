@@ -1,12 +1,12 @@
-package widgets;
+package view;
+
+import java.util.Observable;
 
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 
-import view.CommonView;
 
-
-public abstract class BasicWindow implements Runnable{
+public abstract class BasicWindow extends Observable implements Runnable{
 	
 	Display display;
 	Shell shell;

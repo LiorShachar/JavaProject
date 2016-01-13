@@ -15,6 +15,7 @@ import org.eclipse.swt.widgets.FileDialog;
 
 import algorithms.mazeGenerators.Position;
 import algorithms.search.Solution;
+import view.BasicWindow;
 
 public class MazeWindow extends BasicWindow{
 

@@ -27,7 +27,6 @@ import algorithms.mazeGenerators.Maze3d;
 import algorithms.mazeGenerators.Position;
 import algorithms.search.Solution;
 import algorithms.search.State;
-import widgets.BasicWindow;
 import widgets.ChildWindow;
 import widgets.GameCharacter;
 import widgets.MainWindow;
@@ -35,7 +34,7 @@ import widgets.Maze2D;
 import widgets.Maze3D;
 import widgets.MazeDisplayer;
 
-public class MyGuiView extends CommonView {
+public class testguiview extends CommonView {
 
 	MainWindow mainGuiWindow; // the main menu widget
 	MazeDisplayer mazeWin; // the maze widget
@@ -48,7 +47,7 @@ public class MyGuiView extends CommonView {
 	public String temp; // a temporary string to pass arguements between
 						// temporary events,listeners etc
 
-	public MyGuiView() {
+	public testguiview() {
 		super();
 		listeners = new HashMap<String, Listener>();
 		notifications = new HashMap<String, Object>();
