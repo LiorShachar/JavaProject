@@ -85,7 +85,7 @@ public class Maze2D extends MazeDisplayer{
 
 
 	@Override
-	public void setCharacterPosition(int row, int col) { ////// we opposite the direction because the user see the maze differently
+	public void set2DCharacterPosition(int col, int row) { ////// we opposite the direction because the user see the maze differently
 		this.chr.setX(col);
 		this.chr.setY(row);
 		redraw();

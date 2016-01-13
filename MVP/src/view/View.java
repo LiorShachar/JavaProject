@@ -1,5 +1,6 @@
 package view;
 
+import algorithms.mazeGenerators.Maze3d;
 import algorithms.mazeGenerators.Position;
 import algorithms.search.Solution;
 
@@ -29,16 +30,17 @@ public interface View {
 	void showList(String string);
 	void showMsg(String s);
 	void showError(String s);
-	String getTodo();
+	
 	void showMaze(byte[] arr);
 	void showCross(byte[] arr,String by,int i);
 	void showSolution(Solution<Position> s);
 	void showExit();
 	Object getData(String string);
+	void initMazeWidget(Maze3d maze, String name);
 	
 	
 	/////////////////////////////////////////////
-	void startGame(String name,int levels,int y,int x,int z);
+	
 	
 	
 	//////////////////////////////////////////// TEST

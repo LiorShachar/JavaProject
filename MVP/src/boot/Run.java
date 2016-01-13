@@ -12,9 +12,9 @@ import controller.Presenter;
 import io.MyCompressorOutputStream;
 import model.Model;
 import model.MyModel;
-import view.testguiview;
+
 import view.GuiWindowView;
-import view.MyViewCLI;
+
 import view.View;
 import widgets.MainWindow;
 import widgets.Maze2D;

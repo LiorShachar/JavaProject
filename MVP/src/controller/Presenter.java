@@ -285,31 +285,10 @@ public class Presenter implements Observer {
 			case "initMazeWidgetRequest":
 				String mazetoinit = (String) v.getData(note);
 				Maze3d maze = (Maze3d)m.getMazeByName(mazetoinit);
-				int startlevel = maze.getStartPosition().getY();
-				int levels = maze.getySize();
-				int startY = maze.getStartPosition().getZ();
-				int startX = maze.getStartPosition().getX();
-				v.startGame(mazetoinit,levels,startlevel, startX, startY);
-				v.showCross(maze.toByteArray(), "y", startlevel);
+				v.initMazeWidget(maze,mazetoinit);
 				break;
 				
-			case "RequestUp":
-				Object[] objs= (Object[]) v.getData(note);
-				Maze3d upmaze = (Maze3d)m.getMazeByName((String)objs[1]);
-				Position pos = (Position)objs[0];
-				if(upmaze.getCell(new Position(pos.getY()+1,pos.getX(),pos.getZ()))==0)
-				v.showCross(upmaze.toByteArray(), "y",pos.getY()+1);
-				
-				break;
-				
-			case "RequestDown":
-				Object[] dobjs= (Object[]) v.getData(note);
-				Maze3d dupmaze = (Maze3d)m.getMazeByName((String)dobjs[1]);
-				Position dpos = (Position)dobjs[0];
-				if(dupmaze.getCell(new Position(dpos.getY()-1,dpos.getX(),dpos.getZ()))==0)
-				v.showCross(dupmaze.toByteArray(), "y",dpos.getY()-1);
-				
-				break;
+			
 				
 			case "error":
 				v.showError((String)v.getData(note));
@@ -330,7 +309,6 @@ public class Presenter implements Observer {
 			
 			case "solveRequest":
 				Object solvedetails[]=(Object[])v.getData(note);
-				Maze3d solvetarget = (Maze3d)m.getMazeByName((String)solvedetails[1]); // gets the maze from the model
 				m.handleUpdateStartPosition((Position)solvedetails[0],(String)solvedetails[1]);
 				m.handleSolveMaze((String)solvedetails[1], "bfs");
 				

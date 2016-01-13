@@ -1,4 +1,4 @@
-package view;
+/*package view;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -27,7 +27,7 @@ import algorithms.mazeGenerators.Maze3d;
 import algorithms.mazeGenerators.Position;
 import algorithms.search.Solution;
 import algorithms.search.State;
-import widgets.ChildWindow;
+
 import widgets.GameCharacter;
 import widgets.MainWindow;
 import widgets.Maze2D;
@@ -164,7 +164,7 @@ public class testguiview extends CommonView {
 
 		listeners.put("mazewindowsthread", new Listener() {
 			public void handleEvent(Event event) {
-				/*
+				
 				 * new Thread(new Runnable() {
 				 * 
 				 * @Override public void run() { ChildWindow another= new
@@ -172,7 +172,7 @@ public class testguiview extends CommonView {
 				 * another.run();
 				 * 
 				 * } }).start();
-				 */
+				 
 			}
 		});
 		// ***************************************************************************************************************
@@ -281,11 +281,6 @@ public class testguiview extends CommonView {
 
 	}
 
-	@Override
-	public String getTodo() {
-		// TODO Auto-generated method stub
-		return null;
-	}
 
 	/////////////////////////////////////////////////////////////////// TEST
 	public void displayLoadedMaze(String s) {
@@ -460,13 +455,7 @@ public class testguiview extends CommonView {
 
 	}
 
-	@Override
-	public void startGame(String name, int levels, int lvl, int row, int col) {
-		mazeWin.setMazeName(name);
-		mazeWin.setCharacterPosition(row, col);
-		mazeWin.setCurLvl(lvl);
-		mazeWin.setLevels(levels);
-
-	}
+	
 
 }
+*/

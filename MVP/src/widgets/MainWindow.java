@@ -24,7 +24,7 @@ import algorithms.mazeGenerators.Position;
 import algorithms.search.Solution;
 import view.BasicWindow;
 
-public class MainWindow extends BasicWindow {
+public class MainWindow extends WidBasicWindow {
 	
 	
 	public MazeDisplayer MazeWidget;

@@ -10,23 +10,37 @@ import org.eclipse.swt.widgets.Composite;
 public class GameCharacter extends Canvas{
 
 	
-		   int x,y,w,h;
+		   int x=0; // x represent vertical view by default
+		   int z=0; // z represent horizontal view by default
+		   int y=0; // y represent a LEVEL by default
+		   int w=0; //char width size 
+		   int h=0;//char height size 
 		   
 		   
 		   
-		   public GameCharacter(Composite parent, int style,int startx,int starty,int width,int height) {
+		   public int getZ() {
+			return z;
+		}
+
+
+
+		public void setZ(int z) {
+			this.z = z;
+		}
+
+
+
+		public GameCharacter(Composite parent, int style) {
 			super(parent, style);
-			x=startx;
-			y=starty;
-			w=width;
-			h=height;
-			// TODO Auto-generated constructor stub
+			
+			
 			parent.addPaintListener(new PaintListener() {
 				
 				@Override
 				public void paintControl(PaintEvent e) {
 					
 					paint(e,w,h);
+					redraw();
 					      
 					}
 			});
@@ -37,7 +51,9 @@ public class GameCharacter extends Canvas{
 		   public void paint(PaintEvent e,int w, int h){
 		        
 			   e.gc.setForeground(new Color(null,255,0,0));
-				e.gc.drawOval(x*w,y*h, w, h);
+			   e.gc.setBackground(new Color(null,255,0,0));
+				e.gc.drawOval(z*w,x*h, w, h);
+				e.gc.fillOval(z*w, x*h, w, h);
 			}
 		   
 		

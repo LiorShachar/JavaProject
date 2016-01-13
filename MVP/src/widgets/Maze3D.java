@@ -134,7 +134,7 @@ public class Maze3D extends MazeDisplayer {
 	}
 	
 	@Override
-	public void setCharacterPosition(int row, int col) {
+	public void set2DCharacterPosition(int row, int col) {
 		characterX=col;
 		characterY=row;
 		moveCharacter(col,row);
@@ -155,16 +155,9 @@ public class Maze3D extends MazeDisplayer {
 		
 	}
 
-	@Override
-	public void setCurLvl(int l) {
-		// TODO Auto-generated method stub
+
 		
-	}
-	@Override
-	public void setLevels(int l) {
-		// TODO Auto-generated method stub
-		
-	}
+	
 	@Override
 	public int getCharacterPositionX() {
 		// TODO Auto-generated method stub
@@ -172,16 +165,6 @@ public class Maze3D extends MazeDisplayer {
 	}
 	@Override
 	public int getCharacterPositionY() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-	@Override
-	public int getCurLvl() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-	@Override
-	public int getLevels() {
 		// TODO Auto-generated method stub
 		return 0;
 	}
