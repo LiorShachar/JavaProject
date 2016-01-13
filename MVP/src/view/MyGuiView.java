@@ -2,6 +2,7 @@ package view;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -331,96 +332,108 @@ public class MyGuiView extends CommonView {
 
 	@Override
 	public void showSolution(Solution<Position> s) {
-		MyViewCLI oview= new MyViewCLI();
-		oview.showSolution(s);
-		ArrayList<State<Position>> states = s.getSolution(); // an arraylist of
-																// states to get
-																// from our
-																// solution
-		//
-		System.out.println(s.getSolution().size());
+		mainGuiWindow.getDisplay().syncExec(new Runnable() {
 
-		mazeWin.setFocus();
-		
-		/**
-		 * 
-		 * 
-		 * PROBLEM WITH THE DELAY NEED TO FIND A BETTER SOLUTION
-		 * 
-		 * 
-		 * 
-		 * 
-		 * 
-		 * **/
-		for (State<Position> state : states) { // for every state in the
-												// solution extract the position
-												// from the
-												// states array and compare it
-												// with a relative position,
-												// that way the view knows how
-												// to present the position(same
-												// function as a key pressed)
-			
-			   
-			timer= new Timer();
-			task = new TimerTask() {
+			@Override
+			public void run() {
+				MyViewCLI oview = new MyViewCLI();
+				oview.showSolution(s);
+				ArrayList<State<Position>> states = s.getSolution(); // an
+																		// arraylist
+																		// of
+																		// states
+																		// to
+																		// get
+																		// from
+																		// our
+																		// solution
 
-				@Override
-				public void run() {
+				System.out.println(s.getSolution().size());
 
-					mainGuiWindow.getDisplay().syncExec(new Runnable() {
+				mazeWin.setFocus();
+				timer = new Timer();
+				
+				
 
-						@Override
-						public void run() {
-							 current = new Position(mazeWin.getCurLvl(), mazeWin.getCharacterPositionY(),
+				Iterator<State<Position>> mazeIterator = states.iterator();
+				timer.scheduleAtFixedRate(new TimerTask() {
+					// for every state in the
+					// solution extract the position
+					// from the
+					// states array and compare it
+					// with a relative position,
+					// that way the view knows how
+					// to present the position(same
+					// function as a key pressed)
+					@Override
+					public void run() {
+						if(mazeIterator.hasNext()&&!mazeWin.getDisplay().isDisposed()){ 
+							current = new Position(mazeWin.getCurLvl(), mazeWin.getCharacterPositionY(),
 									mazeWin.getCharacterPositionX());
-							if (current.up().equals(state.getState())) {// if
-																		// the
-																		// next
-																		// step
-																		// in
-								// the solution is to
-								// lvl up
-								Object objs[] = { new Position(mazeWin.getCurLvl(), mazeWin.getCharacterPositionY(),
-										mazeWin.getCharacterPositionX()), mazeWin.getMazeName() };
-								scno("RequestUp", objs);
-							} else if (current.down().equals(state.getState()))// if
-																				// the
-																				// next
-																				// step
-																				// is
-																				// to
-																				// level
-																				// down
-							{
-								Object objs[] = { new Position(mazeWin.getCurLvl(), mazeWin.getCharacterPositionY(),
-										mazeWin.getCharacterPositionX()), mazeWin.getMazeName() };
-								scno("RequestDown", objs);
-							} else if (current.forward().equals(state.getState())) {
-								mazeWin.moveRight();
-							} // if the next step is to move right
-							else if (current.backward().equals(state.getState())) {
-								mazeWin.moveLeft();
-							} // if the next step is to move left
-							else if (current.right().equals(state.getState())) {
-								mazeWin.moveDown();
-							} // if the next step is to move down
-							else if (current.left().equals(state.getState())) {
-								mazeWin.moveUp();
-							} // if the next step is to move up
-							timer.cancel();
-						}
-					});
-				}
-			};
-			timer.schedule(task, 20);
-			
-			
+							mazeWin.getDisplay().syncExec(new Runnable() {
 
-		}
+								@Override
+								public void run() {
+									State state=mazeIterator.next();
+									if (current.up().equals(state.getState())) {// if
+										// the
+										// next
+										// step
+										// in
+										// the solution is to
+										// lvl up
+										Object objs[] = { new Position(mazeWin.getCurLvl(), mazeWin.getCharacterPositionY(),
+												mazeWin.getCharacterPositionX()), mazeWin.getMazeName() };
+										scno("RequestUp", objs);
+									} else if (current.down().equals(state.getState()))// if
+									// the
+									// next
+									// step
+									// is
+									// to
+									// level
+									// down
+									{
+										Object objs[] = { new Position(mazeWin.getCurLvl(), mazeWin.getCharacterPositionY(),
+												mazeWin.getCharacterPositionX()), mazeWin.getMazeName() };
+										scno("RequestDown", objs);
+									} else if (current.forward().equals(state.getState())) {
+										mazeWin.moveRight();
+									} // if the next step is to move right
+									else if (current.backward().equals(state.getState())) {
+										mazeWin.moveLeft();
+									} // if the next step is to move left
+									else if (current.right().equals(state.getState())) {
+										mazeWin.moveDown();
+									} // if the next step is to move down
+									else if (current.left().equals(state.getState())) {
+										mazeWin.moveUp();
+									} // if the next step is to move up
+
+								}
+							});
+							
+							
+					}
+						else
+						{
+							mainGuiWindow.solveButton.setEnabled(false);
+							timer.cancel();
+							}
+					}
+						
+				}, 0, 200);
+
+			}
+		});
 
 	}
 
+	
+	
+	
+	
+	
 	@Override
 	public void showExit() {
 		// TODO Auto-generated method stub
