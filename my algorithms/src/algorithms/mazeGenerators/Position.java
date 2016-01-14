@@ -137,7 +137,7 @@ public class Position {
 	@Override
 	public String toString() {
 
-		return ("{" + this.y + "," + this.x + "," + this.z + "}");
+		return ("{"+"Y:" + this.y + ","+"X:" + this.x + ","+"Z:" + this.z + "}");
 	}
 
 	public int getX() {
