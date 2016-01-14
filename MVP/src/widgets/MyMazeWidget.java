@@ -164,13 +164,7 @@ public class MyMazeWidget extends MazeDisplayer {
 	
 	public void updateMazeData() {
 		setMazeData(maze.getCrossSectionByY(currentPosition.getY()));
-		getDisplay().syncExec(new Runnable() {
-			
-			@Override
-			public void run() {
-				redraw();
-			}
-		});
+		
 
 		
 	}
@@ -279,7 +273,7 @@ public class MyMazeWidget extends MazeDisplayer {
         
         
         
-        e.gc.setBackground(new Color(null, 0, 170, 255));
+        e.gc.setBackground(new Color(null, 0, 255, 250));
         e.gc.fillPolygon(right);
         e.gc.fillPolygon(left);
         e.gc.fillPolygon(fr);
@@ -293,7 +287,8 @@ public class MyMazeWidget extends MazeDisplayer {
         
         e.gc.setBackground(new Color(null, 180, 230, 255));
         e.gc.fillPolygon(r);
-        e.gc.setForeground(new Color(null, 255, 255, 255));
+        
+        e.gc.setForeground(new Color(null, 0, 255, 252));
         e.gc.drawPolygon(r);
 		
 	}

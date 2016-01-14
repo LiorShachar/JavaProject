@@ -36,7 +36,7 @@ public class ImageGameCharacter extends Canvas{
 			super(parent, style);
 			this.image= image;
 			
-			parent.addPaintListener(new PaintListener() {
+			addPaintListener(new PaintListener() {
 				
 				@Override
 				public void paintControl(PaintEvent e) {
