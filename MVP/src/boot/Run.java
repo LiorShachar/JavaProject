@@ -2,6 +2,7 @@ package boot;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.ObjectOutputStream;
 
 import org.eclipse.swt.SWT;
 
@@ -19,8 +20,23 @@ import view.View;
 import widgets.MainWindow;
 import widgets.Maze2D;
 import widgets.MazeWindow;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.util.HashMap;
+import java.util.zip.GZIPOutputStream;
+
 
 public class Run {
+	
+	
+	
+
+	
+	
+	
+
+	
+	
 
 	public static void main(String[] args) {
 		System.out.println("[Lior Shachar 304848427]");
@@ -71,6 +87,7 @@ public class Run {
 
 
 	}
+	}
 	
 	
 
@@ -78,4 +95,4 @@ public class Run {
 	
 
 
-}
+

@@ -333,6 +333,7 @@ public class Presenter implements Observer {
 			case "solutionReady":
 				String mazeSolved =(String)m.getData(note);
 				v.showSolution(m.getSolutionFor(mazeSolved));
+				m.serializeSolutions();
 				break;
 			}
 

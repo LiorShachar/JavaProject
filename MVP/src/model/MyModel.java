@@ -5,7 +5,9 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.ObjectOutputStream;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
@@ -389,6 +391,34 @@ public class MyModel extends CommonModel {
 		
 	}
 
+	
+	public void serializeSolutions(){
+		HashMap<byte[], Solution<Position>> serialized = new HashMap<byte[], Solution<Position>>();
+		Iterator<Maze3d> itr= solutions.keySet().iterator();
+		while(itr.hasNext()){
+			Maze3d temp=itr.next();
+			serialized.put(temp.toByteArray(), solutions.get(temp));
+		}
+		
+		
+		try
+        {
+		FileOutputStream fos =
+                new FileOutputStream("hashmap.ser");
+             ObjectOutputStream oos = new ObjectOutputStream(fos);
+             oos.writeObject(serialized);
+             oos.close();
+             fos.close();
+             System.out.printf("Serialized HashMap data is saved in hashmap.ser");
+      }catch(IOException ioe)
+       {
+             ioe.printStackTrace();
+       }
+		
+		
+		
+		
+	}
 	
 
 	

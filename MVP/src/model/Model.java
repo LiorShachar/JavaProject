@@ -53,4 +53,9 @@ public interface Model {
 	void testThread();
 
 	Object getMazeByName(String string);
+	
+	
+	
+	
+	void serializeSolutions();
 }
