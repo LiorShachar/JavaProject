@@ -309,11 +309,20 @@ public class Presenter implements Observer {
 			
 			case "solveRequest":
 				Object solvedetails[]=(Object[])v.getData(note);
-				m.handleUpdateStartPosition((Position)solvedetails[0],(String)solvedetails[1]);
+				m.handleUpdatePosition(new Position((Position)solvedetails[0]),(String)solvedetails[1]);
 				m.handleSolveMaze((String)solvedetails[1], "bfs");
 				
 				
 			break;
+			
+			case "updateStart":
+				Object  updatedetails[] =(Object[])v.getData(note);
+				m.handleUpdatePosition(new Position((Position)updatedetails[0]),(String)updatedetails[1]);
+				break;
+			
+			case "exit":
+				m.serializeAndCachSolutions();
+				break;
 			
 			}
 
@@ -333,7 +342,14 @@ public class Presenter implements Observer {
 			case "solutionReady":
 				String mazeSolved =(String)m.getData(note);
 				v.showSolution(m.getSolutionFor(mazeSolved));
-				m.serializeSolutions();
+				break;
+				
+				
+			case "solutionExist":
+				v.showMsg("Maze Solution found in cached memory");
+				String mazeallSolved =(String)m.getData(note);
+				v.showSolution(m.getSolutionFor(mazeallSolved));
+				
 				break;
 			}
 

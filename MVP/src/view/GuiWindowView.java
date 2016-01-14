@@ -67,7 +67,20 @@ public class GuiWindowView extends BasicWindow implements View{
 	void initWidgets() {
 		initListeners();
 
+		
+		
+		
+		
+		
 		shell.setLayout(new GridLayout(5,false));
+		shell.addDisposeListener(new DisposeListener() {
+			
+			@Override
+			public void widgetDisposed(DisposeEvent e) {
+				scno("exit", " ");
+				
+			}
+		});
 		//***************************************************************** MAIN MENU BAR
         Menu menuBar = new Menu(shell, SWT.BAR);
       //***************************************************************** File Cascade
@@ -466,6 +479,18 @@ public class GuiWindowView extends BasicWindow implements View{
 			
 			@Override
 			public void widgetDisposed(DisposeEvent arg0) {
+				
+				if(!mazeWin.getMaze().getStartPosition().equals(mazeWin.getCurrentPosition())){
+				 MessageBox messageBox = new MessageBox(shell, SWT.ICON_QUESTION
+				            | SWT.YES | SWT.NO);
+				        messageBox.setMessage("Would you like to change current position?");
+				        messageBox.setText("Exiting Maze");
+				        int response = messageBox.open();
+				        if (response == SWT.YES){
+				        	Object updatecurr[] ={new Position(mazeWin.getCurrentPosition()),mazeWin.getMazeName()};
+				          scno("updateStart",updatecurr );
+				        }
+				}
 				if(solveButton.isEnabled())
 					solveButton.setEnabled(false);
 				if (mazeWin!=null)
@@ -531,6 +556,9 @@ public class GuiWindowView extends BasicWindow implements View{
 
 	@Override
 	public void showSolution(Solution<Position> s) {
+		if(solveButton.isEnabled())
+		solveButton.setEnabled(false);
+		if(!mazeWin.isDisposed())
 		display.syncExec(new Runnable() {
 
 			@Override
@@ -597,6 +625,7 @@ public class GuiWindowView extends BasicWindow implements View{
 		
 	}
 
+	
 
 
 	@Override

@@ -178,6 +178,7 @@ public class MyMazeWidget extends MazeDisplayer {
 		currentPosition.setX(row);
 		currentPosition.setZ(col);
 		updateMazeData();
+		if (!this.isDisposed())
 		getDisplay().syncExec(new Runnable() {
 			
 			@Override

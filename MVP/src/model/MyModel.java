@@ -5,15 +5,20 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
+import java.util.zip.GZIPInputStream;
+import java.util.zip.GZIPOutputStream;
 
 import org.eclipse.swt.SWT;
 
@@ -188,15 +193,14 @@ public class MyModel extends CommonModel {
 	 *  
 	 */
 	@Override
-	public void handleUpdateStartPosition (Position p,String name){
+	public void handleUpdatePosition(Position p,String name){
 		
-		Maze3d tempmaze = mazes.get(name);
-		if(tempmaze!=null){
-		tempmaze.setStartPosition(p);
-		mazes.put(name, tempmaze);
-		}
-		else
-			scno("error","there was a problem updating the maze location (maze not found)");
+		
+		Maze3d currentmaze=mazes.get(name);
+		currentmaze.setStartPosition(new Position(p));
+		
+		
+		
 		
 	}
 	
@@ -204,6 +208,7 @@ public class MyModel extends CommonModel {
 	
 	@Override
 	public void handleSolveMaze(String name, String algo) {
+		
 		if (mazes.containsKey(name)) {
 			
 			if(!solutions.containsKey(mazes.get(name))){
@@ -239,7 +244,7 @@ public class MyModel extends CommonModel {
 
 					});
 				}
-				try {
+					try {
 					solutions.put(mazes.get(name), futures.get());
 					scno("solutionReady",name);
 				} catch (InterruptedException e) {
@@ -258,7 +263,7 @@ public class MyModel extends CommonModel {
 
 		}
 			else{
-				scno("solutionReady",name);
+				scno("solutionExist",name);
 			}	
 		}
 		else {
@@ -392,7 +397,7 @@ public class MyModel extends CommonModel {
 	}
 
 	
-	public void serializeSolutions(){
+	public void serializeAndCachSolutions(){
 		HashMap<byte[], Solution<Position>> serialized = new HashMap<byte[], Solution<Position>>();
 		Iterator<Maze3d> itr= solutions.keySet().iterator();
 		while(itr.hasNext()){
@@ -405,7 +410,8 @@ public class MyModel extends CommonModel {
         {
 		FileOutputStream fos =
                 new FileOutputStream("hashmap.ser");
-             ObjectOutputStream oos = new ObjectOutputStream(fos);
+		GZIPOutputStream gos = new GZIPOutputStream(fos);
+             ObjectOutputStream oos = new ObjectOutputStream(gos);
              oos.writeObject(serialized);
              oos.close();
              fos.close();
@@ -418,9 +424,43 @@ public class MyModel extends CommonModel {
 		
 		
 		
+		
+		
+		
+	}
+	
+	public void loadCachedSolutions(){
+		HashMap<byte[], Solution<Position>> serialized = new HashMap<byte[], Solution<Position>>();
+		try
+	      {
+	         FileInputStream fis = new FileInputStream("hashmap.ser");
+	         GZIPInputStream gis = new GZIPInputStream(fis);
+	         
+	         ObjectInputStream ois = new ObjectInputStream(gis);
+	         serialized = (HashMap) ois.readObject();
+	         ois.close();
+	         fis.close();
+	      }catch(IOException ioe)
+	      {
+	         ioe.printStackTrace();
+	         
+	      }catch(ClassNotFoundException c)
+	      {
+	         System.out.println("Class not found");
+	         c.printStackTrace();
+	         
+	      }
+	      System.out.println("Deserialized HashMap..");
+	      // Display content using Iterator
+	      Set set = serialized.entrySet();
+	      Iterator iterator = set.iterator();
+	      while(iterator.hasNext()) {
+	    	  Map.Entry mentry = ( Map.Entry)iterator.next();
+	    	  solutions.put(new Maze3d((byte[]) mentry.getKey()), (Solution<Position>)mentry.getValue());
+	      
+	      }
+	      System.out.println("Cached memory loaded");
 	}
 	
 
-	
-
-}
+	}

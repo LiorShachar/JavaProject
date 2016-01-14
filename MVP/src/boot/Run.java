@@ -80,7 +80,7 @@ public class Run {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			
+			m.loadCachedSolutions();
 		   v.start();
 		   
 		   
