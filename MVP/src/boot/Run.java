@@ -6,10 +6,13 @@ import java.io.ObjectOutputStream;
 
 import org.eclipse.swt.SWT;
 
+import com.sun.xml.internal.ws.api.server.SDDocumentFilter;
+
 import algorithms.mazeGenerators.Maze3d;
 import algorithms.mazeGenerators.MyMaze3dGenerator;
+import controller.Preferences;
 import controller.Presenter;
-
+import controller.XmlHandler;
 import io.MyCompressorOutputStream;
 import model.Model;
 import model.MyModel;
@@ -18,11 +21,12 @@ import view.GuiWindowView;
 
 import view.View;
 import widgets.MainWindow;
-import widgets.Maze2D;
-import widgets.MazeWindow;
+
+
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.util.HashMap;
+import java.util.Properties;
 import java.util.zip.GZIPOutputStream;
 
 
@@ -39,7 +43,17 @@ public class Run {
 	
 
 	public static void main(String[] args) {
-		System.out.println("[Lior Shachar 304848427]");
+		
+			Preferences p = new Preferences("DFS", "BFS", "manhatten", 5, true, "Gui");
+			
+		 XmlHandler lol = new XmlHandler();
+		 //lol.SaveDataToXml("");
+		 lol.LoadDataFromXml("defaultSettings.xml");
+		 Preferences.print();
+		
+		
+		
+		/*System.out.println("[Lior Shachar 304848427]");
 		System.out.println(" ");
 		System.out.println(" ");
 		System.out.println(" ");
@@ -82,9 +96,8 @@ public class Run {
 			}
 			m.loadCachedSolutions();
 		   v.start();
-		   
-		   
-
+		   */
+		  
 
 	}
 	}

@@ -33,7 +33,6 @@ import algorithms.mazeGenerators.Position;
 import algorithms.search.Solution;
 import algorithms.search.State;
 import widgets.GameCharacter;
-import widgets.Maze2D;
 import widgets.MazeDisplayer;
 import widgets.MyMazeWidget;
 
@@ -325,6 +324,7 @@ public class GuiWindowView extends BasicWindow implements View{
 					@Override
 					public void widgetSelected(SelectionEvent e) {
 						temp = txt.getText();
+						
 						if (temp.matches("([A-Za-z0-9])\\w+")) {
 							String args[] = { selected, temp };
 							scno("loadfrom", args);
@@ -474,13 +474,13 @@ public class GuiWindowView extends BasicWindow implements View{
 		mazeWin.addKeyListener(keys);
 		
 		
-		mazeshell.addDisposeListener(new DisposeListener() {
+		mazeshell.addDisposeListener(new DisposeListener() { ////////////////////// WE NEED TO KNOW IF THE GAME WINDOW IS DISPOSED
 			
 			
 			@Override
 			public void widgetDisposed(DisposeEvent arg0) {
 				
-				if(!mazeWin.getMaze().getStartPosition().equals(mazeWin.getCurrentPosition())){
+				if(!mazeWin.getMaze().getStartPosition().equals(mazeWin.getCurrentPosition()) && !mazeWin.isWon()){
 				 MessageBox messageBox = new MessageBox(shell, SWT.ICON_QUESTION
 				            | SWT.YES | SWT.NO);
 				        messageBox.setMessage("Would you like to change current position?");
@@ -491,12 +491,15 @@ public class GuiWindowView extends BasicWindow implements View{
 				          scno("updateStart",updatecurr );
 				        }
 				}
+				if (timer!=null)
+					timer.cancel();
+				if (task!=null)
+					timer.cancel();
 				if(solveButton.isEnabled())
 					solveButton.setEnabled(false);
 				if (mazeWin!=null)
 				mazeWin.dispose();
-				if (timer!=null)
-				timer.cancel();
+				
 				
 			}
 		});
@@ -582,13 +585,14 @@ public class GuiWindowView extends BasicWindow implements View{
 				
 
 				Iterator<State<Position>> mazeIterator = states.iterator();
+				
 				timer.scheduleAtFixedRate(new TimerTask() {
 					
 					@Override
 					public void run() {
-						if(mazeIterator.hasNext()&&!mazeWin.isDisposed()){ 
+						if(mazeIterator.hasNext()&& !(mazeWin.isDisposed())){ 
 							
-							mazeWin.getDisplay().syncExec(new Runnable() {
+							display.syncExec(new Runnable() {
 
 								@Override
 								public void run() {
@@ -602,8 +606,9 @@ public class GuiWindowView extends BasicWindow implements View{
 					}
 						else
 						{
-							
-							
+							if( task!=null)
+							task.cancel();
+							if( timer!=null)
 							timer.cancel();
 							}
 					}

@@ -56,7 +56,6 @@ public class MyModel extends CommonModel {
 	private HashMap<String, Maze3d> mazes;
 	private HashMap<Maze3d, Solution<Position>> solutions;
 	private HashMap<String, Object> notifications;
-	
 	private ExecutorService threadPool;
 	
 	
