@@ -65,7 +65,7 @@ public abstract class CommonSearcher<T> implements Searcher<T> {
 		  * 
 		 * <h1>Back Trace</h1>
 		 get a start state and a goal state as parameters and return
-		 an array consisted from the parent states all the way to the start.
+		 an array consisted of the parent states all the way to the start.
 			
 		 * 
 		 * 

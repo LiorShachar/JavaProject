@@ -1,5 +1,6 @@
 package algorithms.search;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
@@ -18,7 +19,11 @@ it will contain the moves from the start position to the exit.
 */
 
 
-public class Solution<T> {
+public class Solution<T> implements Serializable{
+	
+	/**
+	 * 
+	 */
 	
 	private ArrayList<State<T>> solution;
 
@@ -71,10 +76,7 @@ public class Solution<T> {
 		this.solution = solution;
 	}
 	
-	public void printSolution(){
-		for (State<T> s : solution)
-			System.out.println(s);
-	}
+	
 	
 
 }

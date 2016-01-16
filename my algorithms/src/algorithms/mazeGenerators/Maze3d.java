@@ -36,6 +36,9 @@ public class Maze3d implements MazeProblem {
 	
 	
 	
+
+
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -49,7 +52,7 @@ public class Maze3d implements MazeProblem {
 		return result;
 	}
 
-	
+
 
 	@Override
 	public boolean equals(Object obj) {
