@@ -1,5 +1,6 @@
 package algorithms.search;
 
+import java.util.Objects;
 
 /**
  * 
@@ -33,6 +34,7 @@ public class Astar<T> extends BFS<T> {
 
 	@Override
 	double updateCost(State<T> current, State<T> neighbor) {
+		Objects.requireNonNull(current);Objects.requireNonNull(neighbor);
 		if(current != null)
 		return current.getCost()+h.calc(neighbor,searchable.getGoalState());
 		else

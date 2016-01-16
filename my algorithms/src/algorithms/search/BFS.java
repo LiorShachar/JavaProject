@@ -2,6 +2,7 @@ package algorithms.search;
 
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.Objects;
 /**
  * 
  * 
@@ -25,6 +26,7 @@ public BFS() {
 
 	@Override
 	public Solution<T> search(Searchable<T> s) {
+		Objects.requireNonNull(s);
 
 		openList.add(s.getInitialState()); // a priority queue of states to be
 											// evaluated
