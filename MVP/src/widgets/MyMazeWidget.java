@@ -19,7 +19,8 @@ public class MyMazeWidget extends MazeDisplayer {
 	Maze3d maze;
 	String mazeName;
 	public boolean won = false;
-	Color colors[] = { new Color(null, 0, 255, 250),new Color(null, 255, 255, 255),new Color(null, 180, 230, 255),new Color(null, 0, 255, 252) };
+	Color colors[] = { new Color(null, 0, 255, 250), new Color(null, 255, 255, 255), new Color(null, 180, 230, 255),
+			new Color(null, 0, 255, 252) };
 
 	public Position getCurrentPosition() {
 		return currentPosition;
@@ -29,8 +30,6 @@ public class MyMazeWidget extends MazeDisplayer {
 		return mazeName;
 	}
 
-	
-	
 	public boolean isWon() {
 		return won;
 	}
@@ -55,7 +54,14 @@ public class MyMazeWidget extends MazeDisplayer {
 		this.mazeName = name;
 		set3DCharacterPosition(maze.getStartPosition());
 		setBackground(new Color(null, 255, 255, 255));
+
 		
+		
+		
+		
+		
+	
+	
 		addDisposeListener(new DisposeListener() {
 
 			@Override
@@ -69,8 +75,6 @@ public class MyMazeWidget extends MazeDisplayer {
 
 			@Override
 			public void paintControl(PaintEvent e) {
-
-				
 
 				int width = getSize().x;
 				int height = getSize().y;
@@ -91,9 +95,9 @@ public class MyMazeWidget extends MazeDisplayer {
 						double cheight = h / 2;
 						if (mazeData[i][j] != 0)
 							paintCube(dpoints, cheight, e);
+						
 
 						if (i == chr.x && j == chr.z) {
-
 							chr.paint(e, (int) Math.round(dpoints[0]), (int) Math.round(dpoints[1] - cheight / 2),
 									(int) Math.round((w0 + w1) / 2), (int) Math.round(h));
 
@@ -109,6 +113,7 @@ public class MyMazeWidget extends MazeDisplayer {
 				}
 			}
 		});
+
 	}
 
 	/**
@@ -119,6 +124,7 @@ public class MyMazeWidget extends MazeDisplayer {
 	public void moveCharacter(int level, int row, int col) {
 		if (maze.getCell(new Position(level, row, col)) == 0 && !this.isDisposed()) {
 			set3DCharacterPosition(level, row, col);
+
 			redraw();
 		}
 
@@ -126,7 +132,6 @@ public class MyMazeWidget extends MazeDisplayer {
 
 	public void moveCharacter(Position p) {
 		moveCharacter(p.getY(), p.getX(), p.getZ());
-
 
 	}
 
@@ -143,7 +148,7 @@ public class MyMazeWidget extends MazeDisplayer {
 		currentPosition.setX(row);
 		currentPosition.setZ(col);
 		updateMazeData();
-		
+
 		if (currentPosition.equals(maze.getGoalPosition()))
 			won = true;
 		else
@@ -218,7 +223,7 @@ public class MyMazeWidget extends MazeDisplayer {
 		for (int k = 1; k < r.length; r[k] = f[k] - (int) (h), k += 2)
 			;
 
-		//int[] b = { r[0], r[1], r[2], r[3], f[2], f[3], f[0], f[1] };
+		// int[] b = { r[0], r[1], r[2], r[3], f[2], f[3], f[0], f[1] };
 		int[] fr = { r[6], r[7], r[4], r[5], f[4], f[5], f[6], f[7] };
 		int[] right = { r[2], r[3], f[2], f[3], f[4], f[5], r[4], r[5] };
 		int[] left = { r[0], r[1], f[0], f[1], f[6], f[7], r[6], r[7] };

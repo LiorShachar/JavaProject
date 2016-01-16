@@ -12,11 +12,10 @@ import algorithms.mazeGenerators.Maze3d;
 import algorithms.mazeGenerators.MyMaze3dGenerator;
 import controller.Preferences;
 import controller.Presenter;
-import controller.XmlHandler;
 import io.MyCompressorOutputStream;
 import model.Model;
 import model.MyModel;
-
+import model.XmlHandler;
 import view.GuiWindowView;
 
 import view.View;
@@ -44,16 +43,12 @@ public class Run {
 
 	public static void main(String[] args) {
 		
-			Preferences p = new Preferences("DFS", "BFS", "manhatten", 5, true, "Gui");
 			
-		 XmlHandler lol = new XmlHandler();
-		 //lol.SaveDataToXml("");
-		 lol.LoadDataFromXml("defaultSettings.xml");
-		 Preferences.print();
+		 
 		
 		
 		
-		/*System.out.println("[Lior Shachar 304848427]");
+		System.out.println("[Lior Shachar 304848427]");
 		System.out.println(" ");
 		System.out.println(" ");
 		System.out.println(" ");
@@ -95,8 +90,9 @@ public class Run {
 				e.printStackTrace();
 			}
 			m.loadCachedSolutions();
+			
 		   v.start();
-		   */
+		   
 		  
 
 	}

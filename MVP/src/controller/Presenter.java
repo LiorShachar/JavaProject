@@ -173,7 +173,7 @@ public class Presenter implements Observer {
 
 			@Override
 			public void doCommand(String[] args) {
-				m.handleKill();
+				m.handleExit();
 				v.showExit();
 
 			}
@@ -264,6 +264,17 @@ public class Presenter implements Observer {
 		String note = (String) arg1;
 		if (arg0 == v) {
 			switch (note) {
+			case "loadSettings":
+				String xmlpath = (String) v.getData(note);
+				m.handleLoadSettings(xmlpath);
+				break;
+				
+			case "saveSettings":
+				String xmlsavepath = (String) v.getData(note);
+			m.handleSaveSettings(xmlsavepath);
+				break;
+				
+				
 			case "loadfrom":
 				String param[] = (String[]) v.getData(note);
 				m.handleLoadMaze(param[0], param[1]);
@@ -310,7 +321,7 @@ public class Presenter implements Observer {
 			case "solveRequest":
 				Object solvedetails[]=(Object[])v.getData(note);
 				m.handleUpdatePosition(new Position((Position)solvedetails[0]),(String)solvedetails[1]);
-				m.handleSolveMaze((String)solvedetails[1], "bfs");
+				m.handleSolveMaze((String)solvedetails[1], Preferences.getSolveAlgo());
 				
 				
 			break;
@@ -322,6 +333,7 @@ public class Presenter implements Observer {
 			
 			case "exit":
 				m.serializeAndCachSolutions();
+				m.handleExit();
 				break;
 			
 			}

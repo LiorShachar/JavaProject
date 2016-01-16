@@ -32,6 +32,7 @@ import algorithms.mazeGenerators.Maze3d;
 import algorithms.mazeGenerators.Position;
 import algorithms.search.Solution;
 import algorithms.search.State;
+import controller.Preferences;
 import widgets.GameCharacter;
 import widgets.MazeDisplayer;
 import widgets.MyMazeWidget;
@@ -71,7 +72,7 @@ public class GuiWindowView extends BasicWindow implements View{
 		
 		
 		
-		shell.setLayout(new GridLayout(5,false));
+		shell.setLayout(new GridLayout(5,true));
 		shell.addDisposeListener(new DisposeListener() {
 			
 			@Override
@@ -91,6 +92,7 @@ public class GuiWindowView extends BasicWindow implements View{
       //*****************************************************************// 
         MenuItem xmlItem = new MenuItem(fileMenu, SWT.PUSH);
         xmlItem.setText("Open properties");
+        xmlItem.addListener(SWT.Selection ,listeners.get("changeSettings"));
       //*****************************************************************// 
         MenuItem loadItem = new MenuItem(fileMenu, SWT.PUSH);
         loadItem.setText("Load");
@@ -253,8 +255,16 @@ public class GuiWindowView extends BasicWindow implements View{
 		
 	}
 
+	/**
+	 * 
+	 * 
+	 * initialize the listeners map from which the gui components get their functionality
+	 * 
+	 * 
+	 * **/
+	
 	 
-	public void initListeners() {
+	 void initListeners() {
 
 		// **************************************{ KEY LISTENER
 		// }***********************************
@@ -285,6 +295,124 @@ public class GuiWindowView extends BasicWindow implements View{
 			}
 		};
 
+		
+		
+		// ***************************************************************************************************************
+				listeners.put("changeSettings", new Listener() {
+					public void handleEvent(Event event) {
+						Shell xmldialog = new Shell(shell, SWT.DIALOG_TRIM | SWT.APPLICATION_MODAL);
+						int fields =Preferences.class.getDeclaredFields().length;
+						xmldialog.setLayout(new GridLayout(2, false));
+						Label labels[]=new Label[fields];
+						Text texts[]=new Text[fields];
+						
+						// generate a label and text for every field in the class of the instance
+						
+						for(int i=0;i<fields;i++){
+							labels[i]=new Label(xmldialog, SWT.BORDER);
+							
+							labels[i].setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
+							
+							labels[i].setText(Preferences.class.getDeclaredFields()[i].getName());
+							
+							texts[i]=new Text(xmldialog, SWT.BORDER);
+							
+							texts[i].setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
+							
+						}
+						
+						
+						// the button sends the data in the texts to their fields
+						
+						Button saveXmlButton = new Button(xmldialog, SWT.PUSH);
+						saveXmlButton.setLayoutData(new GridData(SWT.CENTER, SWT.CENTER, true, true, 2, 2));
+						saveXmlButton.setText("Save and apply");
+						saveXmlButton.addSelectionListener(new SelectionListener() {
+							
+							@Override
+							public void widgetSelected(SelectionEvent e) {
+								
+								//for every field in this class, set the declared field in the new object to be the value
+								//that is sent from the matching textbox
+								Object temp;
+								boolean safetyflag=false;
+								
+								for(int i=0;i<fields;i++){
+									
+									temp=texts[i].getText(); // the value represented by a String
+									String fieldtype=Preferences.class.getDeclaredFields()[i].getType().getSimpleName();
+									
+									
+									 if (fieldtype.matches("[Ss]tring")){
+										 safetyflag=true;
+									 }
+									 else if (fieldtype.matches("int")){
+										 temp=Integer.parseInt(texts[i].getText());
+										 safetyflag=true;
+									 }
+									 else if (fieldtype.matches("double")){
+										 temp=Double.parseDouble(texts[i].getText());
+										 safetyflag=true;
+									 }
+									 else if (fieldtype.matches("boolean")){
+										 temp=Boolean.parseBoolean(texts[i].getText());
+										 safetyflag=true;
+									 }
+									 else if (fieldtype.matches("short")){
+										 temp=Short.parseShort(texts[i].getText());
+										 safetyflag=true;
+									 }
+									 else if (fieldtype.matches("long")){
+										 temp=Long.parseLong(texts[i].getText());
+										 safetyflag=true;
+									 }
+									 else if (fieldtype.matches("float")){
+										 temp=Float.parseFloat(texts[i].getText());
+										 safetyflag=true;
+									 }
+										
+										
+										try {
+											
+											if(safetyflag)
+											Preferences.class.getDeclaredFields()[i].set(new Preferences(), temp);
+											
+											
+											
+											
+										} catch (IllegalArgumentException e1) {
+											// TODO Auto-generated catch block
+											e1.printStackTrace();
+										} catch (IllegalAccessException e1) {
+											// TODO Auto-generated catch block
+											e1.printStackTrace();
+										} catch (SecurityException e1) {
+											// TODO Auto-generated catch block
+											e1.printStackTrace();
+										}
+									
+									scno("saveSettings", "properties.xml");	
+										
+								}
+								Preferences.print();
+								xmldialog.dispose();
+							}
+							
+							@Override
+							public void widgetDefaultSelected(SelectionEvent e) {
+								
+								
+							}
+						});
+						
+						
+						
+						xmldialog.pack();
+						xmldialog.open();
+
+					}
+				});
+				
 		// ***************************************************************************************************************
 		listeners.put("about", new Listener() {
 			public void handleEvent(Event event) {
@@ -512,6 +640,7 @@ public class GuiWindowView extends BasicWindow implements View{
 
 	@Override
 	public void start() {
+		scno("loadSettings","properties.xml");
 		run();
 		
 	}
@@ -526,6 +655,7 @@ public class GuiWindowView extends BasicWindow implements View{
 
 
 
+	
 	@Override
 	public void showMsg(String s) {
 		MessageBox messageBox = new MessageBox(shell, SWT.ICON_WORKING);

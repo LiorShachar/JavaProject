@@ -48,13 +48,14 @@ public interface Model {
 	public Object getData(String string);
 
 	
-	void handleKill();
+	void handleExit();
 
 	void testThread();
 
 	Object getMazeByName(String string);
 	
-	
+	void handleLoadSettings(String path);
+	void handleSaveSettings(String path);
 	
 	
 	void serializeAndCachSolutions();

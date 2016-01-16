@@ -16,6 +16,7 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
+import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 import java.util.zip.GZIPInputStream;
 import java.util.zip.GZIPOutputStream;
@@ -23,13 +24,16 @@ import java.util.zip.GZIPOutputStream;
 import org.eclipse.swt.SWT;
 
 import algorithms.mazeGenerators.Maze3d;
+import algorithms.mazeGenerators.Maze3dGenerator;
 import algorithms.mazeGenerators.MyMaze3dGenerator;
 import algorithms.mazeGenerators.Position;
+import algorithms.mazeGenerators.SimpleMaze3dGenerator;
 import algorithms.search.Astar;
 import algorithms.search.BFS;
 import algorithms.search.MazeManDis;
 import algorithms.search.Solution;
 import algorithms.search.searchableMaze3d;
+import controller.Preferences;
 import io.MyCompressorOutputStream;
 import io.MyDecompressorInputStream;
 
@@ -57,18 +61,22 @@ public class MyModel extends CommonModel {
 	private HashMap<Maze3d, Solution<Position>> solutions;
 	private HashMap<String, Object> notifications;
 	private ExecutorService threadPool;
-	
+	String defaultSettingsPath;
 	
 	
 	
 
+	
+	
+	
 	public MyModel() {
 
 		mazes = new HashMap<String,Maze3d>();
 		solutions = new HashMap<Maze3d, Solution<Position>>();
-		threadPool = Executors.newCachedThreadPool();
-		notifications=new HashMap<String, Object>();
 		
+		notifications=new HashMap<String, Object>();
+		threadPool=Executors.newFixedThreadPool(1);
+		defaultSettingsPath="defaultSettings.xml";
 		
 	}
 
@@ -88,7 +96,13 @@ public class MyModel extends CommonModel {
 
 				@Override
 				public Maze3d call() throws Exception {
-					MyMaze3dGenerator gen = new MyMaze3dGenerator();
+					Maze3dGenerator gen;
+					if(Preferences.getGenAlgo().matches("[Dd][Ff][Ss]")){
+					gen = new MyMaze3dGenerator();
+					}
+					else{
+						gen = new SimpleMaze3dGenerator();
+					}
 					return gen.generate(y, x, z);
 
 				}
@@ -281,19 +295,20 @@ public class MyModel extends CommonModel {
 	 */
 
 	@Override
-	public void handleKill() {
+	public void handleExit() {
 		
 		try {
+			
+			scno("msg", "Shutting down...");
 			this.threadPool.shutdown();
-			scno("m", "Shutting down...");
 			this.threadPool.awaitTermination(10,TimeUnit.SECONDS );
-			scno("m", " --Bye Bye--");
+			
 			
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-
+		
 	}
 
 	// adds a background thread for testing
@@ -459,6 +474,31 @@ public class MyModel extends CommonModel {
 	      
 	      }
 	      System.out.println("Cached memory loaded");
+	}
+
+	@Override
+	public void handleLoadSettings(String path) {
+		File f= new File(path);
+		
+		XmlHandler han = new XmlHandler();
+		if(f.exists()){
+			han.LoadDataFromXml(path);
+			
+		}
+		else
+		{
+			han.LoadDataFromXml(defaultSettingsPath);
+			scno("error","Path to xml file wasn't found, loaded the default settings");
+		}
+		threadPool=Executors.newFixedThreadPool(Preferences.getNumberOfThreads());
+	}
+
+	@Override
+	public void handleSaveSettings(String path) {
+		XmlHandler han = new XmlHandler();
+		han.SaveDataToXml(path);
+		
+		
 	}
 	
 

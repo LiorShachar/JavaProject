@@ -13,10 +13,10 @@ import java.io.Serializable;
 public class Preferences implements Serializable {
 	
 	
-	public static String genAlgo;
-	public static String solveAlgo;
+	public static String generatingAlgorithm;
+	public static String searchingAlgorithm;
 	public static String heuristic;
-	public static String Ui;
+	public static String userInterface;
 	public static int numberOfThreads;
 	public static boolean sound;
 	
@@ -30,32 +30,34 @@ public class Preferences implements Serializable {
 	
 	public Preferences(String genAlgo, String solveAlgo, String heuristic, int numberOfThreads, boolean sound,String Ui) {
 		super();
-		Preferences.Ui=Ui;
-		Preferences.genAlgo = genAlgo;
-		Preferences.solveAlgo = solveAlgo;
+		
+		Preferences.userInterface=Ui;
+		Preferences.generatingAlgorithm = genAlgo;
+		Preferences.searchingAlgorithm = solveAlgo;
 		Preferences.heuristic = heuristic;
 		Preferences.numberOfThreads = numberOfThreads;
 		Preferences.sound = sound;
 	}
 
 
+
 	public static String getGenAlgo() {
-		return genAlgo;
+		return generatingAlgorithm;
 	}
 
 
 	public static void setGenAlgo(String genAlgo) {
-		Preferences.genAlgo = genAlgo;
+		Preferences.generatingAlgorithm = genAlgo;
 	}
 
 
 	public static String getSolveAlgo() {
-		return solveAlgo;
+		return searchingAlgorithm;
 	}
 
 
 	public static void setSolveAlgo(String solveAlgo) {
-		Preferences.solveAlgo = solveAlgo;
+		Preferences.searchingAlgorithm = solveAlgo;
 	}
 
 
@@ -70,12 +72,12 @@ public class Preferences implements Serializable {
 
 
 	public static String getUi() {
-		return Ui;
+		return userInterface;
 	}
 
 
 	public static void setUi(String ui) {
-		Ui = ui;
+		userInterface = ui;
 	}
 
 
@@ -100,12 +102,13 @@ public class Preferences implements Serializable {
 
 
 	public static void print(){
-		System.out.println("generateing algorithm: "+genAlgo);
-		System.out.println("solving algorithm: "+solveAlgo);
+		System.out.println("generateing algorithm: "+generatingAlgorithm);
+		System.out.println("solving algorithm: "+searchingAlgorithm);
 		System.out.println("Astar Heuristic: "+heuristic);
-		System.out.println("User Interface: "+Ui);
+		System.out.println("User Interface: "+userInterface);
 		System.out.println("Number of Threads "+numberOfThreads);
 		System.out.println("Sound is Enabled "+sound);
+		
 		
 		
 	}
