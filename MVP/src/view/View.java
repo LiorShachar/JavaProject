@@ -30,7 +30,7 @@ public interface View {
 	void showList(String string);
 	void showMsg(String s);
 	void showError(String s);
-	
+	 String getViewType();
 	void showMaze(byte[] arr);
 	void showCross(byte[] arr,String by,int i);
 	void showSolution(Solution<Position> s);

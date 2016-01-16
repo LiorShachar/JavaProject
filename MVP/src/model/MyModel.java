@@ -30,12 +30,15 @@ import algorithms.mazeGenerators.Position;
 import algorithms.mazeGenerators.SimpleMaze3dGenerator;
 import algorithms.search.Astar;
 import algorithms.search.BFS;
+import algorithms.search.Heuristic;
+import algorithms.search.MazeAirDis;
 import algorithms.search.MazeManDis;
 import algorithms.search.Solution;
 import algorithms.search.searchableMaze3d;
 import controller.Preferences;
 import io.MyCompressorOutputStream;
 import io.MyDecompressorInputStream;
+import sun.management.ManagementFactoryHelper;
 
 /**
  *
@@ -76,7 +79,7 @@ public class MyModel extends CommonModel {
 		
 		notifications=new HashMap<String, Object>();
 		threadPool=Executors.newFixedThreadPool(1);
-		defaultSettingsPath="defaultSettings.xml";
+		defaultSettingsPath="resources/defaultSettings.xml";
 		
 	}
 
@@ -249,8 +252,16 @@ public class MyModel extends CommonModel {
 
 						@Override
 						public Solution<Position> call() throws Exception {
-
-							return new Astar<Position>(new MazeManDis())
+							Heuristic heur=null;
+							if (Preferences.getHeuristic().matches("[Mm][Aa][Nn][Hh][Aa][Tt][Tt][Ee][Nn]"))
+							{heur = new MazeManDis();}
+							else if(Preferences.getHeuristic().matches("[Aa][Ii][Rr][Dd][Ii][Ss][Tt][Aa][Nn][Cc][Ee]"))
+							{heur = new MazeAirDis();}
+							else{
+								scno("error", "illegal Astar heuristic");
+								return null;}
+							
+							return new Astar<Position>(heur)
 									.search(new searchableMaze3d(mazes.get(name)));
 
 						}
@@ -423,13 +434,13 @@ public class MyModel extends CommonModel {
 		try
         {
 		FileOutputStream fos =
-                new FileOutputStream("hashmap.ser");
+                new FileOutputStream("memoryCach.zip");
 		GZIPOutputStream gos = new GZIPOutputStream(fos);
              ObjectOutputStream oos = new ObjectOutputStream(gos);
              oos.writeObject(serialized);
              oos.close();
              fos.close();
-             System.out.printf("Serialized HashMap data is saved in hashmap.ser");
+             System.out.printf("Serialized HashMap data is saved in memoryCach.zip");
       }catch(IOException ioe)
        {
              ioe.printStackTrace();
@@ -447,7 +458,7 @@ public class MyModel extends CommonModel {
 		HashMap<byte[], Solution<Position>> serialized = new HashMap<byte[], Solution<Position>>();
 		try
 	      {
-	         FileInputStream fis = new FileInputStream("hashmap.ser");
+	         FileInputStream fis = new FileInputStream("resources/memoryCach.zip");
 	         GZIPInputStream gis = new GZIPInputStream(fis);
 	         
 	         ObjectInputStream ois = new ObjectInputStream(gis);
@@ -464,7 +475,7 @@ public class MyModel extends CommonModel {
 	         c.printStackTrace();
 	         
 	      }
-	      System.out.println("Deserialized HashMap..");
+	    //  System.out.println("Deserialized HashMap..");
 	      // Display content using Iterator
 	      Set set = serialized.entrySet();
 	      Iterator iterator = set.iterator();
@@ -473,7 +484,7 @@ public class MyModel extends CommonModel {
 	    	  solutions.put(new Maze3d((byte[]) mentry.getKey()), (Solution<Position>)mentry.getValue());
 	      
 	      }
-	      System.out.println("Cached memory loaded");
+	    //  System.out.println("Cached memory loaded");
 	}
 
 	@Override

@@ -37,7 +37,7 @@ import widgets.GameCharacter;
 import widgets.MazeDisplayer;
 import widgets.MyMazeWidget;
 
-public class GuiWindowView extends BasicWindow implements View{
+public class GuiWindowView extends commonGuiView implements View{
 	
 	
 	MyMazeWidget mazeWin; 
@@ -165,7 +165,7 @@ public class GuiWindowView extends BasicWindow implements View{
         //*****************************************************************//
 
        //*****************************************************************// Maze List
- 		l = new List(shell, SWT.MULTI | SWT.BORDER  );
+ 		l = new List(shell, SWT.MULTI | SWT.BORDER | SWT.V_SCROLL );
  	    l.setLayoutData(new GridData(SWT.None, SWT.None, false,true, 1, 4));
        //*****************************************************************
        
@@ -391,7 +391,7 @@ public class GuiWindowView extends BasicWindow implements View{
 											e1.printStackTrace();
 										}
 									
-									scno("saveSettings", "properties.xml");	
+									scno("saveSettings", "resources/properties.xml");	
 										
 								}
 								Preferences.print();
@@ -640,7 +640,7 @@ public class GuiWindowView extends BasicWindow implements View{
 
 	@Override
 	public void start() {
-		scno("loadSettings","properties.xml");
+		scno("loadSettings","resources/properties.xml");
 		run();
 		
 	}
@@ -743,7 +743,7 @@ public class GuiWindowView extends BasicWindow implements View{
 							}
 					}
 						
-				}, 0, 200);
+				}, 0, 80);
 
 			}
 		});
@@ -775,5 +775,16 @@ public class GuiWindowView extends BasicWindow implements View{
 		l.add(s);
 		
 	}
+
+
+
+	@Override
+	public String getViewType() {
+		
+		ViewType=this.getClass().getSimpleName();
+		return ViewType;
+		
+	}
+	
 
 }

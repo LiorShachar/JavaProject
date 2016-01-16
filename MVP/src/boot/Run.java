@@ -56,42 +56,23 @@ public class Run {
 		
 		
 		
-		Presenter p = new Presenter();
-		//MyViewCLI v = new MyViewCLI();  
-		//MazeWindow v=new MazeWindow("Maze Template", 800, 500);
+		Presenter p = new Presenter(); 
 		
-	//	testguiview v = new testguiview();
-		GuiWindowView v = new GuiWindowView("My View", 800,500);
+		
+	//
+		
+		
 		MyModel m = new MyModel();
 		   p.setModel(m);
-		   p.setView(v);
-		//   v.getCli().addObserver(v);
-		  v.addObserver(p);
-		  m.addObserver(p);
-		  MyMaze3dGenerator gen = new MyMaze3dGenerator();
-		  Maze3d maze=gen.generate(10, 200, 200);
-		  MyCompressorOutputStream writer = null;
-		try {
-			writer = new MyCompressorOutputStream(new FileOutputStream("1.maz"));
-		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-			try {
-				writer.write(maze.toByteArray());
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			try {
-				writer.close();
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			m.loadCachedSolutions();
+		   m.addObserver(p);
+		   m.loadCachedSolutions();
+		  
+		  
+		  
 			
-		   v.start();
+			
+			
+		   
 		   
 		  
 

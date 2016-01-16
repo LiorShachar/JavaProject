@@ -8,7 +8,10 @@ import java.util.Set;
 import algorithms.mazeGenerators.Maze3d;
 import algorithms.mazeGenerators.Position;
 import model.Model;
+import view.GuiWindowView;
+import view.MyViewCLI;
 import view.View;
+import view.commonGuiView;
 
 /**
  *
@@ -259,6 +262,40 @@ public class Presenter implements Observer {
 
 	}
 
+	public void loadSettings(String xmlpath){
+		
+		m.handleLoadSettings(xmlpath);
+		
+		//////////////////////////////// Cases of changing view in run time.  
+		if(v!=null){///// in case theres a current view
+		//	if gui is on but user wants a cli dispose the gui and start the cli
+			System.out.println(v.getViewType());
+			System.out.println(Preferences.getUi());
+			
+		if(Preferences.getUi().matches("[Cc][Ll][Ii]")&& !v.getViewType().matches("[Mm][Yy][Vv][Ii][Ee][Ww][Cc][Ll][Ii]")){
+			
+			((commonGuiView)v).getDisplay().dispose();
+			
+			setView(new MyViewCLI());
+			((Observable) v).addObserver(this);
+			getView().start();
+		}
+		
+			
+		}
+		else if (Preferences.getUi().matches("[Cc][Ll][Ii]")){
+			setView(new MyViewCLI());
+			((Observable) v).addObserver(this);
+			getView().start();
+		}
+		else if (Preferences.getUi().matches("[Gg][Uu][Ii]")){
+			setView( new GuiWindowView("My View", 800,500));
+			((Observable) v).addObserver(this);
+			getView().start();
+		}
+		
+	}
+	
 	@Override
 	public void update(Observable arg0, Object arg1) {
 		String note = (String) arg1;
@@ -267,6 +304,35 @@ public class Presenter implements Observer {
 			case "loadSettings":
 				String xmlpath = (String) v.getData(note);
 				m.handleLoadSettings(xmlpath);
+				
+				//////////////////////////////// Cases of changing view in run time.  
+				if(v!=null){///// in case theres a current view
+				//	if gui is on but user wants a cli dispose the gui and start the cli
+					System.out.println(v.getViewType());
+					System.out.println(Preferences.getUi());
+					
+				if(Preferences.getUi().matches("[Cc][Ll][Ii]")&& !v.getViewType().matches("[Mm][Yy][Vv][Ii][Ee][Ww][Cc][Ll][Ii]")){
+					
+					((commonGuiView)v).getDisplay().dispose();
+					
+					setView(new MyViewCLI());
+					((Observable) v).addObserver(this);
+					getView().start();
+				}
+				
+					
+				}
+				else if (Preferences.getUi().matches("[Cc][Ll][Ii]")){
+					setView(new MyViewCLI());
+					((Observable) v).addObserver(this);
+					getView().start();
+				}
+				else if (Preferences.getUi().matches("[Gg][Uu][Ii]")){
+					setView( new GuiWindowView("My View", 800,500));
+					((Observable) v).addObserver(this);
+					getView().start();
+				}
+				
 				break;
 				
 			case "saveSettings":
@@ -338,35 +404,35 @@ public class Presenter implements Observer {
 			
 			}
 
-		} else if (arg0 == m) {
-			switch (note) {
-			case "loaded":
-				v.displayLoadedMaze((String) m.getData(note));
-				break;
-			case "error":
-				v.showError((String)m.getData(note));
-				break;
-			case "msg":
-			v.showMsg((String)m.getData(note));
-			break;
-			
-			
-			case "solutionReady":
-				String mazeSolved =(String)m.getData(note);
-				v.showSolution(m.getSolutionFor(mazeSolved));
-				break;
-				
-				
-			case "solutionExist":
-				v.showMsg("Maze Solution found in cached memory");
-				String mazeallSolved =(String)m.getData(note);
-				v.showSolution(m.getSolutionFor(mazeallSolved));
-				
-				break;
-			}
+		}else if(arg0==m)
 
+	{
+		switch (note) {
+		case "loaded":
+			v.displayLoadedMaze((String) m.getData(note));
+			break;
+		case "error":
+			v.showError((String) m.getData(note));
+			break;
+		case "msg":
+			v.showMsg((String) m.getData(note));
+			break;
+
+		case "solutionReady":
+			String mazeSolved = (String) m.getData(note);
+			v.showSolution(m.getSolutionFor(mazeSolved));
+			break;
+
+		case "solutionExist":
+			v.showMsg("Maze Solution found in cached memory");
+			String mazeallSolved = (String) m.getData(note);
+			v.showSolution(m.getSolutionFor(mazeallSolved));
+
+			break;
 		}
 
 	}
+
+}
 
 }

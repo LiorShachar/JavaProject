@@ -6,7 +6,7 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 
 
-public abstract class BasicWindow extends Observable implements Runnable{
+public abstract class BasicWindow extends CommonView implements Runnable{
 	
 	Display display;
 	Shell shell;

@@ -1,4 +1,4 @@
-/*package view;
+package view;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -14,7 +14,7 @@ import algorithms.search.Solution;
 import algorithms.search.State;
 import controller.Presenter;
 
-*//**
+/**
 *
 * 
 * 
@@ -31,7 +31,7 @@ import controller.Presenter;
 * @author  Lior Shachar
 * @version 1.0
 * @since   2015-12-17
-*//*
+*/
 
 public class MyViewCLI extends CommonView implements View,Observer {
 	
@@ -79,9 +79,9 @@ public class MyViewCLI extends CommonView implements View,Observer {
 
 
 
-	*//**
+	/**
 	 * starts the CLI thread
-	 *//*
+	 */
 	
 	@Override
 	public void start() {
@@ -98,10 +98,10 @@ public class MyViewCLI extends CommonView implements View,Observer {
 	
 
 
-*//**
+/**
  * uses the File class in order to execute the Dir command.
  * print the names of files and folders in the path provided
- *//*
+ */
 
 	@Override
 	public void showList(String string) {
@@ -119,9 +119,9 @@ public class MyViewCLI extends CommonView implements View,Observer {
 
 	
 	
-	*//**
+	/**
 	 * prints the string provided using the scanner in the cli, so the view will interact with the user the way he chose.
-	 *//*
+	 */
 	@Override
 public void showMsg(String s) {
 	cli.getOut().println(s);
@@ -133,10 +133,10 @@ public void showMsg(String s) {
 }
 
 
-*//**
+/**
  * gets a maze3d provided by its byte array and prints its details.
  * the maze is printed as cross sections of its levels. (the Y axis is fixed)
- *//*
+ */
 
 @Override
 public void showMaze(byte[] arr) {
@@ -163,9 +163,9 @@ public void showMaze(byte[] arr) {
 }
 
 
-*//**
+/**
  * prints the maze cross section provided by byte array of maze3d, a fixed axis and its index. 
- *//*
+ */
 
 @Override
 public void showCross(byte[] arr, String by, int index) {
@@ -269,9 +269,9 @@ public void showCross(byte[] arr, String by, int index) {
 }
 
 
-*//**
+/**
  * gets a solution representing a path of Position array and prints every Position as part of the path from start to exit
- *//*
+ */
 
 @Override
 public void showSolution(Solution<Position> s) {
@@ -312,7 +312,14 @@ public void showError(String s) {
 }
 
 @Override
-public void startGame(String name,int levels, int y, int x, int z) {
+public String getViewType() {
+
+	ViewType=this.getClass().getSimpleName();
+	return ViewType;
+}
+
+@Override
+public void initMazeWidget(Maze3d maze, String name) {
 	// TODO Auto-generated method stub
 	
 }
@@ -321,5 +328,5 @@ public void startGame(String name,int levels, int y, int x, int z) {
 
 
 
+
 }
-*/

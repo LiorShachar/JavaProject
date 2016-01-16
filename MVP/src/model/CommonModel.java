@@ -8,5 +8,9 @@ import algorithms.search.Solution;
 
 public abstract class CommonModel extends Observable implements Model {
 
+	
+	
+	
+	
 
 }
