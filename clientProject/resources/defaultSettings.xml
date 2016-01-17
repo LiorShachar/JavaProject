@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<properties>
+<comment>Maze Settings</comment>
+<entry key="numberOfThreads">5</entry>
+<entry key="sound">true</entry>
+<entry key="heuristic">manhatten</entry>
+<entry key="Ui">Gui</entry>
+<entry key="solveAlgo">BFS</entry>
+<entry key="genAlgo">DFS</entry>
+</properties>
