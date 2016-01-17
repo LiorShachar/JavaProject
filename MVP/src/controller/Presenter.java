@@ -163,8 +163,8 @@ public class Presenter implements Observer {
 			@Override
 			public void doCommand(String[] args) {
 
-				if (m.getSolutions().containsKey(args[2])) {
-					v.showSolution(m.getSolutions().get(args[2]));
+				if (m.getSolutions().containsKey(m.getMazeByName(args[2]))) {
+					v.showSolution(m.getSolutions().get(m.getMazeByName(args[2])));
 				} else {
 					toView("no solution found for this maze");
 				}
@@ -208,6 +208,17 @@ public class Presenter implements Observer {
 			}
 		});
 
+		/////////////////////////////////////////////////////////// Get Back to
+		/////////////////////////////////////////////////////////// GUI view
+		map.put("GUI", new Command() {
+
+			@Override
+			public void doCommand(String[] args) {
+				((MyViewCLI) v).getCli().setFlag(false);
+				switchToGUI();
+
+			}
+		});
 		///////////////////////////////////////////////////// list the commands
 		///////////////////////////////////////////////////// available to the
 		///////////////////////////////////////////////////// user
@@ -262,85 +273,69 @@ public class Presenter implements Observer {
 
 	}
 
-	public void loadSettings(String xmlpath){
-		
+	public void loadSettings(String xmlpath) {
+
 		m.handleLoadSettings(xmlpath);
-		
-		//////////////////////////////// Cases of changing view in run time.  
-		if(v!=null){///// in case theres a current view
-		//	if gui is on but user wants a cli dispose the gui and start the cli
+
+		//////////////////////////////// Cases of changing view in run time.
+		if (v != null) {///// in case theres a current view
+			// if gui is on but user wants a cli dispose the gui and start the
+			// cli and the opposite
 			System.out.println(v.getViewType());
 			System.out.println(Preferences.getUi());
-			
-		if(Preferences.getUi().matches("[Cc][Ll][Ii]")&& !v.getViewType().matches("[Mm][Yy][Vv][Ii][Ee][Ww][Cc][Ll][Ii]")){
-			
-			((commonGuiView)v).getDisplay().dispose();
-			
-			setView(new MyViewCLI());
-			((Observable) v).addObserver(this);
-			getView().start();
+
+			if (Preferences.getUi().matches("[Cc][Ll][Ii]")
+					&& !v.getViewType().matches("[Mm][Yy][Vv][Ii][Ee][Ww][Cc][Ll][Ii]")) {
+
+				((commonGuiView) v).getDisplay().dispose();
+
+				switchToCLI();
+			} else if (Preferences.getUi().matches("[Gg][Uu][Ii]")
+					&& !v.getViewType().matches("[Gg][Uu][Ii][Ww][Ii][Nn][Dd][Oo][Ww][Vv][Ii][Ee][Ww]")) {
+				switchToGUI();
+			}
+
+		} else if (Preferences.getUi().matches("[Cc][Ll][Ii]")) {
+			switchToCLI();
+		} else if (Preferences.getUi().matches("[Gg][Uu][Ii]")) {
+			switchToGUI();
 		}
-		
-			
-		}
-		else if (Preferences.getUi().matches("[Cc][Ll][Ii]")){
-			setView(new MyViewCLI());
-			((Observable) v).addObserver(this);
-			getView().start();
-		}
-		else if (Preferences.getUi().matches("[Gg][Uu][Ii]")){
-			setView( new GuiWindowView("My View", 800,500));
-			((Observable) v).addObserver(this);
-			getView().start();
-		}
-		
+
 	}
-	
+
 	@Override
 	public void update(Observable arg0, Object arg1) {
 		String note = (String) arg1;
+		///////////////////////////////////////////////////////// NOTIFICATIONS
+		///////////////////////////////////////////////////////// FROM THE
+		///////////////////////////////////////////////////////// VIEW//////////////////////////////////////////////////////////////////
 		if (arg0 == v) {
 			switch (note) {
+			case "CLI":/// if the command is from a CLI take the input from
+						/// CLIview, see if it matches any regex keys in the
+						/// command map, if it does split it and send the
+						/// arguments to the right command
+				String input = (String) v.getData("");
+				for (String s : commandCreator.keySet()) {
+					if (input.matches(s)) {
+						String[] args = input.split(" ");
+						commandCreator.get(s).doCommand(args);
+					}
+
+				}
+				break;
+
 			case "loadSettings":
 				String xmlpath = (String) v.getData(note);
 				m.handleLoadSettings(xmlpath);
-				
-				//////////////////////////////// Cases of changing view in run time.  
-				if(v!=null){///// in case theres a current view
-				//	if gui is on but user wants a cli dispose the gui and start the cli
-					System.out.println(v.getViewType());
-					System.out.println(Preferences.getUi());
-					
-				if(Preferences.getUi().matches("[Cc][Ll][Ii]")&& !v.getViewType().matches("[Mm][Yy][Vv][Ii][Ee][Ww][Cc][Ll][Ii]")){
-					
-					((commonGuiView)v).getDisplay().dispose();
-					
-					setView(new MyViewCLI());
-					((Observable) v).addObserver(this);
-					getView().start();
-				}
-				
-					
-				}
-				else if (Preferences.getUi().matches("[Cc][Ll][Ii]")){
-					setView(new MyViewCLI());
-					((Observable) v).addObserver(this);
-					getView().start();
-				}
-				else if (Preferences.getUi().matches("[Gg][Uu][Ii]")){
-					setView( new GuiWindowView("My View", 800,500));
-					((Observable) v).addObserver(this);
-					getView().start();
-				}
-				
 				break;
-				
+
 			case "saveSettings":
 				String xmlsavepath = (String) v.getData(note);
-			m.handleSaveSettings(xmlsavepath);
+				m.handleSaveSettings(xmlsavepath);
+				
 				break;
-				
-				
+
 			case "loadfrom":
 				String param[] = (String[]) v.getData(note);
 				m.handleLoadMaze(param[0], param[1]);
@@ -358,81 +353,100 @@ public class Presenter implements Observer {
 				String fmname = (String) v.getData(note);
 				m.handleFileSize(fmname);
 				break;
-				
+
 			case "initMazeWidgetRequest":
 				String mazetoinit = (String) v.getData(note);
-				Maze3d maze = (Maze3d)m.getMazeByName(mazetoinit);
-				v.initMazeWidget(maze,mazetoinit);
+				Maze3d maze = (Maze3d) m.getMazeByName(mazetoinit);
+				v.initMazeWidget(maze, mazetoinit);
 				break;
-				
-			
-				
+
 			case "error":
-				v.showError((String)v.getData(note));
+				v.showError((String) v.getData(note));
 				break;
 			case "msg":
-			v.showMsg((String)v.getData(note));
-			break;
-			
-			case "PathToSaveMaze":
-				String savedetails[]=(String[])v.getData(note);
-				
-				Maze3d lol = (Maze3d)m.getMazeByName(savedetails[0]); // gets the maze from the model
-				byte b[];
-				b=lol.toByteArray(); // turn the maze into a byte array
-				 
-				m.handleSaveMaze(b, savedetails[1]);
-			break;
-			
-			case "solveRequest":
-				Object solvedetails[]=(Object[])v.getData(note);
-				m.handleUpdatePosition(new Position((Position)solvedetails[0]),(String)solvedetails[1]);
-				m.handleSolveMaze((String)solvedetails[1], Preferences.getSolveAlgo());
-				
-				
-			break;
-			
-			case "updateStart":
-				Object  updatedetails[] =(Object[])v.getData(note);
-				m.handleUpdatePosition(new Position((Position)updatedetails[0]),(String)updatedetails[1]);
+				v.showMsg((String) v.getData(note));
 				break;
-			
+
+			case "PathToSaveMaze":
+				String savedetails[] = (String[]) v.getData(note);
+
+				Maze3d lol = (Maze3d) m.getMazeByName(savedetails[0]); // gets
+																		// the
+																		// maze
+																		// from
+																		// the
+																		// model
+				byte b[];
+				b = lol.toByteArray(); // turn the maze into a byte array
+
+				m.handleSaveMaze(b, savedetails[1]);
+				break;
+
+			case "solveRequest":
+				Object solvedetails[] = (Object[]) v.getData(note);
+				m.handleUpdatePosition(new Position((Position) solvedetails[0]), (String) solvedetails[1]);
+				m.handleSolveMaze((String) solvedetails[1], Preferences.getSolveAlgo());
+
+				break;
+
+			case "updateStart":
+				Object updatedetails[] = (Object[]) v.getData(note);
+				m.handleUpdatePosition(new Position((Position) updatedetails[0]), (String) updatedetails[1]);
+				break;
+
 			case "exit":
 				m.serializeAndCachSolutions();
 				m.handleExit();
 				break;
+
+			}
+			/////////////////////////////////////////////////// NOTIFICATIONS
+			/////////////////////////////////////////////////// FROM THE
+			/////////////////////////////////////////////////// MODEL///////////////////////////////////////////////////////////
+		} else if (arg0 == m)
+
+		{
+			switch (note) {
 			
+			
+			case "loaded":
+				v.displayLoadedMaze((String) m.getData(note));
+				break;
+			case "error":
+				v.showError((String) m.getData(note));
+				break;
+			case "msg":
+				v.showMsg((String) m.getData(note));
+				break;
+
+			case "solutionReady":
+				String mazeSolved = (String) m.getData(note);
+				v.showSolution(m.getSolutionFor(mazeSolved));
+				break;
+
+			case "solutionExist":
+				v.showMsg("Maze Solution found in cached memory");
+				String mazeallSolved = (String) m.getData(note);
+				v.showSolution(m.getSolutionFor(mazeallSolved));
+
+				break;
 			}
 
-		}else if(arg0==m)
-
-	{
-		switch (note) {
-		case "loaded":
-			v.displayLoadedMaze((String) m.getData(note));
-			break;
-		case "error":
-			v.showError((String) m.getData(note));
-			break;
-		case "msg":
-			v.showMsg((String) m.getData(note));
-			break;
-
-		case "solutionReady":
-			String mazeSolved = (String) m.getData(note);
-			v.showSolution(m.getSolutionFor(mazeSolved));
-			break;
-
-		case "solutionExist":
-			v.showMsg("Maze Solution found in cached memory");
-			String mazeallSolved = (String) m.getData(note);
-			v.showSolution(m.getSolutionFor(mazeallSolved));
-
-			break;
 		}
 
 	}
 
-}
+	public void switchToCLI() {
+		setView(new MyViewCLI());
+		((Observable) v).addObserver(this);
+		((MyViewCLI) v).getCli().addObserver((Observer) v);
+		getView().start();
+	}
+
+	public void switchToGUI() {
+		setView(new GuiWindowView("My View", 800, 500));
+		((Observable) v).addObserver(this);
+		getView().start();
+	}
 
 }

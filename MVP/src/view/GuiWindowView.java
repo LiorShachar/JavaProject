@@ -77,6 +77,7 @@ public class GuiWindowView extends commonGuiView implements View{
 			
 			@Override
 			public void widgetDisposed(DisposeEvent e) {
+				
 				scno("exit", " ");
 				
 			}
@@ -297,7 +298,11 @@ public class GuiWindowView extends commonGuiView implements View{
 
 		
 		
-		// ***************************************************************************************************************
+		// **********************************{XML SETTINGS WIDGET }***************************
+		/**
+		 * Started working on a widget that would get a class and generate all the primitive fields for it automatically
+		 * unfortunately it works only on my Preferences class at the meantime
+		 * **/
 				listeners.put("changeSettings", new Listener() {
 					public void handleEvent(Event event) {
 						Shell xmldialog = new Shell(shell, SWT.DIALOG_TRIM | SWT.APPLICATION_MODAL);
@@ -640,7 +645,7 @@ public class GuiWindowView extends commonGuiView implements View{
 
 	@Override
 	public void start() {
-		scno("loadSettings","resources/properties.xml");
+		
 		run();
 		
 	}

@@ -66,6 +66,7 @@ public class Run {
 		   p.setModel(m);
 		   m.addObserver(p);
 		   m.loadCachedSolutions();
+		   p.loadSettings("resources/properties.xml");
 		  
 		  
 		  

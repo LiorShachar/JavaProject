@@ -73,7 +73,7 @@ public class MyViewCLI extends CommonView implements View,Observer {
 
 	public void setCli(CLI cli) {
 		this.cli = cli;
-		this.cli.addObserver(this);
+		cli.addObserver(this);
 	}
 
 
@@ -288,7 +288,7 @@ public void update(Observable o, Object arg) {
 	if (o==cli){
 		this.todo=(String)arg;
 		setChanged();
-		notifyObservers();
+		notifyObservers("CLI");
 	}
 	
 }
@@ -296,12 +296,13 @@ public void update(Observable o, Object arg) {
 @Override
 public Object getData(String string) {
 	// TODO Auto-generated method stub
-	return null;
+	return todo;
 }
 
 @Override
 public void displayLoadedMaze(String s) {
-	// TODO Auto-generated method stub
+	showMsg("Maze "+s+" Is Ready");
+	
 	
 }
 

@@ -37,7 +37,21 @@ public class CLI extends Observable implements Runnable{
 
 	
 	
-	 public PrintWriter getOut() {
+	 public boolean isFlag() {
+		return flag;
+	}
+
+
+
+
+	public void setFlag(boolean flag) {
+		this.flag = flag;
+	}
+
+
+
+
+	public PrintWriter getOut() {
 		return out;
 	}
 
@@ -106,8 +120,8 @@ public class CLI extends Observable implements Runnable{
 @Override
 public void run() {
 	String input="";
-	System.out.println("** Greetings! please enter your desired command, for the commands list type \"help\" **");
-	
+	System.out.println("** Greetings! please enter your desired command **");
+	System.out.println("** for the commands list type \"help\" , for GUI type \"GUI\" **");
 	
 	try {
 		while (flag){
