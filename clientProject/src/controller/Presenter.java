@@ -7,6 +7,7 @@ import java.util.Set;
 
 import algorithms.mazeGenerators.Maze3d;
 import algorithms.mazeGenerators.Position;
+import algorithms.search.Solution;
 import model.Model;
 import singletonexplicitpack.Properties;
 import view.GuiWindowView;
@@ -107,7 +108,7 @@ public class Presenter implements Observer {
 
 			@Override
 			public void doCommand(String[] args) {
-				v.showCross(m.getMazeByName(args[7]).toByteArray(), args[4], Integer.parseInt(args[5]));
+				v.showCross(((Maze3d) m.getMazeByName(args[7])).toByteArray(), args[4], Integer.parseInt(args[5]));
 
 			}
 		});
@@ -116,7 +117,7 @@ public class Presenter implements Observer {
 
 			@Override
 			public void doCommand(String[] args) {
-				m.handleSaveMaze(m.getMazes().get(args[2]).toByteArray(), args[3]);
+				m.handleSaveMaze(((Maze3d) m.getMazeByName(args[2])).toByteArray(), args[3]);
 
 			}
 		});
@@ -135,7 +136,7 @@ public class Presenter implements Observer {
 
 			@Override
 			public void doCommand(String[] args) {
-				v.showMsg("Maze size of " + args[2] + " is: " + m.getMazes().get(args[2]).toByteArray().length
+				v.showMsg("Maze size of " + args[2] + " is: " + ((Maze3d) m.getMazeByName(args[2])).toByteArray().length
 						+ " Bytes");
 
 			}
@@ -165,10 +166,10 @@ public class Presenter implements Observer {
 			@Override
 			public void doCommand(String[] args) {
 
-				if (m.getSolutions().containsKey(m.getMazeByName(args[2]))) {
-					v.showSolution(m.getSolutions().get(m.getMazeByName(args[2])));
+				if (m.getSolutionFor(args[2]) != null) {
+					v.showSolution((Solution<Position>) m.getSolutionFor(args[2]));
 				} else {
-					toView("no solution found for this maze");
+					v.showError("no solution found for this maze");
 				}
 
 			}
@@ -178,8 +179,8 @@ public class Presenter implements Observer {
 
 			@Override
 			public void doCommand(String[] args) {
-				m.handleExit();
-				v.showExit();
+				m.close();
+				v.close();
 
 			}
 		});
@@ -192,8 +193,10 @@ public class Presenter implements Observer {
 			@Override
 			public void doCommand(String[] args) {
 
-				System.out.println(m.getMazes().get(args[0]).equals(m.getMazes().get(args[2])));
-
+				if(((Maze3d)m.getMazeByName(args[0])).equals((Maze3d)(m.getMazeByName(args[2]))))
+					v.showMsg("mazes are equal");
+				else
+					v.showMsg("mazes are NOT equal");
 			}
 		});
 
@@ -270,10 +273,7 @@ public class Presenter implements Observer {
 		this.commandCreator = commandCreator;
 	}
 
-	public void toView(String s) {
-		v.showMsg(s);
 
-	}
 
 	public void loadSettings(String xmlpath) {
 
