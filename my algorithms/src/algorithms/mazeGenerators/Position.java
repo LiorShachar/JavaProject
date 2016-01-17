@@ -1,5 +1,7 @@
 package algorithms.mazeGenerators;
 
+import java.io.Serializable;
+
 /**
  * 
  * 
@@ -15,7 +17,9 @@ package algorithms.mazeGenerators;
  * @since 2015-11-28
  */
 
-public class Position {
+public class Position implements Serializable {
+	
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -25,7 +29,6 @@ public class Position {
 		result = prime * result + z;
 		return result;
 	}
-
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -52,6 +55,9 @@ public class Position {
 		this.x = x;
 		this.y = y;
 		this.z = z;
+	}
+	public Position() {
+		
 	}
 
 	public Position(Position p) {
@@ -137,7 +143,7 @@ public class Position {
 	@Override
 	public String toString() {
 
-		return ("{" + this.y + "," + this.x + "," + this.z + "}");
+		return ("{"+"Y:" + this.y + ","+"X:" + this.x + ","+"Z:" + this.z + "}");
 	}
 
 	public int getX() {

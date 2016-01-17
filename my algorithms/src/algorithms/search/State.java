@@ -1,5 +1,7 @@
 package algorithms.search;
 
+import java.io.Serializable;
+
 /**
  * 
  * 
@@ -18,7 +20,7 @@ to asses and find the best ones in order to create a solution.
 */
 
 
-public class State<T> {
+public class State<T> implements Serializable{
     private T state;    // the state represented by a <T> type
     private double cost;     // State Cost (domain specific)
     private State<T> cameFrom;  // Father State 
@@ -28,6 +30,10 @@ public State(T state){     // a simple C'tor initialized with a specific domain 
 	this.state = state;
 	this.cost = 1;
 	this.cameFrom= null;
+	
+}
+public State(){     // a simple C'tor 
+	
 	
 }
 

@@ -65,7 +65,7 @@ public abstract class CommonSearcher<T> implements Searcher<T> {
 		  * 
 		 * <h1>Back Trace</h1>
 		 get a start state and a goal state as parameters and return
-		 an array consisted from the parent states all the way to the start.
+		 an array consisted of the parent states all the way to the start.
 			
 		 * 
 		 * 
@@ -82,19 +82,26 @@ public abstract class CommonSearcher<T> implements Searcher<T> {
 			 ArrayList<State<T>> list = new ArrayList<State<T>>();
 			 State<T> current = end;
 			 list.add(current);
+			 if(start!=null&&end!=null){
 			 while (!current.equals(start))
 			 {
 				 if(current.getCameFrom()!= null){
 				 list.add(current.getCameFrom());
 				 current=current.getCameFrom();
 				 }
-				 else
+				 else{
 					 System.out.println("ERROR : path not complete");
+					 return null;
+				 }
+				 
 			 }
 			 Collections.reverse(list);
 			 path.setSolution(list);
 			 return path;
 		 }
+			 return null;
+		 }
+		 
 		 }
 	
 		 

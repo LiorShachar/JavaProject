@@ -1,9 +1,12 @@
 package algorithms.mazeGenerators;
 
+import java.io.DataOutputStream;import java.io.IOException;
+import java.io.OutputStream;
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Random;
-
+import java.nio.ByteBuffer;
 import algorithms.search.Searcher;
 
 /**
@@ -33,6 +36,9 @@ public class Maze3d implements MazeProblem {
 	
 	
 	
+
+
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -45,6 +51,8 @@ public class Maze3d implements MazeProblem {
 		result = prime * result + zSize;
 		return result;
 	}
+
+
 
 	@Override
 	public boolean equals(Object obj) {
@@ -76,17 +84,21 @@ public class Maze3d implements MazeProblem {
 		return true;
 	}
 
+
+
 	public Maze3d(byte[] arr){
+		ByteBuffer b = ByteBuffer.wrap(arr); // byte buffer allowes us to iterate over a byte array and get either an int or a single byte
 		
-		ySize=(int)arr[0];
-		xSize=(int)arr[1];
-		zSize=(int)arr[2];
+		ySize=b.getInt();
+		xSize=b.getInt();
+		zSize=b.getInt();
 		
-		StartPosition= new Position((int)arr[3],(int)arr[4],(int)arr[5]) ;
-		GoalPosition= new Position((int)arr[6],(int)arr[7],(int)arr[8]) ;
+		StartPosition= new Position(b.getInt(),b.getInt(),b.getInt()) ;
+		GoalPosition= new Position(b.getInt(),b.getInt(),b.getInt()) ;
 		
-		this.map = new int[ySize][xSize][zSize];
-		int itr = 9;
+		this.map = new int[ySize][xSize][zSize]; // we init the maze with our int values
+		
+		// now we use a loop to read the map which is represented by byte values.
 		
 		for (int i = 0; i < ySize; i++) {
 
@@ -94,8 +106,8 @@ public class Maze3d implements MazeProblem {
 
 				for (int k = 0; k < zSize; k++) {
 
-					this.map[i][j][k] = arr[itr];
-					itr++;
+					this.map[i][j][k] = (int)b.get();
+					
 
 				}
 
@@ -106,22 +118,57 @@ public class Maze3d implements MazeProblem {
 		
 	}
 
+	
+
+	/**
+	 * return the maze data as a byte array, int's are represented as four bytes and their places in the array are fixed
+	 * that way we are able to init the maze accordingly, and our data isn't limited to numbers below 127.
+	 * **/
 	public byte[] toByteArray() {
+		int o;
+		byte arr[] = new byte[(xSize * ySize * zSize) + 36]; // every position has 3 int's + 3 ints of x,y,z size. 9 int's in total equals 36 bytes with fixed indexes.
+		byte temparr[];
+		
+		
+		temparr = intToBytes(ySize); // init the array with the y size int
+		for ( o = 0; o < 4; o++)
+		{arr[o]=temparr[o];}
+		
+		temparr = intToBytes(xSize);// init the array with the x size int
+		for ( o=0; o < 4; o++)
+		{arr[4+o]=temparr[o];}
+		
+		temparr = intToBytes(zSize);// init the array with the z size int
+		for ( o=0; o < 4; o++)
+		{arr[8+o]=temparr[o];}
 
-		byte arr[] = new byte[(xSize * ySize * zSize) + 9];
-		arr[0] = (byte) ySize;
-		arr[1] = (byte) xSize;
-		arr[2] = (byte) zSize;
+		temparr = intToBytes(this.getStartPosition().getY());// init the array with the start position y int
+		for ( o=0; o < 4; o++)
+		{arr[12+o]=temparr[o];}
+		
+		temparr = intToBytes(this.getStartPosition().getX());// init the array with the start position x int
+		for ( o=0; o < 4; o++)
+		{arr[16+o]=temparr[o];}
+		
+		temparr = intToBytes(this.getStartPosition().getZ());// init the array with the start position z int
+		for ( o=0; o < 4; o++)
+		{arr[20+o]=temparr[o];}
+		
+		temparr = intToBytes(this.getGoalPosition().getY());// init the array with the goal position y int
+		for ( o=0; o < 4; o++)
+		{arr[24+o]=temparr[o];}
+		
+		temparr = intToBytes(this.getGoalPosition().getX());// init the array with the goal position x int
+		for ( o=0; o < 4; o++)
+		{arr[28+o]=temparr[o];}
+		
+		temparr = intToBytes(this.getGoalPosition().getZ());// init the array with the goal position z int
+		for ( o=0; o < 4; o++)
+		{arr[32+o]=temparr[o];}
+		
+	
 
-		arr[3] = (byte) this.getStartPosition().getY();
-		arr[4] = (byte) this.getStartPosition().getX();
-		arr[5] = (byte) this.getStartPosition().getZ();
-
-		arr[6] = (byte) this.getGoalPosition().getY();
-		arr[7] = (byte) this.getGoalPosition().getX();
-		arr[8] = (byte) this.getGoalPosition().getZ();
-
-		int itr = 9; // maze map info starts from the 9th place on our array
+		int itr = 36; // maze map info starts from the 36th place on our array
 
 		for (int i = 0; i < ySize; i++) {
 
@@ -139,6 +186,22 @@ public class Maze3d implements MazeProblem {
 		return arr;
 	}
 
+public static byte[] intToBytes(int i){
+		
+		ByteBuffer b = ByteBuffer.allocate(4);
+		//b.order(ByteOrder.BIG_ENDIAN); // optional, the initial order of a byte buffer is always BIG_ENDIAN.
+		b.putInt(i);
+		return b.array();
+		}
+	
+public static int bytesToInt(byte[] arr){
+		
+		ByteBuffer b = ByteBuffer.wrap(arr);
+		return b.getInt();
+		
+		}
+	
+	
 	public Maze3d(int ySize, int xSize, int zSize) { // C`tor, initialize every
 														// cell with 1.
 
@@ -162,12 +225,12 @@ public class Maze3d implements MazeProblem {
 		}
 	}
 
-	public int numOfMoves(Position p) {
+	public int numOfMoves(Position p) {// number of moves available from the given position
 		ArrayList<Position> list = getPossibleMovesList(p);
 		return list.size();
 	}
 
-	public String[] getPossibleMoves(Position p) {
+	public String[] getPossibleMoves(Position p) { //
 
 		ArrayList<Position> moves = getPossibleMovesList(p);
 		ArrayList<String> strings = new ArrayList<String>();
@@ -177,7 +240,7 @@ public class Maze3d implements MazeProblem {
 
 	}
 
-	public ArrayList<Position> getPossibleMovesList(Position p) {
+	public ArrayList<Position> getPossibleMovesList(Position p) { // a list of available Positions with the available coords
 		ArrayList<Position> moves = new ArrayList<Position>();
 
 		if (this.getCell(p.down()) == 0)
@@ -202,7 +265,8 @@ public class Maze3d implements MazeProblem {
 
 	}
 
-	public String[] getPossibleMovesStringDirections(Position p) {
+	
+	public String[] getPossibleMovesStringDirections(Position p) {//get all possible moves as actual directions by strings
 
 		String[] moves = new String[6];
 		int c = 0;
@@ -473,7 +537,9 @@ public class Maze3d implements MazeProblem {
 
 		StartPosition = startPosition;
 	}
-
+	/**
+	 * generates a starting point in the boundaries of the maze.
+	 */
 	public void generateStartPosition() {
 
 		int c;
@@ -570,7 +636,9 @@ public class Maze3d implements MazeProblem {
 		}
 
 	}
-
+/**
+ * generates an exit point in the boundaries of the maze
+ */
 	public void generateGoalPosition() {
 
 		int c;
