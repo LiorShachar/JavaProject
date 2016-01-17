@@ -104,15 +104,11 @@ public class MyViewCLI extends CommonView implements View,Observer {
  */
 
 	@Override
-	public void showList(String string) {
-		File lister = new File(string);
-		try {
-			String[] pathdetails = lister.list();
-			for (String s: pathdetails)
-				showMsg(s);
-		} catch (NullPointerException e) {
-			showMsg("File or Directory not found");
-		}
+	public void showDir(String []pathdetails) {
+		
+		for (String s: pathdetails)
+			showMsg(s);
+		
 		
 		
 	}
@@ -319,11 +315,6 @@ public String getViewType() {
 	return ViewType;
 }
 
-@Override
-public void initMazeWidget(Maze3d maze, String name) {
-	// TODO Auto-generated method stub
-	
-}
 
 
 

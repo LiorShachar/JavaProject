@@ -32,7 +32,7 @@ import algorithms.mazeGenerators.Maze3d;
 import algorithms.mazeGenerators.Position;
 import algorithms.search.Solution;
 import algorithms.search.State;
-import controller.Properties;
+import singletonexplicitpack.Properties;
 import widgets.GameCharacter;
 import widgets.MazeDisplayer;
 import widgets.MyMazeWidget;
@@ -399,7 +399,7 @@ public class GuiWindowView extends commonGuiView implements View{
 									scno("saveSettings", "resources/properties.xml");	
 										
 								}
-								Properties.print();
+								prop.print();
 								xmldialog.dispose();
 							}
 							
@@ -653,7 +653,7 @@ public class GuiWindowView extends commonGuiView implements View{
 
 
 	@Override
-	public void showList(String string) {
+	public void showDir(String []string) {
 		// TODO showList
 		
 	}

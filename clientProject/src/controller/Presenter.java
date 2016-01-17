@@ -8,6 +8,7 @@ import java.util.Set;
 import algorithms.mazeGenerators.Maze3d;
 import algorithms.mazeGenerators.Position;
 import model.Model;
+import singletonexplicitpack.Properties;
 import view.GuiWindowView;
 import view.MyViewCLI;
 import view.View;
@@ -74,7 +75,8 @@ public class Presenter implements Observer {
 
 			@Override
 			public void doCommand(String[] args) {
-				v.showList(args[1]);
+				m.handleDir(args[1]);
+				
 			}
 		});
 
@@ -95,7 +97,7 @@ public class Presenter implements Observer {
 
 			@Override
 			public void doCommand(String[] args) {
-				v.showMaze(m.getMazes().get(args[1]).toByteArray());
+				v.showMaze(((Maze3d) m.getMazeByName(args[1])).toByteArray());
 
 			}
 		});
@@ -105,7 +107,7 @@ public class Presenter implements Observer {
 
 			@Override
 			public void doCommand(String[] args) {
-				v.showCross(m.getMazes().get(args[7]).toByteArray(), args[4], Integer.parseInt(args[5]));
+				v.showCross(m.getMazeByName(args[7]).toByteArray(), args[4], Integer.parseInt(args[5]));
 
 			}
 		});

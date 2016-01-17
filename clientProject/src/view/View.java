@@ -28,7 +28,7 @@ import algorithms.search.Solution;
 public interface View {
 	  void start();
 	  void close();
-	void showList(String string);
+	void showDir(String []string);
 	void showMsg(String s);
 	void showError(String s);
 	 String getViewType();

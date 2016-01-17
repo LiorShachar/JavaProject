@@ -5,6 +5,7 @@ import java.util.HashMap;
 import algorithms.mazeGenerators.Maze3d;
 import algorithms.mazeGenerators.Position;
 import algorithms.search.Solution;
+import singletonexplicitpack.Properties;
 
 /**
 *
@@ -47,11 +48,9 @@ public interface Model {
 	  * */
 	 Object getSolutionFor(String name);
 	 
-	
 	 void handleSolveMaze(String name,String algo);
 	
-	 
-
+	
 	public Object getData(String string);
 
 	
@@ -65,8 +64,8 @@ public interface Model {
 	
 	void handleLoadProperties(String path);
 	
-	void handleSaveProperties(String path);
+	void handleSaveProperties(Properties p,String path);
 	
 	
-	void serializeAndCachSolutions();
+	
 }

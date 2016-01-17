@@ -3,6 +3,7 @@ package model;
 import java.io.DataInputStream;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -35,9 +36,9 @@ import algorithms.search.MazeAirDis;
 import algorithms.search.MazeManDis;
 import algorithms.search.Solution;
 import algorithms.search.searchableMaze3d;
-import controller.Properties;
 import io.MyCompressorOutputStream;
 import io.MyDecompressorInputStream;
+import singletonexplicitpack.Properties;
 import sun.management.ManagementFactoryHelper;
 
 /**
@@ -62,7 +63,7 @@ public class MyModel extends CommonModel {
 
 	private HashMap<String, Maze3d> mazes;
 	private HashMap<Maze3d, Solution<Position>> solutions;
-
+	Properties prop;
 	private ExecutorService threadPool;
 	String defaultSettingsPath;
 	
@@ -199,7 +200,7 @@ public class MyModel extends CommonModel {
 		File test = new File("testfile.maz");
 		scno("msg", "File Size of " + name + ": " + test.length() + " Bytes");
 		test.delete();
-		//TODO computes the file size by saving it...its wrong
+		//TODO computes the file size by saving it...need another way
 	}
 
 	/**
@@ -392,7 +393,14 @@ public class MyModel extends CommonModel {
 
 	@Override
 	public void handleDir(String string) {
-		// TODO handleDir
+		File lister = new File(string);
+		try {
+			String[] pathdetails = lister.list();
+			scno("DirDetails", pathdetails);
+		} catch (NullPointerException e) {
+			scno("error", "file or directory isn't found");
+		}
+		
 		
 	}
 	@Override
@@ -435,10 +443,10 @@ public class MyModel extends CommonModel {
              oos.writeObject(serialized);
              oos.close();
              fos.close();
-             System.out.printf("Serialized HashMap data is saved in memoryCach.zip");
+             System.out.printf("cach updated successfuly to memoryCach.zip");
       }catch(IOException ioe)
        {
-             ioe.printStackTrace();
+             scno("error", "problem updating the cach file");
        }
 		
 		
@@ -468,8 +476,8 @@ public class MyModel extends CommonModel {
 	         
 	      }catch(ClassNotFoundException c)
 	      {
-	         System.out.println("Class not found");
-	         c.printStackTrace();
+	         
+	         scno("error", "problem loading the cach file: class not found");
 	         
 	      }
 	    //  System.out.println("Deserialized HashMap..");
@@ -481,34 +489,38 @@ public class MyModel extends CommonModel {
 	    	  solutions.put(new Maze3d((byte[]) mentry.getKey()), (Solution<Position>)mentry.getValue());
 	      
 	      }
-	    //  System.out.println("Cached memory loaded");
+	      System.out.println("Cached memory loaded");
 	}
 
 	
 	
-	//TODO fix settings loading
+	
 	@Override
 	public void handleLoadProperties(String path) {
-		File f= new File(path);
-		
-		XmlHandler han = new XmlHandler();
-		if(f.exists()){
-			han.LoadDataFromXml(path);
+		try {
+			prop=XMLproperties.getMyPropertiesInstance();
+		} catch (FileNotFoundException e) {
+			try {
+				
+				XMLproperties.writeProperties(new Properties(), "resources/properties.xml");
+				scno("error","no xml profile, creating a default one");
+				prop=XMLproperties.getMyPropertiesInstance();
+			} catch (FileNotFoundException e1) {
+				scno("error","fatal error: system cant write or load settings");
+			}
 			
 		}
-		else
-		{
-			han.LoadDataFromXml(defaultSettingsPath);
-			scno("error","Path to xml file wasn't found, loaded the default settings");
-		}
-		threadPool=Executors.newFixedThreadPool(Properties.getNumberOfThreads());
 	}
 
-	//TODO fix settings save
+	
 	@Override
-	public void handleSaveProperties(String path) {
-		XmlHandler han = new XmlHandler();
-		han.SaveDataToXml(path);
+	public void handleSaveProperties(Properties p,String path) {
+		try {
+			XMLproperties.writeProperties(p, path);
+		} catch (FileNotFoundException e) {
+			scno("error","File Not Found Exception");
+			
+		}
 		
 		
 	}

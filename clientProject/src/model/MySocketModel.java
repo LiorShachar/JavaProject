@@ -3,6 +3,7 @@ package model;
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -15,7 +16,7 @@ import javax.management.NotificationBroadcasterSupport;
 import algorithms.mazeGenerators.Maze3d;
 import algorithms.mazeGenerators.Position;
 import algorithms.search.Solution;
-import controller.Properties;
+import singletonexplicitpack.Properties;
 
 
 public class MySocketModel extends CommonModel implements Model {
@@ -152,8 +153,13 @@ public class MySocketModel extends CommonModel implements Model {
 	}
 
 	@Override
-	public void handleSaveProperties(String path) {
-		//TODO  Save Settings for socket model
+	public void handleSaveProperties(Properties p,String path) {
+		try {
+			XMLproperties.writeProperties(p, path);
+		} catch (FileNotFoundException e) {
+			scno("error","File Not Found Exception");
+			
+		}
 
 	}
 

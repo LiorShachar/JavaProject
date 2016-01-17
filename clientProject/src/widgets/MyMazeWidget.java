@@ -244,7 +244,7 @@ public class MyMazeWidget extends MazeDisplayer {
 
 	@Override
 	public void set2DCharacterPosition(int row, int col) {
-		// TODO get rid of this
+		// TODO not needed
 	}
 
 	@Override
