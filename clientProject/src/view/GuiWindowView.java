@@ -54,6 +54,9 @@ public class GuiWindowView extends commonGuiView implements View{
 	 String temp;
 	 Timer timer;
 	 TimerTask task;
+	 
+	 boolean canExitAll=true;
+	 
 	 /////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	 public GuiWindowView(String title, int width, int height) {
 		super(title, width, height);
@@ -73,15 +76,7 @@ public class GuiWindowView extends commonGuiView implements View{
 		
 		
 		shell.setLayout(new GridLayout(5,true));
-		shell.addDisposeListener(new DisposeListener() {
-			
-			@Override
-			public void widgetDisposed(DisposeEvent e) {
-				
-				scno("exit", " ");
-				
-			}
-		});
+		
 		//***************************************************************** MAIN MENU BAR
         Menu menuBar = new Menu(shell, SWT.BAR);
       //***************************************************************** File Cascade
@@ -105,6 +100,7 @@ public class GuiWindowView extends commonGuiView implements View{
       //*****************************************************************  
         MenuItem exitItem = new MenuItem(fileMenu, SWT.PUSH);
         exitItem.setText("&Exit");
+        exitItem.addListener(SWT.Selection ,listeners.get("exitItem"));
       //*****************************************************************//
         
         
@@ -266,7 +262,20 @@ public class GuiWindowView extends commonGuiView implements View{
 	
 	 
 	 void initListeners() {
-
+		 
+		 //****************************************************** DISPOSE LISTENER
+		 
+		 shell.addDisposeListener(new DisposeListener() {
+			
+			@Override
+			public void widgetDisposed(DisposeEvent e) {
+				scno("GuiDisposed", "");
+				
+			}
+		});
+		 
+		 
+		 
 		// **************************************{ KEY LISTENER
 		// }***********************************
 		this.keys = new KeyListener() {
@@ -379,11 +388,12 @@ public class GuiWindowView extends commonGuiView implements View{
 										 safetyflag=true;
 									 }
 										
-										
+									 Properties settings=new Properties();
 										try {
 											
 											if(safetyflag)
-											Properties.class.getDeclaredFields()[i].set(new Properties(), temp);
+												
+											Properties.class.getDeclaredFields()[i].set(settings, temp);
 											
 											
 											
@@ -563,6 +573,7 @@ public class GuiWindowView extends commonGuiView implements View{
 			}
 		});
 		// ***************************************************************************************************************
+		
 		listeners.put("solveButton", new Listener() {
 			public void handleEvent(Event event) {
 				
@@ -571,8 +582,15 @@ public class GuiWindowView extends commonGuiView implements View{
 				scno("solveRequest", solvedetails);
 			}
 		});
+		
 		// ***************************************************************************************************************
-	
+				
+				listeners.put("exitItem", new Listener() {
+					public void handleEvent(Event event) {
+					close();
+					}
+				});
+				// ***************************************************************************************************************
 
 	
 	
@@ -755,13 +773,16 @@ public class GuiWindowView extends commonGuiView implements View{
 
 	}
 		
-	
 
 
-
+               /**
+                * when the shell is disposed
+                * **/
 	@Override
 	public void close() {
-		// TODO close (CHANGE THE DISPOSE LISTENER)
+		canExitAll=false; // set the exit safety, since we want to dispose the view and keep the model running, once the shell is disposed the presenter gets notified with the safety boolean 
+		if(!shell.isDisposed())
+		shell.dispose();
 		
 	}
 
@@ -789,6 +810,18 @@ public class GuiWindowView extends commonGuiView implements View{
 		ViewType=this.getClass().getSimpleName();
 		return ViewType;
 		
+	}
+
+
+
+	public boolean isCanExitAll() {
+		return canExitAll;
+	}
+
+
+
+	public void setCanExitAll(boolean canExitAll) {
+		this.canExitAll = canExitAll;
 	}
 	
 

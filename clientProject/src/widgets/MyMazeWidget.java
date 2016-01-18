@@ -130,7 +130,7 @@ public class MyMazeWidget extends MazeDisplayer {
 										(int) Math.round((w0 + w1) / 2), (int) Math.round(h));
 
 							}
-							if (i==maze.getGoalPosition().getX()&&j==maze.getGoalPosition().getZ())
+							if (i==maze.getGoalPosition().getX()&&j==maze.getGoalPosition().getZ()&&currentPosition.getY()==maze.getGoalPosition().getY())
 								e.gc.drawImage(goalImage, 0, 0, 256, 256, (int) Math.round(dpoints[0]), (int) Math.round(dpoints[1] - cheight / 2), (int) Math.round((w0 + w1) / 2), (int) Math.round(h));
 
 						}

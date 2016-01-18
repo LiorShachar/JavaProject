@@ -130,12 +130,7 @@ public class MySocketModel extends CommonModel implements Model {
 	}
 
 
-	@Override
-	public void handleExit() {
-		Object m="";
-		packageToServer("handleExit",m);
-
-	}
+	
 
 
 	@Override
@@ -211,7 +206,7 @@ public class MySocketModel extends CommonModel implements Model {
 
 	@Override
 	public void close() {
-		// TODO Auto-generated method stub
+		// TODO tell the remote server your'e done
 		
 	}
 
@@ -224,7 +219,7 @@ public class MySocketModel extends CommonModel implements Model {
 
 	@Override
 	public void start() {
-		// TODO Auto-generated method stub
+		// TODO START THE LOOP THREAD
 		
 	}
 	

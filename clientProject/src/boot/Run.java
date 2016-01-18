@@ -35,7 +35,8 @@ public class Run {
 		
 		   p.setModel(m);
 		   m.addObserver(p);
-		   m.loadCachedSolutions();
+		   m.start();
+		   
 		   
 		  
 		  

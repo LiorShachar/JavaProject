@@ -54,7 +54,7 @@ public interface Model {
 	public Object getData(String string);
 
 	
-	void handleExit();
+	
 
 	void close();
 	

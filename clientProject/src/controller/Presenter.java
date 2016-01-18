@@ -79,7 +79,7 @@ public class Presenter implements Observer {
 			@Override
 			public void doCommand(String[] args) {
 				m.handleDir(args[1]);
-				
+
 			}
 		});
 
@@ -195,7 +195,7 @@ public class Presenter implements Observer {
 			@Override
 			public void doCommand(String[] args) {
 
-				if(((Maze3d)m.getMazeByName(args[0])).equals((Maze3d)(m.getMazeByName(args[2]))))
+				if (((Maze3d) m.getMazeByName(args[0])).equals((Maze3d) (m.getMazeByName(args[2]))))
 					v.showMsg("mazes are equal");
 				else
 					v.showMsg("mazes are NOT equal");
@@ -209,8 +209,6 @@ public class Presenter implements Observer {
 
 			@Override
 			public void doCommand(String[] args) {
-
-				
 
 			}
 		});
@@ -233,7 +231,8 @@ public class Presenter implements Observer {
 
 			@Override
 			public void doCommand(String[] args) {
-				v.showMsg("*************************************************************************************************");
+				v.showMsg(
+						"*************************************************************************************************");
 				v.showMsg("dir <directory/path>");
 				v.showMsg("generate 3d maze <name of the maze> <x size (rows)> <y size (levels)> <z size(columns)>");
 				v.showMsg("display <name of the maze>");
@@ -244,7 +243,8 @@ public class Presenter implements Observer {
 				v.showMsg("file size <name of the maze>");
 				v.showMsg("solve <name of the maze> <BFS/Astar>");
 				v.showMsg("display solution <name of the maze>");
-				v.showMsg("*************************************************************************************************");
+				v.showMsg(
+						"*************************************************************************************************");
 
 			}
 		});
@@ -297,17 +297,22 @@ public class Presenter implements Observer {
 				}
 				break;
 
+			case "GuiDisposed":
+				if (((GuiWindowView) v).isCanExitAll())
+					m.close();
+				break;
+
 			case "loadSettings":
-				//String xmlpath = (String) v.getData(note);
-				//TODO check if needed
+				// String xmlpath = (String) v.getData(note);
+				// TODO check if needed
 				m.handleLoadProperties();
 				break;
 
 			case "saveSettings":
-				//TODO make sure it works fine
-				Object []savedetails = (Object[]) v.getData(note);
-				m.handleSaveProperties((Properties)savedetails[0],(String)savedetails[1]);
-				
+				// TODO make sure it works fine
+				Object[] savedetails = (Object[]) v.getData(note);
+				m.handleSaveProperties((Properties) savedetails[0], (String) savedetails[1]);
+
 				break;
 
 			case "loadfrom":
@@ -329,7 +334,7 @@ public class Presenter implements Observer {
 				break;
 
 			case "initMazeWidgetRequest":
-				//TODO check if this works fine
+				// TODO check if this works fine
 				String mazetoinit = (String) v.getData(note);
 				Maze3d maze = (Maze3d) m.getMazeByName(mazetoinit);
 				((GuiWindowView) v).initMazeWidget(maze, mazetoinit);
@@ -346,11 +351,11 @@ public class Presenter implements Observer {
 				String mazesavedetails[] = (String[]) v.getData(note);
 
 				Maze3d lol = (Maze3d) m.getMazeByName(mazesavedetails[0]); // gets
-																		// the
-																		// maze
-																		// from
-																		// the
-																		// model
+																			// the
+																			// maze
+																			// from
+																			// the
+																			// model
 				byte b[];
 				b = lol.toByteArray(); // turn the maze into a byte array
 
@@ -361,7 +366,8 @@ public class Presenter implements Observer {
 				Object solvedetails[] = (Object[]) v.getData(note);
 				m.handleUpdatePosition(new Position((Position) solvedetails[0]), (String) solvedetails[1]);
 				try {
-					m.handleSolveMaze((String) solvedetails[1], XMLproperties.getMyPropertiesInstance().getSearchingAlgorithm());
+					m.handleSolveMaze((String) solvedetails[1],
+							XMLproperties.getMyPropertiesInstance().getSearchingAlgorithm());
 				} catch (FileNotFoundException e) {
 					v.showError("problem loading the searching algorithm from the properties file");
 				}
@@ -374,8 +380,8 @@ public class Presenter implements Observer {
 				break;
 
 			case "exit":
-				//TODO configure the order of closing and exits on runtime
-				
+				// TODO configure the order of closing and exits on runtime
+
 				break;
 
 			}
@@ -386,16 +392,26 @@ public class Presenter implements Observer {
 
 		{
 			switch (note) {
-			
-			
+			case "modelReady":
+				updateView();
+				break;
+
 			case "loaded":
 				v.showMazeIsReady((String) m.getData(note));
 				break;
 			case "error":
-				v.showError((String) m.getData(note));
+				if (v != null) {
+					v.showError((String) m.getData(note));
+				} else {
+					System.out.println((String) m.getData(note));
+				}
 				break;
 			case "msg":
-				v.showMsg((String) m.getData(note));
+				if (v != null) {
+					v.showMsg((String) m.getData(note));
+				} else {
+					System.out.println((String) m.getData(note));
+				}
 				break;
 
 			case "solutionReady":
@@ -414,13 +430,28 @@ public class Presenter implements Observer {
 		}
 
 	}
-	
-	
-	
-	
+
+	/**
+	 * 
+	 * whenever something happend to the view this method can check its own
+	 * status and get a new view according to the properties
+	 */
+	public void updateView() {
+		try {
+			String choice = XMLproperties.getMyPropertiesInstance().getUserInterface();
+			if (choice.matches("[Cc][Ll][Ii]")) {
+				switchToCLI();
+			} else
+				switchToGUI();
+
+		} catch (FileNotFoundException e) {
+			System.out.println("User Interface choice isnt reachable, properties file failed to load");
+			e.printStackTrace();
+		}
+	}
 
 	public void switchToCLI() {
-		if(v!=null)
+		if (v != null)
 			v.close();
 		setView(new MyViewCLI());
 		((Observable) v).addObserver(this);
@@ -429,7 +460,7 @@ public class Presenter implements Observer {
 	}
 
 	public void switchToGUI() {
-		if(v!=null)
+		if (v != null)
 			v.close();
 		setView(new GuiWindowView("My View", 800, 500));
 		((Observable) v).addObserver(this);

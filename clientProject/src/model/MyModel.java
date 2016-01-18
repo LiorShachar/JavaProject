@@ -65,7 +65,7 @@ public class MyModel extends CommonModel {
 	private HashMap<Maze3d, Solution<Position>> solutions;
 	Properties prop;
 	private ExecutorService threadPool;
-	String defaultSettingsPath;
+	
 	
 	
 	
@@ -77,10 +77,8 @@ public class MyModel extends CommonModel {
 
 		mazes = new HashMap<String,Maze3d>();
 		solutions = new HashMap<Maze3d, Solution<Position>>();
-		
-		
 		threadPool=Executors.newFixedThreadPool(1);
-		defaultSettingsPath="resources/defaultSettings.xml";
+		
 		
 	}
 
@@ -307,10 +305,10 @@ public class MyModel extends CommonModel {
 	 */
 
 	@Override
-	public void handleExit() {
+	public void close() {
 		
 		try {
-			
+			serializeAndCachSolutions();
 			scno("msg", "Shutting down...");
 			this.threadPool.shutdown();
 			this.threadPool.awaitTermination(10,TimeUnit.SECONDS );
@@ -437,7 +435,7 @@ public class MyModel extends CommonModel {
 		try
         {
 		FileOutputStream fos =
-                new FileOutputStream("memoryCach.zip");
+                new FileOutputStream("resources/memoryCach.zip");
 		GZIPOutputStream gos = new GZIPOutputStream(fos);
              ObjectOutputStream oos = new ObjectOutputStream(gos);
              oos.writeObject(serialized);
@@ -470,9 +468,19 @@ public class MyModel extends CommonModel {
 	         serialized = (HashMap) ois.readObject();
 	         ois.close();
 	         fis.close();
+	     //  System.out.println("Deserialized HashMap..");
+		      // Display content using Iterator
+		      Set set = serialized.entrySet();
+		      Iterator iterator = set.iterator();
+		      while(iterator.hasNext()) {
+		    	  Map.Entry mentry = ( Map.Entry)iterator.next();
+		    	  solutions.put(new Maze3d((byte[]) mentry.getKey()), (Solution<Position>)mentry.getValue());
+		      
+		      }
+		      scno("msg","Cached memory loaded");
 	      }catch(IOException ioe)
 	      {
-	         ioe.printStackTrace();
+	    	  scno("error", "problem loading the cach file: file not found");
 	         
 	      }catch(ClassNotFoundException c)
 	      {
@@ -480,16 +488,7 @@ public class MyModel extends CommonModel {
 	         scno("error", "problem loading the cach file: class not found");
 	         
 	      }
-	    //  System.out.println("Deserialized HashMap..");
-	      // Display content using Iterator
-	      Set set = serialized.entrySet();
-	      Iterator iterator = set.iterator();
-	      while(iterator.hasNext()) {
-	    	  Map.Entry mentry = ( Map.Entry)iterator.next();
-	    	  solutions.put(new Maze3d((byte[]) mentry.getKey()), (Solution<Position>)mentry.getValue());
-	      
-	      }
-	      System.out.println("Cached memory loaded");
+	    
 	}
 
 	
@@ -504,10 +503,10 @@ public class MyModel extends CommonModel {
 			try {
 				
 				XMLproperties.writeProperties(new Properties(), "resources/properties.xml");
-				scno("error","no xml profile, creating a default one");
+				System.out.println("error : no xml profile, creating a default one");
 				prop=XMLproperties.getMyPropertiesInstance();
 			} catch (FileNotFoundException e1) {
-				scno("error","fatal error: system cant write or load settings");
+				System.out.println("fatal error: system cant write or load settings");
 			}
 			
 		}
@@ -526,15 +525,13 @@ public class MyModel extends CommonModel {
 		
 	}
 
-	@Override
-	public void close() {
-		// TODO Auto-generated method stub
-		
-	}
+	
 
 	@Override
 	public void start() {
-		// TODO Auto-generated method stub
+		handleLoadProperties();
+		loadCachedSolutions();
+		scno("modelReady", "");
 		
 	}
 	

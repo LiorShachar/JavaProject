@@ -12,7 +12,7 @@ public class Properties implements Serializable {
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 7914288303263635885L;
+	//private static final long serialVersionUID = 7914288303263635885L;
 	/**
 	 * 
 	 */
