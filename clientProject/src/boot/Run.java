@@ -31,16 +31,12 @@ public class Run {
 		
 		
 		Presenter p = new Presenter(); 
-		
-		
-	//
-		
-		
 		MyModel m = new MyModel();
+		
 		   p.setModel(m);
 		   m.addObserver(p);
 		   m.loadCachedSolutions();
-		   p.loadSettings("resources/properties.xml");
+		   
 		  
 		  
 		  

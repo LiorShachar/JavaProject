@@ -27,7 +27,18 @@ public class Properties implements Serializable {
 	 boolean sound;
 	
 	
-	public Properties() {	
+	public Properties() { 	
+		 server_ip="localhost";
+		 server_port=5400;
+		  userInterface="gui";
+		 generatingAlgorithm="dfs";
+		 searchingAlgorithm="astar";
+		  heuristic="manhatten";
+		 numberOfThreads=10;
+		 sound=true;
+		
+		
+		
 	}
 	
 	
@@ -36,7 +47,7 @@ public class Properties implements Serializable {
 
 	public Properties(String server_ip, int server_port, String userInterface, String generatingAlgorithm,
 			String searchingAlgorithm, String heuristic, int numberOfThreads, boolean sound) {
-		super();
+		
 		this.server_ip = server_ip;
 		this.server_port = server_port;
 		this.userInterface = userInterface;

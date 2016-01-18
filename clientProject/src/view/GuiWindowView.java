@@ -395,11 +395,11 @@ public class GuiWindowView extends commonGuiView implements View{
 										} catch (SecurityException e1) {
 											showError("SecurityException");
 										}
-									
-									scno("saveSettings", "resources/properties.xml");	
+									//TODO FIX this 
+									//scno("saveSettings", "resources/properties.xml");	
 										
 								}
-								prop.print();
+								
 								xmldialog.dispose();
 							}
 							

@@ -101,7 +101,7 @@ public class MyModel extends CommonModel {
 				@Override
 				public Maze3d call() throws Exception {
 					Maze3dGenerator gen;
-					if(Properties.getGenAlgo().matches("[Dd][Ff][Ss]")){
+					if(prop.getGeneratingAlgorithm().matches("[Dd][Ff][Ss]")){
 					gen = new MyMaze3dGenerator();
 					}
 					else{
@@ -254,9 +254,9 @@ public class MyModel extends CommonModel {
 						@Override
 						public Solution<Position> call() throws Exception {
 							Heuristic heur=null;
-							if (Properties.getHeuristic().matches("[Mm][Aa][Nn][Hh][Aa][Tt][Tt][Ee][Nn]"))
+							if (prop.getHeuristic().matches("[Mm][Aa][Nn][Hh][Aa][Tt][Tt][Ee][Nn]"))
 							{heur = new MazeManDis();}
-							else if(Properties.getHeuristic().matches("[Aa][Ii][Rr][Dd][Ii][Ss][Tt][Aa][Nn][Cc][Ee]"))
+							else if(prop.getHeuristic().matches("[Aa][Ii][Rr][Dd][Ii][Ss][Tt][Aa][Nn][Cc][Ee]"))
 							{heur = new MazeAirDis();}
 							else{
 								scno("error", "illegal Astar heuristic");
@@ -496,9 +496,10 @@ public class MyModel extends CommonModel {
 	
 	
 	@Override
-	public void handleLoadProperties(String path) {
+	public void handleLoadProperties() {
 		try {
 			prop=XMLproperties.getMyPropertiesInstance();
+			//TODO check for an update option in runtime
 		} catch (FileNotFoundException e) {
 			try {
 				
@@ -522,6 +523,18 @@ public class MyModel extends CommonModel {
 			
 		}
 		
+		
+	}
+
+	@Override
+	public void close() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void start() {
+		// TODO Auto-generated method stub
 		
 	}
 	

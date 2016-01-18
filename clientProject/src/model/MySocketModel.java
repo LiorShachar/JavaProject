@@ -144,10 +144,23 @@ public class MySocketModel extends CommonModel implements Model {
 	}
 
 	@Override
-	public void handleLoadProperties(String path) {
+	public void handleLoadProperties() {
 		
 		
-		//TODO load settings for socket model
+		try {
+			prop=XMLproperties.getMyPropertiesInstance();
+			//TODO check for an update option in runtime
+		} catch (FileNotFoundException e) {
+			try {
+				
+				XMLproperties.writeProperties(new Properties(), "resources/properties.xml");
+				scno("error","no xml profile, creating a default one");
+				prop=XMLproperties.getMyPropertiesInstance();
+			} catch (FileNotFoundException e1) {
+				scno("error","fatal error: system cant write or load settings");
+			}
+			
+		}
 		
 
 	}
@@ -163,11 +176,7 @@ public class MySocketModel extends CommonModel implements Model {
 
 	}
 
-	@Override
-	public void serializeAndCachSolutions() {
-		//TODO tell the remote to cach?! might not even needed
-
-	}
+	
 
 	
 	void packageToServer(String details,Object object) {
@@ -191,6 +200,32 @@ public class MySocketModel extends CommonModel implements Model {
 			e.printStackTrace();
 		}
 		return null;
+	}
+
+
+
+
+
+
+
+
+	@Override
+	public void close() {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+
+
+
+
+
+
+	@Override
+	public void start() {
+		// TODO Auto-generated method stub
+		
 	}
 	
 }

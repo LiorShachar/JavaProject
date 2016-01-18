@@ -62,7 +62,7 @@ public interface Model {
 
 	Object getMazeByName(String string);
 	
-	void handleLoadProperties(String path);
+	void handleLoadProperties();
 	
 	void handleSaveProperties(Properties p,String path);
 	
