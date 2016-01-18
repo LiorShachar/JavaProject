@@ -13,6 +13,7 @@ import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.events.KeyListener;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
+import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
@@ -33,6 +34,7 @@ import algorithms.mazeGenerators.Position;
 import algorithms.search.Solution;
 import algorithms.search.State;
 import singletonexplicitpack.Properties;
+import sun.audio.AudioStream;
 import widgets.GameCharacter;
 import widgets.MazeDisplayer;
 import widgets.MyMazeWidget;
@@ -42,6 +44,11 @@ public class GuiWindowView extends commonGuiView implements View{
 	
 	MyMazeWidget mazeWin; 
 	
+	//////////////////////{WIDGET FUNCTIONS COMPONENTS}////////////////////////////
+	AudioStream audioStream;
+	Image victorySplashImage;
+	Image goalImage;
+	//////////////////////////////////////////////////////////
 	
 	HashMap<String, Object> notifications;
 	HashMap<String, Listener> listeners;
@@ -308,125 +315,11 @@ public class GuiWindowView extends commonGuiView implements View{
 		
 		
 		// **********************************{XML SETTINGS WIDGET }***************************
-		/**
-		 * Started working on a widget that would get a class and generate all the primitive fields for it automatically
-		 * unfortunately it works only on my Preferences class at the meantime
-		 * **/
+		
 		
 		//TODO improve this, if you can try to make it generic for every class
 		
-				listeners.put("changeSettings", new Listener() {
-					public void handleEvent(Event event) {
-						Shell xmldialog = new Shell(shell, SWT.DIALOG_TRIM | SWT.APPLICATION_MODAL);
-						int fields =Properties.class.getDeclaredFields().length;
-						xmldialog.setLayout(new GridLayout(2, false));
-						Label labels[]=new Label[fields];
-						Text texts[]=new Text[fields];
-						
-						// generate a label and text for every field in the class of the instance
-						
-						for(int i=0;i<fields;i++){
-							labels[i]=new Label(xmldialog, SWT.BORDER);
-							
-							labels[i].setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
-							
-							labels[i].setText(Properties.class.getDeclaredFields()[i].getName());
-							
-							texts[i]=new Text(xmldialog, SWT.BORDER);
-							
-							texts[i].setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
-							
-						}
-						
-						
-						// the button sends the data in the texts to their fields
-						
-						Button saveXmlButton = new Button(xmldialog, SWT.PUSH);
-						saveXmlButton.setLayoutData(new GridData(SWT.CENTER, SWT.CENTER, true, true, 2, 2));
-						saveXmlButton.setText("Save and apply");
-						saveXmlButton.addSelectionListener(new SelectionListener() {
-							
-							@Override
-							public void widgetSelected(SelectionEvent e) {
-								
-								//for every field in this class, set the declared field in the new object to be the value
-								//that is sent from the matching textbox
-								Object temp;
-								boolean safetyflag=false;
-								
-								for(int i=0;i<fields;i++){
-									
-									temp=texts[i].getText(); // the value represented by a String
-									String fieldtype=Properties.class.getDeclaredFields()[i].getType().getSimpleName();
-									
-									
-									 if (fieldtype.matches("[Ss]tring")){
-										 safetyflag=true;
-									 }
-									 else if (fieldtype.matches("int")){
-										 temp=Integer.parseInt(texts[i].getText());
-										 safetyflag=true;
-									 }
-									 else if (fieldtype.matches("double")){
-										 temp=Double.parseDouble(texts[i].getText());
-										 safetyflag=true;
-									 }
-									 else if (fieldtype.matches("boolean")){
-										 temp=Boolean.parseBoolean(texts[i].getText());
-										 safetyflag=true;
-									 }
-									 else if (fieldtype.matches("short")){
-										 temp=Short.parseShort(texts[i].getText());
-										 safetyflag=true;
-									 }
-									 else if (fieldtype.matches("long")){
-										 temp=Long.parseLong(texts[i].getText());
-										 safetyflag=true;
-									 }
-									 else if (fieldtype.matches("float")){
-										 temp=Float.parseFloat(texts[i].getText());
-										 safetyflag=true;
-									 }
-										
-									 Properties settings=new Properties();
-										try {
-											
-											if(safetyflag)
-												
-											Properties.class.getDeclaredFields()[i].set(settings, temp);
-											
-											
-											
-											
-										} catch (IllegalArgumentException e1) {
-											showError("IllegalArgumentException");
-										} catch (IllegalAccessException e1) {
-											showError("IllegalAccessException");
-										} catch (SecurityException e1) {
-											showError("SecurityException");
-										}
-									//TODO FIX this 
-									//scno("saveSettings", "resources/properties.xml");	
-										
-								}
-								
-								xmldialog.dispose();
-							}
-							
-							@Override
-							public void widgetDefaultSelected(SelectionEvent e) {
-								
-								
-							}
-						});
-						
-						
-						
-						xmldialog.pack();
-						xmldialog.open();
-
-					}
-				});
+				
 				
 		// ***************************************************************************************************************
 		listeners.put("about", new Listener() {

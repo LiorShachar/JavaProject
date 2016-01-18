@@ -28,63 +28,31 @@ import algorithms.mazeGenerators.Position;
 import sun.audio.AudioPlayer;
 import sun.audio.AudioStream;
 
-public class MyMazeWidget extends MazeDisplayer {
-	AudioStream audioStream;
-	ImageGameCharacter chr;
-	Position currentPosition;
-	Image victorySplashImage;
-	Image goalImage;
-	Maze3d maze;
-	String mazeName;
-	Label splashlbl;
-	public boolean won = false;
+public class MyMazeWidget extends commonMaze3dWidget {
+
 	Color colors[] = { new Color(null, 0, 255, 250), new Color(null, 255, 255, 255), new Color(null, 180, 230, 255),
 			new Color(null, 0, 255, 252) };
 
-	public Image getVictorySplashImage() {
-		return victorySplashImage;
-	}
+	Image goalImage;
+	Image charImage;
 
-	public void setVictorySplashImage(Image victorySplashImage) {
-		this.victorySplashImage = victorySplashImage;
-	}
-
-	public Position getCurrentPosition() {
-		return currentPosition;
-	}
-
-	public String getMazeName() {
-		return mazeName;
-	}
-
-	public boolean isWon() {
-		return won;
-	}
-
-	public void setMazeName(String mazeName) {
-		this.mazeName = mazeName;
-	}
-
-	public Maze3d getMaze() {
-		return maze;
-	}
-
-	public void setMaze(Maze3d maze) {
-		this.maze = maze;
-	}
+	
 
 	public MyMazeWidget(Composite parent, int style, Maze3d maze, String name) {
-		super(parent, style);
-		chr = new ImageGameCharacter(this, SWT.NONE, new Image(getDisplay(), "resources/Chibi_Goku_2.png"));
-		victorySplashImage = new Image(getDisplay(), "resources/winsplash.jpg");
-		goalImage = new Image(getDisplay(), "resources/dragonball.png");
+		this( parent,style,  maze,  name, new Image(parent.getDisplay(), "resources/dragonball.png"), new Image(parent.getDisplay(), "resources/Chibi_Goku_2.png"));
+	}
+
+	public MyMazeWidget(Composite parent, int style, Maze3d maze, String name, Image goalImage, Image charImage) {
 		
-		
-		
-		
+		super(parent, style, maze, name);
+		this.goalImage = goalImage;
+		this.charImage = charImage;
+		chr = new ImageGameCharacter(this, SWT.NONE, charImage);
 		currentPosition = new Position(0, 0, 0);
+		
 		this.maze = maze;
 		this.mazeName = name;
+		
 		set3DCharacterPosition(maze.getStartPosition());
 		setBackground(new Color(null, 255, 255, 255));
 
@@ -101,98 +69,85 @@ public class MyMazeWidget extends MazeDisplayer {
 
 			@Override
 			public void paintControl(PaintEvent e) {
-				
-				
-					
-				
-					int width = getSize().x;
-					int height = getSize().y;
 
-					int mx = width / 2;
+				int width = getSize().x;
+				int height = getSize().y;
 
-					double w = (double) width / mazeData.length;
-					double h = (double) height / mazeData[0].length;
+				int mx = width / 2;
 
-					for (int i = 0; i < mazeData.length; i++) {
-						double w0 = 0.7 * w + 0.3 * w * i / mazeData.length;
-						double w1 = 0.7 * w + 0.3 * w * (i + 1) / mazeData.length;
-						double start = mx - w0 * mazeData[i].length / 2;
-						double start1 = mx - w1 * mazeData[i].length / 2;
-						for (int j = 0; j < mazeData[i].length; j++) {
-							double[] dpoints = { start + j * w0, i * h, start + j * w0 + w0, i * h,
-									start1 + j * w1 + w1, i * h + h, start1 + j * w1, i * h + h };
-							double cheight = h / 2;
-							if (mazeData[i][j] != 0)
-								paintCube(dpoints, cheight, e);
+				double w = (double) width / mazeData.length;
+				double h = (double) height / mazeData[0].length;
 
-							if (i == chr.x && j == chr.z) {
-								chr.paint(e, (int) Math.round(dpoints[0]), (int) Math.round(dpoints[1] - cheight / 2),
-										(int) Math.round((w0 + w1) / 2), (int) Math.round(h));
+				for (int i = 0; i < mazeData.length; i++) {
+					double w0 = 0.7 * w + 0.3 * w * i / mazeData.length;
+					double w1 = 0.7 * w + 0.3 * w * (i + 1) / mazeData.length;
+					double start = mx - w0 * mazeData[i].length / 2;
+					double start1 = mx - w1 * mazeData[i].length / 2;
+					for (int j = 0; j < mazeData[i].length; j++) {
+						double[] dpoints = { start + j * w0, i * h, start + j * w0 + w0, i * h, start1 + j * w1 + w1,
+								i * h + h, start1 + j * w1, i * h + h };
+						double cheight = h / 2;
+						if (mazeData[i][j] != 0)
+							paintCube(dpoints, cheight, e);
 
-							}
-							if (i==maze.getGoalPosition().getX()&&j==maze.getGoalPosition().getZ()&&currentPosition.getY()==maze.getGoalPosition().getY())
-								e.gc.drawImage(goalImage, 0, 0, 256, 256, (int) Math.round(dpoints[0]), (int) Math.round(dpoints[1] - cheight / 2), (int) Math.round((w0 + w1) / 2), (int) Math.round(h));
+						if (i == chr.x && j == chr.z) {
+							chr.paint(e, (int) Math.round(dpoints[0]), (int) Math.round(dpoints[1] - cheight / 2),
+									(int) Math.round((w0 + w1) / 2), (int) Math.round(h));
 
 						}
-
-						e.gc.setForeground(new Color(null, 255, 0, 0));
-						e.gc.drawString("Position: " + currentPosition, 0, 20);
+						if (i == maze.getGoalPosition().getX() && j == maze.getGoalPosition().getZ()
+								&& currentPosition.getY() == maze.getGoalPosition().getY())
+							e.gc.drawImage(goalImage, 0, 0, 256, 256, (int) Math.round(dpoints[0]),
+									(int) Math.round(dpoints[1] - cheight / 2), (int) Math.round((w0 + w1) / 2),
+									(int) Math.round(h));
 
 					}
-					
-				
+
+					e.gc.setForeground(new Color(null, 255, 0, 0));
+					e.gc.drawString("Position: " + currentPosition, 0, 20);
+
+				}
+
 			}
-			
+
 		});
 
 	}
 
-	protected void showVictory(Image background) {
-		 InputStream in;
-			try {
-				in = new FileInputStream("resources/dandan.mid");
-				 // create an audiostream from the inputstream
-		        audioStream = new AudioStream(in);
-		     
-		        // play the audio clip with the audioplayer class
-		        AudioPlayer.player.start(audioStream);
-		        
-			} catch (FileNotFoundException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			} catch (IOException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			}
-		Shell shell = new Shell (this.getShell(), SWT.FILL |SWT.DOUBLE_BUFFERED);
-        shell.setLayout(new FillLayout ());
-        
-
-        shell.addListener (SWT.Paint, new Listener () 
-        {
-            public void handleEvent (Event e) {
-                GC gc = e.gc;
-                int x = 0, y = 0;
-                gc.drawImage (background, x, y);
-                gc.dispose();
-            }
-        });
-        shell.setSize(background.getBounds().width, background.getBounds().height);
-       
-        shell.open ();
-        
-       
-     shell.addDisposeListener(new DisposeListener() {
-		
-		@Override
-		public void widgetDisposed(DisposeEvent e) {
-			AudioPlayer.player.stop(audioStream);
-			
-		}
-	});
-       
-		
-	}
+	// TODO move this to the view and inject it as a command
+	/*
+	 * protected void showVictory(Image background) { InputStream in; try { in =
+	 * new FileInputStream("resources/dandan.mid"); // create an audiostream
+	 * from the inputstream audioStream = new AudioStream(in);
+	 * 
+	 * // play the audio clip with the audioplayer class
+	 * AudioPlayer.player.start(audioStream);
+	 * 
+	 * } catch (FileNotFoundException e1) { // TODO Auto-generated catch block
+	 * e1.printStackTrace(); } catch (IOException e1) { // TODO Auto-generated
+	 * catch block e1.printStackTrace(); } Shell shell = new Shell
+	 * (this.getShell(), SWT.FILL |SWT.DOUBLE_BUFFERED); shell.setLayout(new
+	 * FillLayout ());
+	 * 
+	 * 
+	 * shell.addListener (SWT.Paint, new Listener () { public void handleEvent
+	 * (Event e) { GC gc = e.gc; int x = 0, y = 0; gc.drawImage (background, x,
+	 * y); gc.dispose(); } }); shell.setSize(background.getBounds().width,
+	 * background.getBounds().height);
+	 * 
+	 * shell.open ();
+	 * 
+	 * 
+	 * shell.addDisposeListener(new DisposeListener() {
+	 * 
+	 * @Override public void widgetDisposed(DisposeEvent e) {
+	 * AudioPlayer.player.stop(audioStream);
+	 * 
+	 * } });
+	 * 
+	 * 
+	 * }
+	 */
 
 	/**
 	 * 
@@ -219,33 +174,26 @@ public class MyMazeWidget extends MazeDisplayer {
 	}
 
 	public void set3DCharacterPosition(int level, int row, int col) {
-		if(!won){
-		chr.setY(level);
-		chr.setX(row);
-		chr.setZ(col);
-		currentPosition.setY(level);
-		currentPosition.setX(row);
-		currentPosition.setZ(col);
-		updateMazeData();
+		
+			chr.setY(level);
+			chr.setX(row);
+			chr.setZ(col);
+			currentPosition.setY(level);
+			currentPosition.setX(row);
+			currentPosition.setZ(col);
+			updateMazeData();
 
-		if (currentPosition.equals(maze.getGoalPosition())){
-			won = true;
-			
-			showVictory(victorySplashImage);
+			if (currentPosition.equals(maze.getGoalPosition())) {
+				this.command.doCommand();
+
+				
+			}
 		}
-		}
 
-	}
 
-	public void set3DCharacterPosition(Position p) {
-		set3DCharacterPosition(p.getY(), p.getX(), p.getZ());
 
-	}
 
-	@Override
-	public void set2DCharacterPosition(int row, int col) {
-		// TODO not needed
-	}
+	
 
 	@Override
 	public int getCharacterPositionX() {
@@ -288,12 +236,6 @@ public class MyMazeWidget extends MazeDisplayer {
 
 	}
 
-	@Override
-	public void setCharacter(ImageGameCharacter chr) {
-		this.chr = chr;
-
-	}
-
 	private void paintCube(double[] p, double h, PaintEvent e) {
 		int[] f = new int[p.length];// FLOOR
 		for (int k = 0; k < f.length; f[k] = (int) Math.round(p[k]), k++)
@@ -326,5 +268,15 @@ public class MyMazeWidget extends MazeDisplayer {
 
 	}
 
-	
+	@Override
+	void setCharacterPosition(Position p) {
+		set3DCharacterPosition(p.getY(), p.getX(), p.getZ());
+
+	}
+
+	@Override
+	int getCharacterPositionZ() {
+		return currentPosition.getZ();
+	}
+
 }

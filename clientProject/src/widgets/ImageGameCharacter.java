@@ -8,27 +8,13 @@ import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Canvas;
 import org.eclipse.swt.widgets.Composite;
 
-public class ImageGameCharacter extends Canvas{
+public class ImageGameCharacter extends GameCharacter{
 
 			Image image;
 	
-		   int x=0; // x represent vertical view by default
-		   int z=0; // z represent horizontal view by default
-		   int y=0; // y represent a LEVEL by default
-		   int w=0; //char width size 
-		   int h=0;//char height size 
+	
 		   
-		   
-		   
-		   public int getZ() {
-			return z;
-		}
-
-
-
-		public void setZ(int z) {
-			this.z = z;
-		}
+		
 
 
 
@@ -41,9 +27,9 @@ public class ImageGameCharacter extends Canvas{
 
 		   
 		   
-		   public void paint(PaintEvent e,int z,int x,int w, int h){
+		   public void paint(PaintEvent e,int col,int row,int width, int height){
 			
-			   e.gc.drawImage(image, 0, 0, 556,768,z, x, (int)Math.round(w*1.2), (int)Math.round(h*1.3));
+			   e.gc.drawImage(image, 0, 0, 556,768,col, row, (int)Math.round(width*1.2), (int)Math.round(height*1.3));
 		        
 			   
 			}
@@ -51,43 +37,11 @@ public class ImageGameCharacter extends Canvas{
 		
 
 
-		public int getW() {
-			return w;
-		}
 
-
-		public void setW(int w) {
-			this.w = w;
-		}
-
-
-		public int getH() {
-			return h;
-		}
-
-
-		public void setH(int h) {
-			this.h = h;
-		}
-
-
-		public int getX() {
-			return x;
-		}
-
-
-		public void setX(int x) {
-			this.x = x;
-		}
-
-
-		public int getY() {
-			return y;
-		}
-
-
-		public void setY(int y) {
-			this.y = y;
+		@Override
+		public void paint(PaintEvent e) {
+			// TODO Auto-generated method stub
+			
 		}
 		   
 		   
