@@ -315,6 +315,12 @@ public String getViewType() {
 	return ViewType;
 }
 
+@Override
+public void showSolved(String name) {
+	// TODO ANNOUNCE THE THE MAZE HAS BEEN SOLVED
+	
+}
+
 
 
 

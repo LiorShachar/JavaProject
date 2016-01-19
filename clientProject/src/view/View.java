@@ -35,7 +35,7 @@ public interface View {
 	void showMaze(byte[] arr);
 	void showCross(byte[] arr,String by,int i);
 	void showSolution(Solution<Position> s);
-	
+	void showSolved(String name);
 	Object getData(String string);
 	
 	

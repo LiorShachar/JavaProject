@@ -422,7 +422,7 @@ public class MyModel extends CommonModel {
 
 	
 	
-	//TODO serializeAndCachSolutions
+	
 	public void serializeAndCachSolutions(){
 		HashMap<byte[], Solution<Position>> serialized = new HashMap<byte[], Solution<Position>>();
 		Iterator<Maze3d> itr= solutions.keySet().iterator();
@@ -456,7 +456,7 @@ public class MyModel extends CommonModel {
 	}
 	
 	
-	//TODO find a way to improve this
+	
 	public void loadCachedSolutions(){
 		HashMap<byte[], Solution<Position>> serialized = new HashMap<byte[], Solution<Position>>();
 		try
@@ -498,7 +498,7 @@ public class MyModel extends CommonModel {
 	public void handleLoadProperties() {
 		try {
 			prop=XMLproperties.getMyPropertiesInstance();
-			//TODO check for an update option in runtime
+			//TODO LOAD THE PROPERTIES IN RUNTIME AND UPDATE EVERYTHING INCLUDING THE VIEW
 		} catch (FileNotFoundException e) {
 			try {
 				

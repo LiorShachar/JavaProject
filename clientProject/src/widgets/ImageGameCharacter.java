@@ -40,7 +40,7 @@ public class ImageGameCharacter extends GameCharacter{
 
 		@Override
 		public void paint(PaintEvent e) {
-			// TODO Auto-generated method stub
+			
 			
 		}
 		   

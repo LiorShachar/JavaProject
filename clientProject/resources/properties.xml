@@ -8,7 +8,7 @@
    <string>127.0.0.1</string>
   </void>
   <void property="userInterface">
-   <string>GUI</string>
+   <string>CLI</string>
   </void>
  </object>
 </java>

@@ -49,7 +49,7 @@ import widgets.PropertiesWidget;
 import widgets.WidCommand;
 
 public class GuiWindowView extends commonGuiView implements View{
-	//TODO arrange things to be more organized
+	
 	
 	MyMazeWidget mazeWin; 
 	
@@ -323,10 +323,7 @@ public class GuiWindowView extends commonGuiView implements View{
 
 		
 		
-		// **********************************{XML SETTINGS WIDGET }***************************
-		
-		
-		//TODO improve this, if you can try to make it generic for every class
+	
 		
 				
 				
@@ -424,7 +421,7 @@ public class GuiWindowView extends commonGuiView implements View{
 					   String ppath;
 					   if (pmenu.getProp()!=null&& ((ppath=pdialog.open())!=null)){
 						   Object choices[]={pmenu.getProp(),ppath};
-						   scno("saveSettings", choices); //TODO might get a widget disposed
+						   scno("saveSettings", choices); 
 						   pshell.dispose();
 					   }
 						  
@@ -437,7 +434,7 @@ public class GuiWindowView extends commonGuiView implements View{
 					
 					@Override
 					public void widgetDefaultSelected(SelectionEvent e) {
-						// TODO Auto-generated method stub
+					
 						
 					}
 				});
@@ -581,11 +578,11 @@ public class GuiWindowView extends commonGuiView implements View{
 			        AudioPlayer.player.start(audioStream);
 			        
 				} catch (FileNotFoundException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
+					scno("error", "music file not found");
+					
 				} catch (IOException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
+					scno("error", "music file I/O problem");
+					
 				}
 			Shell winshell = new Shell (mazeWin.getShell(), SWT.FILL |SWT.DOUBLE_BUFFERED);
 			winshell.setLayout(new FillLayout ());
@@ -666,7 +663,7 @@ public class GuiWindowView extends commonGuiView implements View{
 
 	@Override
 	public void showDir(String []string) {
-		// TODO showList
+		// TODO method is irrelevant here ,check for an alternative
 		
 	}
 
@@ -816,6 +813,14 @@ public class GuiWindowView extends commonGuiView implements View{
 
 	public void setCanExitAll(boolean canExitAll) {
 		this.canExitAll = canExitAll;
+	}
+
+
+
+	@Override
+	public void showSolved(String name) {
+		// TODO CHANGE THIS TO SHOW THE SOLVED MAZES AND CREATE AN OTHER METHOD FOR ACTUALLY DISPLAYING THE SOLUTION
+		
 	}
 	
 

@@ -304,12 +304,12 @@ public class Presenter implements Observer {
 
 			case "loadSettings":
 				// String xmlpath = (String) v.getData(note);
-				// TODO check if needed
+				// TODO INTEGRATE THIS IN THE VIEW TO OPEN PROPERTIES AND UPDATE ON RUNTIME
 				m.handleLoadProperties();
 				break;
 
 			case "saveSettings":
-				// TODO make sure it works fine
+				
 				Object[] savedetails = (Object[]) v.getData(note);
 				m.handleSaveProperties((Properties) savedetails[0], (String) savedetails[1]);
 
@@ -416,7 +416,7 @@ public class Presenter implements Observer {
 
 			case "solutionReady":
 				String mazeSolved = (String) m.getData(note);
-				v.showSolution((Solution<Position>) m.getSolutionFor(mazeSolved));
+				v.showSolved(mazeSolved);
 				break;
 
 			case "solutionExist":

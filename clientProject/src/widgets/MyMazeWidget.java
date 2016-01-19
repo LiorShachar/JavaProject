@@ -120,7 +120,7 @@ public class MyMazeWidget extends commonMaze3dWidget {
 
 	}
 
-	// TODO move this to the view and inject it as a command
+	
 	
 
 	/**
