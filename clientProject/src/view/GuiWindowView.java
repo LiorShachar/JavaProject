@@ -854,7 +854,14 @@ public class GuiWindowView extends commonGuiView implements View{
 	
 
 	public void showUpdatedList(String []elements){
-		l.setItems(elements);
+		String[] temp= new String[elements.length];
+		/*for (String s : elements){
+			temp=s.split(" ");           // TODO FIND A NICE WAY TO USE THE SOLVED STATUS AND PRESENT IT TO THE USER
+			s=temp[1];
+		}*/
+		for(int i=0;i<elements.length;i++)
+			temp[i]=(elements[i].split(" "))[0];
+		l.setItems(temp);
 	}
 	
 	

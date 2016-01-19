@@ -115,6 +115,7 @@ public class MyModel extends CommonModel {
 				mazes.put(name, futurem.get());
 				
 				scno("loaded", name);
+				generateListStatus();
 			} catch (InterruptedException e) {
 				scno("error", " thread interrupted, maze generation aborted");
 				e.printStackTrace();
@@ -400,7 +401,10 @@ public class MyModel extends CommonModel {
 			else
 		status.add(m+" [X]");
 		}
-		scno("StatusUpdate",status.toArray());
+		String items[]=new String[status.size()];
+		status.toArray(items);
+		if(!(items.length<1))
+		scno("updateListStatus",items);
 	
 	}
 	

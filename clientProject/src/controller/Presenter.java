@@ -415,10 +415,10 @@ public class Presenter implements Observer {
 			
 			case "updateListStatus":
 				
-				String []elements1=(String[])m.getData(note);
+				String []elements=(String[])m.getData(note);
 				
 				
-				v.showUpdatedList(elements1);
+				v.showUpdatedList(elements);
 				break;
 			
 			
