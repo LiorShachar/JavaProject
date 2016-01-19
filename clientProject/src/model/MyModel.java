@@ -517,6 +517,7 @@ public class MyModel extends CommonModel {
 	public void handleSaveProperties(Properties p,String path) {
 		try {
 			XMLproperties.writeProperties(p, path);
+			scno("msg","settings saved successfuly");
 		} catch (FileNotFoundException e) {
 			scno("error","File Not Found Exception");
 			

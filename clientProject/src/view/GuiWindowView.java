@@ -1,5 +1,9 @@
 package view;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -13,7 +17,9 @@ import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.events.KeyListener;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
+import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Image;
+import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
@@ -34,19 +40,22 @@ import algorithms.mazeGenerators.Position;
 import algorithms.search.Solution;
 import algorithms.search.State;
 import singletonexplicitpack.Properties;
+import sun.audio.AudioPlayer;
 import sun.audio.AudioStream;
 import widgets.GameCharacter;
 import widgets.MazeDisplayer;
 import widgets.MyMazeWidget;
+import widgets.PropertiesWidget;
+import widgets.WidCommand;
 
 public class GuiWindowView extends commonGuiView implements View{
-	
+	//TODO arrange things to be more organized
 	
 	MyMazeWidget mazeWin; 
 	
 	//////////////////////{WIDGET FUNCTIONS COMPONENTS}////////////////////////////
 	AudioStream audioStream;
-	Image victorySplashImage;
+	Image victorySplashImage=new Image(display, "resources/winsplash.jpg");
 	Image goalImage;
 	//////////////////////////////////////////////////////////
 	
@@ -383,17 +392,55 @@ public class GuiWindowView extends commonGuiView implements View{
 
 		// ***************************************************************************************************************
 
-		listeners.put("mazewindowsthread", new Listener() {
+		listeners.put("changeSettings", new Listener() {
 			public void handleEvent(Event event) {
-				/*
-				 * new Thread(new Runnable() {
-				 * 
-				 * @Override public void run() { ChildWindow another= new
-				 * ChildWindow("Maze Game", 800, 500,listeners,keylis);
-				 * another.run();
-				 * 
-				 * } }).start();
-				 */
+				Shell pshell = new Shell(display, SWT.SHELL_TRIM);
+				PropertiesWidget pmenu = new PropertiesWidget(pshell, SWT.NONE);
+				pmenu.setLayout(new GridLayout(3, false));
+						
+						pshell.setSize(247, 400);
+						pshell.setLayout(new GridLayout(SWT.FILL, false));
+						pshell.pack();
+						pshell.open();
+						
+						
+						
+				
+				
+				pmenu.btnSaveTo.addSelectionListener(new SelectionListener() {
+					
+					@Override
+					public void widgetSelected(SelectionEvent e) {
+						
+						// when the user presses the button a file dialog opens,and then we send the presenter the new properties instance and the path 
+						FileDialog pdialog = new FileDialog(pshell, SWT.SAVE);
+					    pdialog
+					        .setFilterNames(new String[] { "XML files", "All Files (*.*)" });
+					    pdialog.setFilterExtensions(new String[] { "*.xml", "*.*" }); // Windows
+					                                    // wild
+					                                    // cards
+					    pdialog.setFilterPath("resources/"); // Windows path
+					    pdialog.setFileName("properties.xml");
+					   String ppath;
+					   if (pmenu.getProp()!=null&& ((ppath=pdialog.open())!=null)){
+						   Object choices[]={pmenu.getProp(),ppath};
+						   scno("saveSettings", choices); //TODO might get a widget disposed
+						   pshell.dispose();
+					   }
+						  
+							  
+					   
+					   
+						   
+						
+					}
+					
+					@Override
+					public void widgetDefaultSelected(SelectionEvent e) {
+						// TODO Auto-generated method stub
+						
+					}
+				});
 			}
 		});
 		// ***********************************{opens the maze widget}****************************************************
@@ -517,14 +564,68 @@ public class GuiWindowView extends commonGuiView implements View{
 		mazeWin.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true,true,1,1));
 		mazeWin.addKeyListener(keys);
 		
+		////////////////////////////////////////////////a special command to inject to the Widget
+		/////////////this command is the victory mode of my widget (acts as a special listener)
+		
+		mazeWin.setCommand(new WidCommand() {
+			
+			@Override
+			public void doCommand() {
+				InputStream in;
+				try {
+					in = new FileInputStream("resources/dandan.mid");
+					 // create an audiostream from the inputstream
+			        audioStream = new AudioStream(in);
+			     
+			        // play the audio clip with the audioplayer class
+			        AudioPlayer.player.start(audioStream);
+			        
+				} catch (FileNotFoundException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+			Shell winshell = new Shell (mazeWin.getShell(), SWT.FILL |SWT.DOUBLE_BUFFERED);
+			winshell.setLayout(new FillLayout ());
+	        
+
+	        winshell.addListener (SWT.Paint, new Listener () 
+	        {
+	            public void handleEvent (Event e) {
+	                GC gc = e.gc;
+	                int x = 0, y = 0;
+	                gc.drawImage (victorySplashImage, x, y);
+	                gc.dispose();
+	            }
+	        });
+	        winshell.setSize(victorySplashImage.getBounds().width, victorySplashImage.getBounds().height);
+	        winshell.setLocation(mazeWin.getShell().getLocation());
+	       
+	        winshell.open ();
+	        
+	       
+	     winshell.addDisposeListener(new DisposeListener() {
+			
+			@Override
+			public void widgetDisposed(DisposeEvent e) {
+				AudioPlayer.player.stop(audioStream);
+				
+			}
+		});
+				
+			}
+		});
+		
 		
 		mazeshell.addDisposeListener(new DisposeListener() { ////////////////////// WE NEED TO KNOW IF THE GAME WINDOW IS DISPOSED
 			
 			
 			@Override
 			public void widgetDisposed(DisposeEvent arg0) {
-				
-				if(!mazeWin.getMaze().getStartPosition().equals(mazeWin.getCurrentPosition()) && !mazeWin.isWon()){
+				//
+				if(!mazeWin.getMaze().getStartPosition().equals(mazeWin.getCurrentPosition())&&!mazeWin.getMaze().getGoalPosition().equals(mazeWin.getCurrentPosition()) ){
 				 MessageBox messageBox = new MessageBox(shell, SWT.ICON_QUESTION
 				            | SWT.YES | SWT.NO);
 				        messageBox.setMessage("Would you like to change current position?");

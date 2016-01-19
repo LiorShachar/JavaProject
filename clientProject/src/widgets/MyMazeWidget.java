@@ -36,12 +36,18 @@ public class MyMazeWidget extends commonMaze3dWidget {
 	Image goalImage;
 	Image charImage;
 
-	
+	/**CTOR with default images
+	 * */
 
 	public MyMazeWidget(Composite parent, int style, Maze3d maze, String name) {
 		this( parent,style,  maze,  name, new Image(parent.getDisplay(), "resources/dragonball.png"), new Image(parent.getDisplay(), "resources/Chibi_Goku_2.png"));
 	}
 
+	
+	/**
+	 * CTOR WITH CUSTOM IMAGES
+	 * */
+	
 	public MyMazeWidget(Composite parent, int style, Maze3d maze, String name, Image goalImage, Image charImage) {
 		
 		super(parent, style, maze, name);
@@ -53,7 +59,7 @@ public class MyMazeWidget extends commonMaze3dWidget {
 		this.maze = maze;
 		this.mazeName = name;
 		
-		set3DCharacterPosition(maze.getStartPosition());
+		setCharacterPosition(maze.getStartPosition());
 		setBackground(new Color(null, 255, 255, 255));
 
 		addDisposeListener(new DisposeListener() {
@@ -115,39 +121,7 @@ public class MyMazeWidget extends commonMaze3dWidget {
 	}
 
 	// TODO move this to the view and inject it as a command
-	/*
-	 * protected void showVictory(Image background) { InputStream in; try { in =
-	 * new FileInputStream("resources/dandan.mid"); // create an audiostream
-	 * from the inputstream audioStream = new AudioStream(in);
-	 * 
-	 * // play the audio clip with the audioplayer class
-	 * AudioPlayer.player.start(audioStream);
-	 * 
-	 * } catch (FileNotFoundException e1) { // TODO Auto-generated catch block
-	 * e1.printStackTrace(); } catch (IOException e1) { // TODO Auto-generated
-	 * catch block e1.printStackTrace(); } Shell shell = new Shell
-	 * (this.getShell(), SWT.FILL |SWT.DOUBLE_BUFFERED); shell.setLayout(new
-	 * FillLayout ());
-	 * 
-	 * 
-	 * shell.addListener (SWT.Paint, new Listener () { public void handleEvent
-	 * (Event e) { GC gc = e.gc; int x = 0, y = 0; gc.drawImage (background, x,
-	 * y); gc.dispose(); } }); shell.setSize(background.getBounds().width,
-	 * background.getBounds().height);
-	 * 
-	 * shell.open ();
-	 * 
-	 * 
-	 * shell.addDisposeListener(new DisposeListener() {
-	 * 
-	 * @Override public void widgetDisposed(DisposeEvent e) {
-	 * AudioPlayer.player.stop(audioStream);
-	 * 
-	 * } });
-	 * 
-	 * 
-	 * }
-	 */
+	
 
 	/**
 	 * 
@@ -163,6 +137,10 @@ public class MyMazeWidget extends commonMaze3dWidget {
 
 	}
 
+	/**
+	 * gets a position and translate it to coordinates
+	 * */
+	
 	public void moveCharacter(Position p) {
 		moveCharacter(p.getY(), p.getX(), p.getZ());
 
