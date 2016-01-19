@@ -222,5 +222,18 @@ public class MySocketModel extends CommonModel implements Model {
 		// TODO START THE LOOP THREAD
 		
 	}
+
+
+
+
+
+
+
+
+	@Override
+	public void handleCustomProperties(String path) {
+		// TODO Auto-generated method stub
+		
+	}
 	
 }

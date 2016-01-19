@@ -102,9 +102,14 @@ public class GuiWindowView extends commonGuiView implements View{
         Menu fileMenu = new Menu(shell, SWT.DROP_DOWN);
         cascadeFileMenu.setMenu(fileMenu);
       //*****************************************************************// 
-        MenuItem xmlItem = new MenuItem(fileMenu, SWT.PUSH);
-        xmlItem.setText("Open properties");
-        xmlItem.addListener(SWT.Selection ,listeners.get("changeSettings"));
+        MenuItem saveXmlItem = new MenuItem(fileMenu, SWT.PUSH);
+        saveXmlItem.setText("Change properties");
+        saveXmlItem.addListener(SWT.Selection ,listeners.get("saveSettings"));
+        
+      //*****************************************************************// 
+        MenuItem loadXmlItem = new MenuItem(fileMenu, SWT.PUSH);
+        loadXmlItem.setText("Load Custom properties");
+        loadXmlItem.addListener(SWT.Selection ,listeners.get("loadSettings"));
       //*****************************************************************// 
         MenuItem loadItem = new MenuItem(fileMenu, SWT.PUSH);
         loadItem.setText("Load");
@@ -322,9 +327,22 @@ public class GuiWindowView extends commonGuiView implements View{
 		};
 
 		
+		// ***************************************************************************************************************
 		
-	
-		
+		listeners.put("loadSettings", new Listener() {
+			public void handleEvent(Event event) {
+				FileDialog fd = new FileDialog(shell, SWT.OPEN);
+				fd.setText("Please choose a file to load from");
+				fd.setFilterPath("resources/");
+				String[] filterExt = { "*.xml", "*.*" };
+				fd.setFilterExtensions(filterExt);
+				String selected = fd.open();
+				if (selected != null)
+					scno("loadSettings", selected);
+
+
+			}
+		});
 				
 				
 		// ***************************************************************************************************************
@@ -389,7 +407,7 @@ public class GuiWindowView extends commonGuiView implements View{
 
 		// ***************************************************************************************************************
 
-		listeners.put("changeSettings", new Listener() {
+		listeners.put("saveSettings", new Listener() {
 			public void handleEvent(Event event) {
 				Shell pshell = new Shell(display, SWT.SHELL_TRIM);
 				PropertiesWidget pmenu = new PropertiesWidget(pshell, SWT.NONE);

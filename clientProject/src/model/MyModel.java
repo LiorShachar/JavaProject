@@ -498,7 +498,7 @@ public class MyModel extends CommonModel {
 	public void handleLoadProperties() {
 		try {
 			prop=XMLproperties.getMyPropertiesInstance();
-			//TODO LOAD THE PROPERTIES IN RUNTIME AND UPDATE EVERYTHING INCLUDING THE VIEW
+			
 		} catch (FileNotFoundException e) {
 			try {
 				
@@ -533,6 +533,25 @@ public class MyModel extends CommonModel {
 		handleLoadProperties();
 		loadCachedSolutions();
 		scno("modelReady", "");
+		
+	}
+
+	@Override
+	public void handleCustomProperties(String path) {
+		try {
+			prop=XMLproperties.getCustomProperties(path);
+			scno("loadedCustomSettings","");
+		} catch (FileNotFoundException e) {
+			try {
+				
+				
+				System.out.println("error : problem loading xml profile, loading the default one");
+				prop=XMLproperties.getMyPropertiesInstance();
+			} catch (FileNotFoundException e1) {
+				System.out.println("fatal error: system cant write or load settings");
+			}
+			
+		}
 		
 	}
 	

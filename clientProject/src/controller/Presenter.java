@@ -6,6 +6,8 @@ import java.util.Observable;
 import java.util.Observer;
 import java.util.Set;
 
+import org.eclipse.swt.widgets.Display;
+
 import algorithms.mazeGenerators.Maze3d;
 import algorithms.mazeGenerators.Position;
 import algorithms.search.Solution;
@@ -303,9 +305,9 @@ public class Presenter implements Observer {
 				break;
 
 			case "loadSettings":
-				// String xmlpath = (String) v.getData(note);
+				 String xmlloadpath = (String) v.getData(note);
 				// TODO INTEGRATE THIS IN THE VIEW TO OPEN PROPERTIES AND UPDATE ON RUNTIME
-				m.handleLoadProperties();
+				m.handleCustomProperties(xmlloadpath);
 				break;
 
 			case "saveSettings":
@@ -396,6 +398,10 @@ public class Presenter implements Observer {
 				updateView();
 				break;
 
+			case "loadedCustomSettings":
+				updateView();
+				break;
+				
 			case "loaded":
 				v.showMazeIsReady((String) m.getData(note));
 				break;
@@ -462,9 +468,21 @@ public class Presenter implements Observer {
 	public void switchToGUI() {
 		if (v != null)
 			v.close();
-		setView(new GuiWindowView("My View", 800, 500));
-		((Observable) v).addObserver(this);
-		getView().start();
+		
+		Presenter m=this;
+		Display.getDefault().asyncExec(new Runnable() {
+			
+			@Override
+			public void run() {
+				setView(new GuiWindowView("My View", 800, 500));
+				((Observable) v).addObserver(m);
+				getView().start();
+				
+				
+			}
+		});
+		
+		
 	}
 
 }

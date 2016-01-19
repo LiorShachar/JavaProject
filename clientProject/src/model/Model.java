@@ -64,6 +64,8 @@ public interface Model {
 	
 	void handleLoadProperties();
 	
+	void handleCustomProperties(String path);
+	
 	void handleSaveProperties(Properties p,String path);
 	
 	
