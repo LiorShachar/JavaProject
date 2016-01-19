@@ -147,52 +147,7 @@ public class MyMazeWidget extends MazeDisplayer {
 
 	}
 
-	protected void showVictory(Image background) {
-		 InputStream in;
-			try {
-				in = new FileInputStream("resources/dandan.mid");
-				 // create an audiostream from the inputstream
-		        audioStream = new AudioStream(in);
-		     
-		        // play the audio clip with the audioplayer class
-		        AudioPlayer.player.start(audioStream);
-		        
-			} catch (FileNotFoundException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			} catch (IOException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			}
-		Shell shell = new Shell (this.getShell(), SWT.FILL |SWT.DOUBLE_BUFFERED);
-        shell.setLayout(new FillLayout ());
-        
-
-        shell.addListener (SWT.Paint, new Listener () 
-        {
-            public void handleEvent (Event e) {
-                GC gc = e.gc;
-                int x = 0, y = 0;
-                gc.drawImage (background, x, y);
-                gc.dispose();
-            }
-        });
-        shell.setSize(background.getBounds().width, background.getBounds().height);
-       
-        shell.open ();
-        
-       
-     shell.addDisposeListener(new DisposeListener() {
-		
-		@Override
-		public void widgetDisposed(DisposeEvent e) {
-			AudioPlayer.player.stop(audioStream);
-			
-		}
-	});
-       
-		
-	}
+	
 
 	/**
 	 * 
