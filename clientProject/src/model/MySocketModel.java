@@ -144,7 +144,7 @@ public class MySocketModel extends CommonModel implements Model {
 		
 		try {
 			prop=XMLproperties.getMyPropertiesInstance();
-			//TODO check for an update option in runtime
+			
 		} catch (FileNotFoundException e) {
 			try {
 				
@@ -234,6 +234,19 @@ public class MySocketModel extends CommonModel implements Model {
 	public void handleCustomProperties(String path) {
 		// TODO Auto-generated method stub
 		
+	}
+
+
+
+
+
+
+
+
+	@Override
+	public boolean hasSolution(String name) {
+		// TODO Auto-generated method stub
+		return false;
 	}
 	
 }

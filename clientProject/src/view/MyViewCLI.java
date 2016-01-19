@@ -317,7 +317,13 @@ public String getViewType() {
 
 @Override
 public void showSolved(String name) {
-	// TODO ANNOUNCE THE THE MAZE HAS BEEN SOLVED
+	showMsg("Solution for maze "+name+" is ready");
+	
+}
+
+@Override
+public void showUpdatedList(String[] elements) {
+	// TODO Auto-generated method stub
 	
 }
 

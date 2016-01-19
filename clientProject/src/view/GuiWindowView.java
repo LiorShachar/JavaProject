@@ -39,6 +39,7 @@ import algorithms.mazeGenerators.Maze3d;
 import algorithms.mazeGenerators.Position;
 import algorithms.search.Solution;
 import algorithms.search.State;
+import model.XMLproperties;
 import singletonexplicitpack.Properties;
 import sun.audio.AudioPlayer;
 import sun.audio.AudioStream;
@@ -259,7 +260,7 @@ public class GuiWindowView extends commonGuiView implements View{
 	       solveButton=new Button(shell, SWT.PUSH);
 			solveButton.setText("Solve the maze for me!");
 			solveButton.setLayoutData(new GridData(SWT.None, SWT.None, false,false, 1, 1));
-			solveButton.addListener(SWT.Selection,listeners.get("solveButton"));
+			solveButton.addListener(SWT.Selection,listeners.get("ShowMe"));
 			solveButton.setEnabled(false); // only when there's a playable maze the option should be enabled
 	     //*****************************************************************
 		
@@ -529,12 +530,12 @@ public class GuiWindowView extends commonGuiView implements View{
 		});
 		// ***************************************************************************************************************
 		
-		listeners.put("solveButton", new Listener() {
+		listeners.put("ShowMe", new Listener() {
 			public void handleEvent(Event event) {
 				
 				
 				Object solvedetails[] = { mazeWin.getCurrentPosition(), mazeWin.getMazeName() };
-				scno("solveRequest", solvedetails);
+				scno("ShowMe", solvedetails);
 			}
 		});
 		
@@ -588,19 +589,24 @@ public class GuiWindowView extends commonGuiView implements View{
 			public void doCommand() {
 				InputStream in;
 				try {
-					in = new FileInputStream("resources/dandan.mid");
-					 // create an audiostream from the inputstream
-			        audioStream = new AudioStream(in);
-			     
-			        // play the audio clip with the audioplayer class
-			        AudioPlayer.player.start(audioStream);
-			        
+					if(XMLproperties.getMyPropertiesInstance().isSound())
+					try {
+						in = new FileInputStream("resources/dandan.mid");
+						 // create an audiostream from the inputstream
+					    audioStream = new AudioStream(in);
+					 
+					    // play the audio clip with the audioplayer class
+					    AudioPlayer.player.start(audioStream);
+					    
+					} catch (FileNotFoundException e1) {
+						scno("error", "music file not found");
+						
+					} catch (IOException e1) {
+						scno("error", "music file I/O problem");
+						
+					}
 				} catch (FileNotFoundException e1) {
-					scno("error", "music file not found");
-					
-				} catch (IOException e1) {
-					scno("error", "music file I/O problem");
-					
+					scno("error", "properties file corrupted");
 				}
 			Shell winshell = new Shell (mazeWin.getShell(), SWT.FILL |SWT.DOUBLE_BUFFERED);
 			winshell.setLayout(new FillLayout ());
@@ -625,7 +631,12 @@ public class GuiWindowView extends commonGuiView implements View{
 			
 			@Override
 			public void widgetDisposed(DisposeEvent e) {
-				AudioPlayer.player.stop(audioStream);
+				try {
+					if(XMLproperties.getMyPropertiesInstance().isSound())
+					AudioPlayer.player.stop(audioStream);
+				} catch (FileNotFoundException e1) {
+					scno("error", "properties file corruped");
+				}
 				
 			}
 		});
@@ -791,7 +802,7 @@ public class GuiWindowView extends commonGuiView implements View{
 	public void close() {
 		canExitAll=false; // set the exit safety, since we want to dispose the view and keep the model running, once the shell is disposed the presenter gets notified with the safety boolean 
 		if(!shell.isDisposed())
-		shell.dispose();
+		display.dispose();
 		
 	}
 
@@ -807,8 +818,8 @@ public class GuiWindowView extends commonGuiView implements View{
 
 	@Override
 	public void showMazeIsReady(String s) {
-		l.add(s);
-		
+	
+		//does nothing here(GUI) (the update list function does its job )
 	}
 
 
@@ -837,9 +848,14 @@ public class GuiWindowView extends commonGuiView implements View{
 
 	@Override
 	public void showSolved(String name) {
-		// TODO CHANGE THIS TO SHOW THE SOLVED MAZES AND CREATE AN OTHER METHOD FOR ACTUALLY DISPLAYING THE SOLUTION
 		
-	}
+		// does nothing here (GUI)(the update list function does its job )
+ 	}
 	
 
+	public void showUpdatedList(String []elements){
+		l.setItems(elements);
+	}
+	
+	
 }

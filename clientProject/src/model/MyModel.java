@@ -8,6 +8,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -77,7 +78,7 @@ public class MyModel extends CommonModel {
 
 		mazes = new HashMap<String,Maze3d>();
 		solutions = new HashMap<Maze3d, Solution<Position>>();
-		threadPool=Executors.newFixedThreadPool(1);
+		threadPool=Executors.newCachedThreadPool();
 		
 		
 	}
@@ -176,6 +177,7 @@ public class MyModel extends CommonModel {
 			comp.close();
 			mazes.put(name, new Maze3d(arr));
 			scno("loaded",name);
+			generateListStatus();
 
 		} catch (IOException e) {
 			scno("error","loading maze failed");
@@ -201,12 +203,7 @@ public class MyModel extends CommonModel {
 		//TODO computes the file size by saving it...need another way
 	}
 
-	/**
-	 * solve a maze represented by a key name with the algorithm specified in
-	 * the string using a callable, in order to handle the solving in a separate thread
-	 * 	
-	 *  
-	 */
+	
 	@Override
 	public void handleUpdatePosition(Position p,String name){
 		
@@ -220,7 +217,12 @@ public class MyModel extends CommonModel {
 	}
 	
 	
-	
+	/**
+	 * solve a maze represented by a key name with the algorithm specified in
+	 * the string using a callable, in order to handle the solving in a separate thread
+	 * 	
+	 *  
+	 */
 	@Override
 	public void handleSolveMaze(String name, String algo) {
 		
@@ -270,6 +272,7 @@ public class MyModel extends CommonModel {
 					try {
 					solutions.put(mazes.get(name), futures.get());
 					scno("solutionReady",name);
+					generateListStatus();
 				} catch (InterruptedException e) {
 					scno("error", "Cannot solve thread interrupted");
 					e.printStackTrace();
@@ -287,6 +290,7 @@ public class MyModel extends CommonModel {
 		}
 			else{
 				scno("solutionExist",name);
+				generateListStatus();
 			}	
 		}
 		else {
@@ -366,28 +370,42 @@ public class MyModel extends CommonModel {
 	public Solution<Position> getSolutionFor(String name) {
 		Maze3d maze= (Maze3d)getMazeByName(name);
 		if(maze!=null){
-			if(solutions.containsKey(maze)){
+			if(hasSolution(name)){
 				return solutions.get(maze);
 			}
-			scno("error", "no solution for this maze");
+			scno("error", "no solution for this maze (NULL POINTER TO MAZE)");
 		}
 		scno("error", "Maze name doesn't exist");
 		return null;
 	}
 
-
+	@Override
+	public boolean hasSolution(String name){
+		return solutions.containsKey((Maze3d)getMazeByName(name));
+		
+		}
+	
+	
 
 	/**
-	 * this method serves as an easy way to notify the observers with the
-	 * appropriate outcome in this case we want to specifiy in
-	 * the parameters what type of data we want the presenter to check.
 	 * 
-	 * @param  s
-	 *            acts as the notification type
-	 * @param o
-	 *            acts as the data passed
-	 */
-	 
+	 * updates the presentor about current list of items and their statuses 
+	 * method can be called whenever it seems appropriate to update on some changes
+	 * **/
+	void generateListStatus(){
+		ArrayList<String> status = new ArrayList<String>();
+		for(String m : mazes.keySet()){
+			if(hasSolution(m))
+			status.add(m+" [V]");
+			else
+		status.add(m+" [X]");
+		}
+		scno("StatusUpdate",status.toArray());
+	
+	}
+	
+
+
 
 	@Override
 	public void handleDir(String string) {
@@ -441,7 +459,7 @@ public class MyModel extends CommonModel {
              oos.writeObject(serialized);
              oos.close();
              fos.close();
-             System.out.printf("cach updated successfuly to memoryCach.zip");
+             System.out.println("cach updated successfuly to memoryCach.zip");
       }catch(IOException ioe)
        {
              scno("error", "problem updating the cach file");
@@ -478,6 +496,7 @@ public class MyModel extends CommonModel {
 		      
 		      }
 		      scno("msg","Cached memory loaded");
+		      generateListStatus();
 	      }catch(IOException ioe)
 	      {
 	    	  scno("error", "problem loading the cach file: file not found");

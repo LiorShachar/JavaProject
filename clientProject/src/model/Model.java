@@ -67,6 +67,13 @@ public interface Model {
 	void handleCustomProperties(String path);
 	
 	void handleSaveProperties(Properties p,String path);
+
+	boolean hasSolution(String name);
+
+	
+
+
+	
 	
 	
 	

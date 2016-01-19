@@ -16,6 +16,22 @@ public abstract class CommonModel extends Observable implements Model {
 	}
 
 
+	
+	
+	
+	
+
+	/**
+	 * this method serves as an easy way to notify the observers with the
+	 * appropriate outcome in this case we want to specifiy in
+	 * the parameters what type of data we want the presenter to check.
+	 * 
+	 * @param  s
+	 *            acts as the notification type
+	 * @param o
+	 *            acts as the data passed
+	 */
+	 
 	void scno(String type, Object data) {
 		notifications.put(type, data);
 		setChanged();

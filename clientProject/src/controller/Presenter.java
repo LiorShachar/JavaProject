@@ -6,8 +6,6 @@ import java.util.Observable;
 import java.util.Observer;
 import java.util.Set;
 
-import org.eclipse.swt.widgets.Display;
-
 import algorithms.mazeGenerators.Maze3d;
 import algorithms.mazeGenerators.Position;
 import algorithms.search.Solution;
@@ -277,6 +275,17 @@ public class Presenter implements Observer {
 		this.commandCreator = commandCreator;
 	}
 
+	
+	
+	
+	
+	
+	/**
+	 * the update method check whether the presenter got a command from the view or from the model
+	 * since the CLI commands have regex keys we are able to generate commands based on the right regex pattern
+	 *
+	 * **/
+	
 	@Override
 	public void update(Observable arg0, Object arg1) {
 		String note = (String) arg1;
@@ -287,7 +296,7 @@ public class Presenter implements Observer {
 			switch (note) {
 			case "CLI":/// if the command is from a CLI take the input from
 						/// CLIview, see if it matches any regex keys in the
-						/// command map, if it does split it and send the
+						/// command map, if it does, split it and send the
 						/// arguments to the right command
 				String input = (String) v.getData("");
 				for (String s : commandCreator.keySet()) {
@@ -306,7 +315,7 @@ public class Presenter implements Observer {
 
 			case "loadSettings":
 				 String xmlloadpath = (String) v.getData(note);
-				// TODO INTEGRATE THIS IN THE VIEW TO OPEN PROPERTIES AND UPDATE ON RUNTIME
+				
 				m.handleCustomProperties(xmlloadpath);
 				break;
 
@@ -336,7 +345,7 @@ public class Presenter implements Observer {
 				break;
 
 			case "initMazeWidgetRequest":
-				// TODO check if this works fine
+				
 				String mazetoinit = (String) v.getData(note);
 				Maze3d maze = (Maze3d) m.getMazeByName(mazetoinit);
 				((GuiWindowView) v).initMazeWidget(maze, mazetoinit);
@@ -365,26 +374,34 @@ public class Presenter implements Observer {
 				break;
 
 			case "solveRequest":
-				Object solvedetails[] = (Object[]) v.getData(note);
-				m.handleUpdatePosition(new Position((Position) solvedetails[0]), (String) solvedetails[1]);
+				String target = (String) v.getData(note);
 				try {
-					m.handleSolveMaze((String) solvedetails[1],
-							XMLproperties.getMyPropertiesInstance().getSearchingAlgorithm());
-				} catch (FileNotFoundException e) {
+					m.handleSolveMaze(target,XMLproperties.getMyPropertiesInstance().getSearchingAlgorithm());
+				} catch (FileNotFoundException e1) {
 					v.showError("problem loading the searching algorithm from the properties file");
 				}
-
+				
 				break;
+				
+			case "ShowMe":
+			Object solvedetails[] = (Object[]) v.getData(note);
+			m.handleUpdatePosition(new Position((Position) solvedetails[0]), (String) solvedetails[1]);
+			try {
+				m.handleSolveMaze((String) solvedetails[1],
+						XMLproperties.getMyPropertiesInstance().getSearchingAlgorithm());
+			} catch (FileNotFoundException e) {
+				v.showError("problem loading the searching algorithm from the properties file");
+			}
+			while(!m.hasSolution((String) solvedetails[1]));
+			v.showSolution( (Solution<Position>) m.getSolutionFor( (String) solvedetails[1]) );
+			break;
+				
 
 			case "updateStart":
 				Object updatedetails[] = (Object[]) v.getData(note);
 				m.handleUpdatePosition(new Position((Position) updatedetails[0]), (String) updatedetails[1]);
 				break;
 
-			case "exit":
-				// TODO configure the order of closing and exits on runtime
-
-				break;
 
 			}
 			/////////////////////////////////////////////////// NOTIFICATIONS
@@ -394,6 +411,18 @@ public class Presenter implements Observer {
 
 		{
 			switch (note) {
+			
+			
+			case "updateListStatus":
+				
+				String []elements1=(String[])m.getData(note);
+				
+				
+				v.showUpdatedList(elements1);
+				break;
+			
+			
+			
 			case "modelReady":
 				updateView();
 				break;
@@ -422,13 +451,14 @@ public class Presenter implements Observer {
 
 			case "solutionReady":
 				String mazeSolved = (String) m.getData(note);
-				v.showSolved(mazeSolved);
+				v.showSolved(mazeSolved); 
 				break;
 
 			case "solutionExist":
-				v.showMsg("Maze Solution found in cached memory");
-				String mazeallSolved = (String) m.getData(note);
-				v.showSolution((Solution<Position>) m.getSolutionFor(mazeallSolved));
+				String mazeAlreadySolved = (String) m.getData(note);
+				v.showMsg("Solution found in cached memory for"+mazeAlreadySolved);
+				
+				
 
 				break;
 			}
@@ -443,6 +473,9 @@ public class Presenter implements Observer {
 	 * status and get a new view according to the properties
 	 */
 	public void updateView() {
+		
+		
+		
 		try {
 			String choice = XMLproperties.getMyPropertiesInstance().getUserInterface();
 			if (choice.matches("[Cc][Ll][Ii]")) {
@@ -466,22 +499,15 @@ public class Presenter implements Observer {
 	}
 
 	public void switchToGUI() {
-		if (v != null)
+		if (v != null){
 			v.close();
+		}
 		
-		Presenter m=this;
-		Display.getDefault().asyncExec(new Runnable() {
-			
-			@Override
-			public void run() {
-				setView(new GuiWindowView("My View", 800, 500));
-				((Observable) v).addObserver(m);
-				getView().start();
-				
-				
-			}
-		});
+		GuiWindowView newv =new GuiWindowView("My View", 800, 500);
 		
+		newv.addObserver(this);
+		v=newv;
+		newv.start();
 		
 	}
 

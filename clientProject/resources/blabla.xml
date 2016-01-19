@@ -7,6 +7,9 @@
   <void property="server_ip">
    <string>127.0.0.1</string>
   </void>
+  <void property="sound">
+   <boolean>false</boolean>
+  </void>
   <void property="userInterface">
    <string>GUI</string>
   </void>

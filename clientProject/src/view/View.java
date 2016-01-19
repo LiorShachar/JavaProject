@@ -42,6 +42,11 @@ public interface View {
 	
 	/////////////////////////////////////////////
 	
+	/**
+	 * function finds a way to show the user current status of mazes and their solutions
+	 * based on a string array of [name][boolean status] format
+	 * */
+	void showUpdatedList(String []elements);
 	
 	
 	//////////////////////////////////////////// TEST
