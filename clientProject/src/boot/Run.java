@@ -2,6 +2,7 @@ package boot;
 
 import controller.Presenter;
 import model.MyModel;
+import model.MySocketModel;
 
 public class Run {
 	
@@ -31,8 +32,8 @@ public class Run {
 		
 		
 		Presenter p = new Presenter(); 
-		MyModel m = new MyModel();
-		
+		//MyModel m = new MyModel();
+		MySocketModel m = new MySocketModel();
 		   p.setModel(m);
 		   m.addObserver(p);
 		   m.start();

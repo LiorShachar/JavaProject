@@ -48,6 +48,7 @@ import widgets.MazeDisplayer;
 import widgets.MyMazeWidget;
 import widgets.PropertiesWidget;
 import widgets.WidCommand;
+import widgets.widgetbuilds.StatusList;
 
 public class GuiWindowView extends commonGuiView implements View{
 	
@@ -64,7 +65,7 @@ public class GuiWindowView extends commonGuiView implements View{
 	HashMap<String, Listener> listeners;
 	KeyListener keys;
 
-	List l;
+	 StatusList l;
 	 Text nametxt,heighttxt,widthtxt,levelstxt;
 	 Label genlbl,mazelistlbl,namelbl,heightlbl,widthlbl,levelslbl;
 	 Button playButton,genButton,solveButton;
@@ -166,7 +167,7 @@ public class GuiWindowView extends commonGuiView implements View{
         
       //*****************************************************************//"maze list" label
         mazelistlbl = new Label(shell,SWT.None);
-        mazelistlbl.setText("Maze list");
+        mazelistlbl.setText("");
         mazelistlbl.setLayoutData(new GridData(SWT.None, SWT.None, false,false, 3, 1));
         //*****************************************************************//
         
@@ -184,8 +185,9 @@ public class GuiWindowView extends commonGuiView implements View{
         //*****************************************************************//
 
        //*****************************************************************// Maze List
- 		l = new List(shell, SWT.MULTI | SWT.BORDER | SWT.V_SCROLL );
- 	    l.setLayoutData(new GridData(SWT.None, SWT.None, false,true, 1, 4));
+ 		Label empty = new Label(shell,  SWT.BORDER );
+ 	    empty.setLayoutData(new GridData(SWT.None, SWT.None, false,true, 1, 4));
+ 	  
        //*****************************************************************
        
       //*****************************************************************//Play Button
@@ -264,6 +266,11 @@ public class GuiWindowView extends commonGuiView implements View{
 			solveButton.setEnabled(false); // only when there's a playable maze the option should be enabled
 	     //*****************************************************************
 		
+			   //*****************************************************************// Maze List
+	 		l = new StatusList(shell,  SWT.BORDER  );
+	 	    
+	 	   
+	       //*****************************************************************
 		
         
 
@@ -463,8 +470,8 @@ public class GuiWindowView extends commonGuiView implements View{
 
 		listeners.put("mazewindow", new Listener() {
 			public void handleEvent(Event event) {
-				if (l.getSelection().length > 0) {
-					String selected = l.getSelection()[0];
+				if (l.getSelection().length() > 0) {
+					String selected = l.getSelection();
 					scno("initMazeWidgetRequest", selected);
 				} else {
 					scno("error", "no maze selected");
@@ -491,8 +498,8 @@ public class GuiWindowView extends commonGuiView implements View{
 		// ***************************************************************************************************************
 		listeners.put("MazeSize", new Listener() {
 			public void handleEvent(Event event) {
-				if (l.getSelection().length > 0) {
-					String selected = l.getSelection()[0];
+				if (l.getSelection().length() > 0) {
+					String selected = l.getSelection();
 					scno("MazeSizeRequest", selected);
 				} else
 					scno("error", "no maze selected");
@@ -501,8 +508,8 @@ public class GuiWindowView extends commonGuiView implements View{
 		// ***************************************************************************************************************
 		listeners.put("FileSize", new Listener() {
 			public void handleEvent(Event event) {
-				if (l.getSelection().length > 0) {
-					String selected = l.getSelection()[0];
+				if (l.getSelection().length() > 0) {
+					String selected = l.getSelection();
 					scno("FileSizeRequest", selected);
 				} else
 					scno("error", "no maze selected");
@@ -518,10 +525,10 @@ public class GuiWindowView extends commonGuiView implements View{
 				// cards
 				savedialog.setFilterPath("c:\\"); // Windows path
 				savedialog.setFileName("newMaze.maz");
-				if (l.getSelection().length > 0) {
+				if (l.getSelection().length() > 0) {
 					String filepath = savedialog.open();
 					if (filepath != null) {
-						String saveparams[] = { l.getSelection()[0], filepath };
+						String saveparams[] = { l.getSelection(), filepath };
 						scno("PathToSaveMaze", saveparams);
 					}
 				} else
@@ -854,14 +861,20 @@ public class GuiWindowView extends commonGuiView implements View{
 	
 
 	public void showUpdatedList(String []elements){
+		l.RemoveAll();
+		String s1; //name segement
+		String s2; // status segment
 		String[] temp= new String[elements.length];
-		/*for (String s : elements){
+		for (String s : elements){
 			temp=s.split(" ");           // TODO FIND A NICE WAY TO USE THE SOLVED STATUS AND PRESENT IT TO THE USER
-			s=temp[1];
-		}*/
-		for(int i=0;i<elements.length;i++)
-			temp[i]=(elements[i].split(" "))[0];
-		l.setItems(temp);
+			s1=temp[0];
+			s2=temp[1];
+			l.AddItem(s1, Boolean.parseBoolean(s2));
+			
+			
+		}
+	l.update();
+		shell.pack();
 	}
 	
 	
