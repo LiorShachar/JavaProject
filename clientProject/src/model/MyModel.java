@@ -397,9 +397,9 @@ public class MyModel extends CommonModel {
 		ArrayList<String> status = new ArrayList<String>();
 		for(String m : mazes.keySet()){
 			if(hasSolution(m))
-			status.add(m+" [V]");
+			status.add(m+" solved");
 			else
-		status.add(m+" [X]");
+		status.add(m+" unsolved");
 		}
 		String items[]=new String[status.size()];
 		status.toArray(items);
