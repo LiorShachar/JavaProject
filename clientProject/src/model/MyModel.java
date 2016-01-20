@@ -1,5 +1,6 @@
 package model;
 
+import java.io.BufferedReader;
 import java.io.DataInputStream;
 import java.io.File;
 import java.io.FileInputStream;
@@ -8,6 +9,8 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.io.PrintWriter;
+import java.net.Socket;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -62,9 +65,32 @@ import sun.management.ManagementFactoryHelper;
 
 public class MyModel extends CommonModel {
 
+	int port;
+
+	String ipaddress;
+
+	Socket serverSocket;
+
+	Thread inputThread;
+
+	Properties prop;
+	
+
+	// streams for communicating with simple strings
+	PrintWriter stringToServer;
+	BufferedReader stringFromServer;
+
+	// streams for sending and getting objects
+	ObjectOutputStream dataWriter;
+	ObjectInputStream dataReader;
+	
+	
+	
+	
+	
+	
 	private HashMap<String, Maze3d> mazes;
 	private HashMap<Maze3d, Solution<Position>> solutions;
-	Properties prop;
 	private ExecutorService threadPool;
 	
 	
