@@ -8,6 +8,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.net.ServerSocket;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -60,7 +61,7 @@ import sun.management.ManagementFactoryHelper;
  * @since 2015-12-17
  */
 
-public class MyModel extends CommonModel {
+public class MyServerModel extends CommonModel {
 
 	private HashMap<String, Maze3d> mazes;
 	private HashMap<Maze3d, Solution<Position>> solutions;
@@ -68,13 +69,23 @@ public class MyModel extends CommonModel {
 	private ExecutorService threadPool;
 	
 	
+
+	int port;
+	ServerSocket server;
 	
+	ClientHandler clinetHandler;
+	int numOfClients;
+	ExecutorService threadpool;
+	
+	volatile boolean stop;
+	
+	Thread mainServerThread;
 	
 
 	
 	
 	
-	public MyModel() {
+	public MyServerModel() {
 
 		mazes = new HashMap<String,Maze3d>();
 		solutions = new HashMap<Maze3d, Solution<Position>>();

@@ -22,7 +22,7 @@ public class MyMaze3dClientHandler implements ClientHandler,Observer{
 	volatile DataObject inPackage;
 	
 
-	MyModel originModel;
+	MyServerModel originModel;
 	
 	@Override
 	public void handleClient(InputStream inFromClient, OutputStream outToClient) {
@@ -92,9 +92,10 @@ public class MyMaze3dClientHandler implements ClientHandler,Observer{
 		
 	}
 
-
+/*
 	@Override
 	public void update(Observable arg0, Object arg1) {
+		//TODO 
 		if(arg0==originModel){
 			
 			
@@ -102,5 +103,5 @@ public class MyMaze3dClientHandler implements ClientHandler,Observer{
 		}
 		
 	}
-
+*/
 }
