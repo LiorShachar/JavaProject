@@ -10,26 +10,25 @@ public class Properties implements Serializable {
 	
 
 	
-	 String server_ip;
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 7284442227337269279L;
+	// String server_ip;
 	 int server_port;
-	 String userInterface;
-	 String generatingAlgorithm;
-	 String searchingAlgorithm;
-	 String heuristic;
+	 int clientsCapacity;
+	// String userInterface;
+	// String generatingAlgorithm;
+	// String searchingAlgorithm;
+	// String heuristic;
 	
-	 boolean sound;
+	// boolean sound;
 	
 	
 	public Properties() { 	
-		 server_ip="localhost";
-		 server_port=5400;
-		  userInterface="gui";
-		 generatingAlgorithm="dfs";
-		 searchingAlgorithm="astar";
-		  heuristic="manhatten";
 		 
-		 sound=true;
-		
+		server_port=5400;
+		clientsCapacity=10;
 		
 		
 	}
@@ -37,36 +36,6 @@ public class Properties implements Serializable {
 	
 	
 	
-
-	public Properties(String server_ip, int server_port, String userInterface, String generatingAlgorithm,
-			String searchingAlgorithm, String heuristic,  boolean sound) {
-		
-		this.server_ip = server_ip;
-		this.server_port = server_port;
-		this.userInterface = userInterface;
-		this.generatingAlgorithm = generatingAlgorithm;
-		this.searchingAlgorithm = searchingAlgorithm;
-		this.heuristic = heuristic;
-		
-		this.sound = sound;
-	}
-
-
-
-
-
-	public String getServer_ip() {
-		return server_ip;
-	}
-
-
-
-
-
-	public void setServer_ip(String server_ip) {
-		this.server_ip = server_ip;
-	}
-
 
 
 
@@ -74,6 +43,9 @@ public class Properties implements Serializable {
 	public int getServer_port() {
 		return server_port;
 	}
+
+
+
 
 
 
@@ -87,64 +59,11 @@ public class Properties implements Serializable {
 
 
 
-	public String getUserInterface() {
-		return userInterface;
-	}
 
 
 
-
-
-	public void setUserInterface(String userInterface) {
-		this.userInterface = userInterface;
-	}
-
-
-
-
-
-	public String getGeneratingAlgorithm() {
-		return generatingAlgorithm;
-	}
-
-
-
-
-
-	public void setGeneratingAlgorithm(String generatingAlgorithm) {
-		this.generatingAlgorithm = generatingAlgorithm;
-	}
-
-
-
-
-
-	public String getSearchingAlgorithm() {
-		return searchingAlgorithm;
-	}
-
-
-
-
-
-	public void setSearchingAlgorithm(String searchingAlgorithm) {
-		this.searchingAlgorithm = searchingAlgorithm;
-	}
-
-
-
-
-
-	public String getHeuristic() {
-		return heuristic;
-	}
-
-
-
-
-
-	public void setHeuristic(String heuristic) {
-		this.heuristic = heuristic;
+	public int getClientsCapacity() {
+		return clientsCapacity;
 	}
 
 
@@ -154,30 +73,21 @@ public class Properties implements Serializable {
 
 
 
-	public boolean isSound() {
-		return sound;
+	public void setClientsCapacity(int clientsCapacity) {
+		this.clientsCapacity = clientsCapacity;
 	}
 
 
 
-
-
-	public void setSound(boolean sound) {
-		this.sound = sound;
-	}
 
 
 
 
 
 	public void print(){
-		System.out.println("generateing algorithm: "+generatingAlgorithm);
-		System.out.println("solving algorithm: "+searchingAlgorithm);
-		System.out.println("Astar Heuristic: "+heuristic);
-		System.out.println("User Interface: "+userInterface);
-	
-		System.out.println("Sound is Enabled "+sound);
 		
+		System.out.println(this.server_port);
+		System.out.println(this.clientsCapacity);
 		
 		
 	}

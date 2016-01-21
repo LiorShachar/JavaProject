@@ -1,4 +1,4 @@
-package serverModel;
+/*package serverModel;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -16,18 +16,23 @@ public class MyServer {
 	ServerSocket server;
 	
 	ClientHandler clinetHandler;
-	int numOfClients;
+	
 	ExecutorService threadpool;
+	Thread mainServerThread;
+	
 	
 	volatile boolean stop;
 	
-	Thread mainServerThread;
 	
+	int numOfClients;
 	int clientsHandled=0;
 	
-	public MyServer(int port,ClientHandler clinetHandler,int numOfClients) {
+	
+	
+	
+	public MyServer() {
 		this.port=port;
-		this.clinetHandler=clinetHandler;
+		this.clientHandler=clinetHandler;
 		this.numOfClients=numOfClients;
 	}
 	
@@ -94,18 +99,5 @@ public class MyServer {
 	}
 	
 	
-	public static void main(String[] args) throws Exception{
-		System.out.println("Server Side");
-		System.out.println("type \"close the server\" to stop it");
-	//	MyServer server=new MyServer(5400,new ASCIIArtClientHandler(),10);
-		MyServer server=new MyServer(5400,new MyMaze3dClientHandler(),10);
-		server.start();
-		
-		BufferedReader in=new BufferedReader(new InputStreamReader(System.in)); //
-		
-		while(!(in.readLine()).equals("close the server"));
-		
-		server.close();		
-		
-	}
 }
+*/

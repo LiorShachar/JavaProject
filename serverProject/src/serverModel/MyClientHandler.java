@@ -28,4 +28,10 @@ public class MyClientHandler implements ClientHandler{
 		}catch(Exception e){}
 	}
 
+	@Override
+	public Object getData(String string) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }
