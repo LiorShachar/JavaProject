@@ -561,10 +561,21 @@ public class GuiWindowView extends commonGuiView implements View{
 	
 	
 	public void showError(String s) {
-		MessageBox messageBox = new MessageBox(shell, SWT.ICON_ERROR);
-		messageBox.setMessage(s);
-		messageBox.setText("Error!");
-		messageBox.open();
+		
+		display.syncExec(new Runnable() {
+
+			@Override
+			public void run() {
+
+				MessageBox messageBox = new MessageBox(shell, SWT.ICON_ERROR);
+				messageBox.setMessage(s);
+				messageBox.setText("Error!");
+				messageBox.open();
+				
+			}
+		});
+		
+		
 
 	}
 
@@ -701,10 +712,18 @@ public class GuiWindowView extends commonGuiView implements View{
 	
 	@Override
 	public void showMsg(String s) {
-		MessageBox messageBox = new MessageBox(shell, SWT.ICON_WORKING);
-		messageBox.setMessage(s);
-		messageBox.setText("Message");
-		messageBox.open();
+		display.syncExec(new Runnable() {
+
+			@Override
+			public void run() {
+				MessageBox messageBox = new MessageBox(shell, SWT.ICON_WORKING);
+				messageBox.setMessage(s);
+				messageBox.setText("Message");
+				messageBox.open();
+				
+			}
+		});
+		
 
 	}
 
@@ -861,7 +880,15 @@ public class GuiWindowView extends commonGuiView implements View{
 		}*/
 		for(int i=0;i<elements.length;i++)
 			temp[i]=(elements[i].split(" "))[0];
-		l.setItems(temp);
+		display.syncExec(new Runnable() {
+
+			@Override
+			public void run() {
+				l.setItems(temp);
+				
+			}
+		});
+		
 	}
 	
 	

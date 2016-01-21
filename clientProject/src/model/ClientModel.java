@@ -385,6 +385,8 @@ public class ClientModel extends CommonModel implements Model {
 		
 		
 	}
+	
+	
 	@Override
 	public Object getMazeByName(String string) {
 		if(mazes.containsKey(string))
