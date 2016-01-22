@@ -19,6 +19,7 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.Callable;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -256,8 +257,15 @@ public class ClientModel extends CommonModel implements Model {
 	@Override
 	public void handleSolveMaze(String name, String algo) {
 		//TODO check
+		threadPool.execute(new Runnable() {
+			
+			@Override
+			public void run() {
+				packageToServer("handleSolve "+name+" "+algo+" "+prop.getHeuristic(),mazes.get(name).toByteArray() );
+				
+			}
+		});
 		
-		packageToServer("handleSolve "+name+" "+algo+" "+prop.getHeuristic(),mazes.get(name).toByteArray() );
 
 	}
 
@@ -318,13 +326,8 @@ public class ClientModel extends CommonModel implements Model {
 
 	}
 
-	public HashMap<String, Maze3d> getMazes() {
-		return mazes;
-	}
 
-	public HashMap<Maze3d, Solution<Position>> getSolutions() {
-		return solutions;
-	}
+
 
 	@Override
 	public Solution<Position> getSolutionFor(String name) {
@@ -496,6 +499,7 @@ public class ClientModel extends CommonModel implements Model {
 								scno("solutionReady", input.getDataDetails().split(" ")[1]);
 								}
 							}
+							
 						} while (input != null && !input.getDataDetails().equals("exit"));
 
 						scno("msg", "Connection ended");
