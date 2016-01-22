@@ -7,6 +7,7 @@ import java.io.InputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.OutputStream;
+import java.net.Socket;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -33,13 +34,11 @@ public class MyMaze3dClientHandler extends Observable implements ClientHandler{
 	
 	
 	
-	ObjectOutputStream dataWriter;
-	ObjectInputStream dataReader;
+	
+	
+	
 
-	volatile DataObject outPackage;
-	volatile DataObject inPackage;
-
-	private HashMap<String, Object> notifications;
+	private ConcurrentHashMap<String, Object> notifications;
 
 	private static ConcurrentHashMap<Maze3d, Solution<Position>> solutions; // a
 																			// shared
@@ -53,8 +52,9 @@ public class MyMaze3dClientHandler extends Observable implements ClientHandler{
 	
 	public MyMaze3dClientHandler() {
 		super();
+		
 		 solutions = new ConcurrentHashMap<Maze3d, Solution<Position>>();
-		 notifications= new HashMap<String, Object>();
+		 notifications= new ConcurrentHashMap<String, Object>();
 		loadCachedSolutions();
 		
 	}
@@ -63,61 +63,60 @@ public class MyMaze3dClientHandler extends Observable implements ClientHandler{
 	
 	
 	@Override
-	public void handleClient(InputStream inFromClient, OutputStream outToClient) {
-
-		// streams for sending and getting objects
+	public void handleClient(Socket sock) {
 
 		try {
-			dataWriter = new ObjectOutputStream(outToClient);
-			dataReader = new ObjectInputStream(inFromClient);
-			dataWriter.flush();
-		} catch (IOException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
+			// streams for sending and getting objects
+			ObjectOutputStream dataWriter;
+			ObjectInputStream  dataReader;
+			
+				 dataWriter = new ObjectOutputStream(sock.getOutputStream());
+				 dataReader = new ObjectInputStream(sock.getInputStream());
+				dataWriter.flush();
+			
+
+				packageToClient("connected", "",dataWriter);
+				DataObject inPackage;
+				
+			
+			String modelCommand;
+			byte[] problem;
+			
+			do { // after the first ACK we start recieving orders from the client
+				
+					inPackage = (DataObject) dataReader.readObject();
+				
+
+				modelCommand = inPackage.getDataDetails();
+				String params[]=modelCommand.split(" ");
+				problem = (byte[]) inPackage.getData();
+
+				switch (params[0]) {
+
+				case "handleSolve":
+					handleSolveMaze(params[1], params[2], params[3], new Maze3d(problem),dataWriter);
+					break;
+
+				}
+
+			} while (inPackage != null && !inPackage.getDataDetails().equals("exit")  );
+			dataWriter.close();
+			dataReader.close();
+			
+		} catch (ClassNotFoundException e) {
+			scno("error", "cannot communicate with client package corrupted");
+		} catch (IOException e) {
+			scno("error", "cannot write to the client, IO exception");
 		}
-
-		try {
-			outPackage = new DataObject("connected", "");
-			dataWriter.writeObject(outPackage);
-			dataWriter.flush();
-			dataWriter.reset();
-		} catch (IOException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
-		String modelCommand;
-		byte[] problem;
-		do { // after the first ACK we start recieving orders from the client
-			try {
-				inPackage = (DataObject) dataReader.readObject();
-			} catch (ClassNotFoundException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-
-			modelCommand = inPackage.getDataDetails();
-			String params[]=modelCommand.split(" ");
-			problem = (byte[]) inPackage.getData();
-
-			switch (params[0]) {
-
-			case "handleSolve":
-				handleSolveMaze(params[1], params[1], params[1], new Maze3d(problem));
-				break;
-
-			}
-
-		} while (inPackage != null && !inPackage.getDataDetails().equals("exit"));
-		close();
+		
+		
+		
 
 	}
 
 	
 
-	public void handleSolveMaze(String name, String algo, String heurName ,Maze3d maze ) {
+	public void handleSolveMaze(String name, String algo, String heurName ,Maze3d maze,ObjectOutputStream out ) {
 		
 		Solution<Position> tempsol=null;
 		boolean flag=false;
@@ -125,7 +124,7 @@ public class MyMaze3dClientHandler extends Observable implements ClientHandler{
 		
 		if (algo.matches("[Bb][Ff][Ss]") || algo.matches("[Aa][Ss][Tt][Aa][Rr]")) {
 
-			packageToClient("msgFromServer", "Solving " + name + " using " + algo);//TODO add this command to the client
+			packageToClient("status", "Solving " + name + " using " + algo,out);//TODO add this command to the client
 			if (algo.matches("[Bb][Ff][Ss]")) {
 
 				
@@ -133,27 +132,27 @@ public class MyMaze3dClientHandler extends Observable implements ClientHandler{
 						tempsol= new BFS<Position>().search(new searchableMaze3d(maze));
 						flag=true;
 					}
-
-			
-
-			} else if (algo.matches("[Aa][Ss][Tt][Aa][Rr]")) {
+			else if (algo.matches("[Aa][Ss][Tt][Aa][Rr]")) {
 
 				
-						Heuristic heur=null;
-						if (heurName.matches("[Mm][Aa][Nn][Hh][Aa][Tt][Tt][Ee][Nn]"))
-						{heur = new MazeManDis(); tempsol= new Astar<Position>(heur)
-						.search(new searchableMaze3d(maze));}
-						else if(heurName.matches("[Aa][Ii][Rr][Dd][Ii][Ss][Tt][Aa][Nn][Cc][Ee]"))
-						{heur = new MazeAirDis();tempsol= new Astar<Position>(heur)
-						.search(new searchableMaze3d(maze));}
-						
-						
-						tempsol= new Astar<Position>(heur)
-								.search(new searchableMaze3d(maze));
-						flag=true;
-			}		
+				Heuristic heur=null;
+				if (heurName.matches("[Mm][Aa][Nn][Hh][Aa][Tt][Tt][Ee][Nn]"))
+				{heur = new MazeManDis(); tempsol= new Astar<Position>(heur)
+				.search(new searchableMaze3d(maze));}
+				else if(heurName.matches("[Aa][Ii][Rr][Dd][Ii][Ss][Tt][Aa][Nn][Cc][Ee]"))
+				{heur = new MazeAirDis();tempsol= new Astar<Position>(heur)
+				.search(new searchableMaze3d(maze));}
+				
+				
+				tempsol= new Astar<Position>(heur)
+						.search(new searchableMaze3d(maze));
+				flag=true;
+	}		
+			
+
+			} 
 			else{
-				packageToClient("errorFromServer", "illegal Astar heuristic"); //TODO add error command to the client
+				packageToClient("errorFromServer", "illegal solving algorithm/heuristic name",out); //TODO add error command to the client
 				}		
 		}
 		else{
@@ -166,7 +165,7 @@ public class MyMaze3dClientHandler extends Observable implements ClientHandler{
 		{
 			
 			
-			packageToClient("solution "+name, tempsol);}
+			packageToClient("solution "+name, tempsol,out);}
 		
 		
 		
@@ -176,22 +175,10 @@ public class MyMaze3dClientHandler extends Observable implements ClientHandler{
 	
 	
 	void close(){
+		
 		serializeAndCachSolutions();
 		
-		try {
-			if(dataWriter!=null)
-			dataWriter.close();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		 try {
-			if(dataWriter!=null)
-			dataReader.close();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+
 	}
 	
 	
@@ -201,7 +188,7 @@ public class MyMaze3dClientHandler extends Observable implements ClientHandler{
 	 * the command sent
 	 */
 
-	void packageToClient(String details, Object object) {
+	void packageToClient(String details, Object object,ObjectOutputStream dataWriter) {
 		try {
 			dataWriter.writeObject(new DataObject(details, object));
 			dataWriter.flush();
@@ -230,6 +217,8 @@ public class MyMaze3dClientHandler extends Observable implements ClientHandler{
 
 	}
 
+	
+	
 	public void serializeAndCachSolutions(){
 		HashMap<byte[], Solution<Position>> serialized = new HashMap<byte[], Solution<Position>>();
 		Iterator<Maze3d> itr= solutions.keySet().iterator();

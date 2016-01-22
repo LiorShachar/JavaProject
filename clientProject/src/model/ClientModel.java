@@ -78,8 +78,9 @@ public class ClientModel extends CommonModel implements Model {
 	
 
 	Properties prop;
+	boolean isConnected;
+	boolean canDisconnect;
 	
-
 	// streams for communicating with simple strings
 	PrintWriter stringToServer;
 	BufferedReader stringFromServer;
@@ -282,6 +283,7 @@ public class ClientModel extends CommonModel implements Model {
 		try {
 			serializeAndCachSolutions();
 			scno("msg", "Shutting down...");
+			canDisconnect=true;
 			this.threadPool.shutdown();
 			this.threadPool.awaitTermination(10,TimeUnit.SECONDS );
 			
@@ -471,7 +473,12 @@ public class ClientModel extends CommonModel implements Model {
 		handleLoadProperties();
 		ipaddress = prop.getServer_ip();
 		port = prop.getServer_port();
+		scno("modelReady","");
+		
+		
+	}
 
+	public void connectToServer(){
 		try {
 			serverSocket = new Socket(ipaddress, port);
 
@@ -480,60 +487,71 @@ public class ClientModel extends CommonModel implements Model {
 			dataWriter = new ObjectOutputStream(serverSocket.getOutputStream());
 			
 			// TODO delete the stacktraces
-			threadPool.execute((new Runnable() {
-
-				@Override
-				public void run() {
-
-					try {
-						DataObject input;
-						do {
-
-							input = (DataObject) dataReader.readObject();
-
-							if (input != null){
-								if (input.getDataDetails().startsWith("solution")){
-									
-								solutions.put((Maze3d)getMazeByName(input.getDataDetails().split(" ")[1]), (Solution<Position>)input.getData());
-								generateListStatus();
-								scno("solutionReady", input.getDataDetails().split(" ")[1]);
-								}
-							}
-							
-						} while (input != null && !input.getDataDetails().equals("exit"));
-
-						scno("msg", "Connection ended");
-					} catch (ClassNotFoundException e) {
-						scno("error", "problem reading the object from server");
-						e.printStackTrace();
-					} catch (IOException e) {
-						scno("error", "problem reading the object from server");
-						e.printStackTrace();
-					}
-
-				}
-			}));
 			
-		} catch (UnknownHostException e) {
-			scno("error", "unknown host");
-			e.printStackTrace();
-		} catch (SocketException e) {
-			scno("error", "socket exception");
-			e.printStackTrace();
-		} catch (IOException e) {
-			scno("error", "IOException");
-			e.printStackTrace();
-		}
-		scno("modelReady","");
-	
 		
-	}
+		threadPool.execute((new Runnable() {
 
+			@Override
+			public void run() {
+
+				try {
+					DataObject input;
+					isConnected=true;
+					do {
+
+						input = (DataObject) dataReader.readObject();
+
+						if (input != null){
+							if (input.getDataDetails().startsWith("solution")){
+								
+							solutions.put((Maze3d)getMazeByName(input.getDataDetails().split(" ")[1]), (Solution<Position>)input.getData());
+							generateListStatus();
+							scno("solutionReady", input.getDataDetails().split(" ")[1]);
+							}
+						}
+						
+					} while (input != null && !input.getDataDetails().equals("exit") && !canDisconnect);
+					isConnected=false;
+
+					scno("msg", "Connection ended");
+				} catch (ClassNotFoundException e) {
+					scno("error", "problem reading the object from server");
+					e.printStackTrace();
+				} catch (IOException e) {
+					scno("error", "problem reading the object from server");
+					e.printStackTrace();
+				}
+
+			}
+		}));
+		
+	} catch (UnknownHostException e) {
+		scno("error", "unknown host");
+		e.printStackTrace();
+	} catch (SocketException e) {
+		scno("error", "socket exception");
+		e.printStackTrace();
+	} catch (IOException e) {
+		scno("error", "IOException");
+		e.printStackTrace();
+	}
+	}
+	
+	
+	
+	
+	
+	/**
+	 *  initialize and writes a DataObject to the server with the provided ObjectOutput stream
+	 * 
+	 * */
 	void packageToServer(String details, Object object) {
 		try {
+			if(dataWriter!=null){
 			dataWriter.writeObject(new DataObject(details, object));
 			dataWriter.flush();
 			dataWriter.reset();
+			}
 		} catch (IOException e) {
 			scno("error", "FATAL ERROR: cannot write to the server, check please connection");
 		}

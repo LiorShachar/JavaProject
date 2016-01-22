@@ -19,6 +19,7 @@ import java.util.Observable;
 import java.util.Observer;
 import java.util.Set;
 import java.util.concurrent.Callable;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -68,7 +69,7 @@ import sun.management.ManagementFactoryHelper;
 
 public class MyServerModel extends Observable  implements Observer{
 
-	private HashMap<String, Object> notifications;
+	private ConcurrentHashMap<String, Object> notifications;
 
 	int port;
 	
@@ -92,9 +93,9 @@ public class MyServerModel extends Observable  implements Observer{
 
 	public MyServerModel() {
 
-		notifications = new HashMap<String, Object>();
+		notifications = new ConcurrentHashMap<String, Object>();
 		threadPool = Executors.newCachedThreadPool();
-
+		SocketHolder=new ArrayList<Socket>();
 	}
 
 	void scno(String type, Object data) {
@@ -113,6 +114,7 @@ public class MyServerModel extends Observable  implements Observer{
 		try {
 			
 			scno("msg", "Shutting down...");
+			stop=true;
 			this.threadPool.shutdown();
 			this.threadPool.awaitTermination(10, TimeUnit.SECONDS);
 
@@ -127,7 +129,7 @@ public class MyServerModel extends Observable  implements Observer{
 		handleLoadProperties();
 		port = prop.getServer_port();
 		
-		ArrayList<Socket> SocketHolder= new ArrayList<Socket>();
+		
 		this.threadPool = Executors.newFixedThreadPool(prop.getClientsCapacity());
 		// TODO
 																					// EDIT
@@ -141,6 +143,7 @@ public class MyServerModel extends Observable  implements Observer{
 
 	public void runServer() {
 		clientHandler= new MyMaze3dClientHandler();
+		((MyMaze3dClientHandler)clientHandler).addObserver(this);
 		port = prop.getServer_port();
 		
 		
@@ -152,8 +155,8 @@ public class MyServerModel extends Observable  implements Observer{
 					while(!stop){
 						try {
 							final Socket someClient=server.accept(); //  get the client socket
-							//SocketHolder.add(someClient);
-							//scno("newClient",SocketHolder.size()); // saves the socket and sends the index
+							SocketHolder.add(someClient);
+							
 							if(someClient!=null){
 								threadPool.execute(new Runnable() {									
 									@Override
@@ -161,7 +164,7 @@ public class MyServerModel extends Observable  implements Observer{
 										try{										
 											clientsHandled++;
 											System.out.println("\thandling client "+clientsHandled);
-											clientHandler.handleClient(someClient.getInputStream(), someClient.getOutputStream()); //create the right client handler
+											clientHandler.handleClient(someClient); 
 											 
 											someClient.close(); 
 											System.out.println("\tdone handling client "+clientsHandled);										
@@ -223,6 +226,10 @@ public class MyServerModel extends Observable  implements Observer{
 
 		}
 	}
+	
+
+	
+	
 	@Override
 	public void update(Observable o, Object arg) {
 		String note = (String)arg;

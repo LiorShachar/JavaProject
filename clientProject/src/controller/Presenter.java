@@ -417,7 +417,7 @@ public class Presenter implements Observer {
 				
 				String []elements=(String[])m.getData(note);
 				
-				//TODO CHECK WHY THIS ISNT WORKING
+				
 				 v.showUpdatedList(elements);
 				break;
 			
