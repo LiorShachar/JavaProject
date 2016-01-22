@@ -1,17 +1,25 @@
 package model;
 
+import java.io.BufferedReader;
 import java.io.DataInputStream;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.io.PrintWriter;
+import java.net.Socket;
+import java.net.SocketException;
+import java.net.UnknownHostException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.Callable;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -35,9 +43,10 @@ import algorithms.search.MazeAirDis;
 import algorithms.search.MazeManDis;
 import algorithms.search.Solution;
 import algorithms.search.searchableMaze3d;
-import controller.Preferences;
 import io.MyCompressorOutputStream;
 import io.MyDecompressorInputStream;
+import protocol.DataObject;
+import singletonexplicitpack.Properties;
 import sun.management.ManagementFactoryHelper;
 
 /**
@@ -58,13 +67,36 @@ import sun.management.ManagementFactoryHelper;
  * @since 2015-12-17
  */
 
-public class MyModel extends CommonModel {
+public class ClientModel extends CommonModel implements Model {
 
+	int port;
+
+	String ipaddress;
+
+	Socket serverSocket;
+
+	
+
+	Properties prop;
+	
+
+	// streams for communicating with simple strings
+	PrintWriter stringToServer;
+	BufferedReader stringFromServer;
+
+	// streams for sending and getting objects
+	ObjectOutputStream dataWriter;
+	ObjectInputStream dataReader;
+	
+	
+	
+	
+	
+	
 	private HashMap<String, Maze3d> mazes;
 	private HashMap<Maze3d, Solution<Position>> solutions;
-	private HashMap<String, Object> notifications;
 	private ExecutorService threadPool;
-	String defaultSettingsPath;
+	
 	
 	
 	
@@ -72,14 +104,12 @@ public class MyModel extends CommonModel {
 	
 	
 	
-	public MyModel() {
+	public ClientModel() {
 
 		mazes = new HashMap<String,Maze3d>();
 		solutions = new HashMap<Maze3d, Solution<Position>>();
+		threadPool=Executors.newCachedThreadPool();
 		
-		notifications=new HashMap<String, Object>();
-		threadPool=Executors.newFixedThreadPool(1);
-		defaultSettingsPath="resources/defaultSettings.xml";
 		
 	}
 
@@ -100,7 +130,7 @@ public class MyModel extends CommonModel {
 				@Override
 				public Maze3d call() throws Exception {
 					Maze3dGenerator gen;
-					if(Preferences.getGenAlgo().matches("[Dd][Ff][Ss]")){
+					if(prop.getGeneratingAlgorithm().matches("[Dd][Ff][Ss]")){
 					gen = new MyMaze3dGenerator();
 					}
 					else{
@@ -115,6 +145,7 @@ public class MyModel extends CommonModel {
 				mazes.put(name, futurem.get());
 				
 				scno("loaded", name);
+				generateListStatus();
 			} catch (InterruptedException e) {
 				scno("error", " thread interrupted, maze generation aborted");
 				e.printStackTrace();
@@ -177,6 +208,7 @@ public class MyModel extends CommonModel {
 			comp.close();
 			mazes.put(name, new Maze3d(arr));
 			scno("loaded",name);
+			generateListStatus();
 
 		} catch (IOException e) {
 			scno("error","loading maze failed");
@@ -199,15 +231,10 @@ public class MyModel extends CommonModel {
 		File test = new File("testfile.maz");
 		scno("msg", "File Size of " + name + ": " + test.length() + " Bytes");
 		test.delete();
-
+		//TODO computes the file size by saving it...need another way
 	}
 
-	/**
-	 * solve a maze represented by a key name with the algorithm specified in
-	 * the string using a callable, in order to handle the solving in a separate thread
-	 * 	
-	 *  
-	 */
+	
 	@Override
 	public void handleUpdatePosition(Position p,String name){
 		
@@ -221,80 +248,24 @@ public class MyModel extends CommonModel {
 	}
 	
 	
-	
+	/**
+	 * solve a maze represented by a key name with the algorithm specified in
+	 * the string using a callable, in order to handle the solving in a separate thread
+	 * 	
+	 *  
+	 */
 	@Override
 	public void handleSolveMaze(String name, String algo) {
-		
-		if (mazes.containsKey(name)) {
+		//TODO check
+		threadPool.execute(new Runnable() {
 			
-			if(!solutions.containsKey(mazes.get(name))){
-			
-			Future<Solution<Position>> futures = null;
-			if (algo.matches("[Bb][Ff][Ss]") || algo.matches("[Aa][Ss][Tt][Aa][Rr]")) {
-
-				scno("msg", "Solving " + name + " using " + algo);
-				if (algo.matches("[Bb][Ff][Ss]")) {
-
-					futures = threadPool.submit(new Callable<Solution<Position>>() {
-
-						@Override
-						public Solution<Position> call() throws Exception {
-
-							return new BFS<Position>().search(new searchableMaze3d(mazes.get(name)));
-
-						}
-
-					});
-
-				} else if (algo.matches("[Aa][Ss][Tt][Aa][Rr]")) {
-
-					futures = threadPool.submit(new Callable<Solution<Position>>() {
-
-						@Override
-						public Solution<Position> call() throws Exception {
-							Heuristic heur=null;
-							if (Preferences.getHeuristic().matches("[Mm][Aa][Nn][Hh][Aa][Tt][Tt][Ee][Nn]"))
-							{heur = new MazeManDis();}
-							else if(Preferences.getHeuristic().matches("[Aa][Ii][Rr][Dd][Ii][Ss][Tt][Aa][Nn][Cc][Ee]"))
-							{heur = new MazeAirDis();}
-							else{
-								scno("error", "illegal Astar heuristic");
-								return null;}
-							
-							return new Astar<Position>(heur)
-									.search(new searchableMaze3d(mazes.get(name)));
-
-						}
-
-					});
-				}
-					try {
-					solutions.put(mazes.get(name), futures.get());
-					scno("solutionReady",name);
-				} catch (InterruptedException e) {
-					scno("error", "Cannot solve thread interrupted");
-					e.printStackTrace();
-				} catch (ExecutionException e) {
-					scno("error", "Cannot solve, the thread was unable to send solution");
-					e.printStackTrace();
-				}
+			@Override
+			public void run() {
+				packageToServer("handleSolve "+name+" "+algo+" "+prop.getHeuristic(),mazes.get(name).toByteArray() );
 				
 			}
-
-			else {
-				scno("error", "Mo such algorithm");
-			}
-
-		}
-			else{
-				scno("solutionExist",name);
-			}	
-		}
-		else {
-			scno("error", "Maze name doesn't exist");
-			
-			
-		}
+		});
+		
 
 	}
 
@@ -306,25 +277,25 @@ public class MyModel extends CommonModel {
 	 */
 
 	@Override
-	public void handleExit() {
+	public void close() {
 		
 		try {
-			
+			serializeAndCachSolutions();
 			scno("msg", "Shutting down...");
 			this.threadPool.shutdown();
 			this.threadPool.awaitTermination(10,TimeUnit.SECONDS );
 			
 			
 		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			scno("error", "InterruptedException");
+			
 		}
 		
 	}
 
 	// adds a background thread for testing
 
-	@Override
+	
 	public void testThread() {
 
 		threadPool.execute(new Runnable() {
@@ -355,51 +326,70 @@ public class MyModel extends CommonModel {
 
 	}
 
-	public HashMap<String, Maze3d> getMazes() {
-		return mazes;
-	}
 
-	public HashMap<Maze3d, Solution<Position>> getSolutions() {
-		return solutions;
-	}
+
 
 	@Override
 	public Solution<Position> getSolutionFor(String name) {
+		
+		//TODO ASKS THE SERVER FOR A SOLUTION FOR THE REPRESENTED MAZE
+		
 		Maze3d maze= (Maze3d)getMazeByName(name);
 		if(maze!=null){
-			if(solutions.containsKey(maze)){
+			if(hasSolution(name)){
 				return solutions.get(maze);
 			}
-			scno("error", "no solution for this maze");
+			scno("error", "no solution for this maze (NULL POINTER TO MAZE)");
 		}
 		scno("error", "Maze name doesn't exist");
 		return null;
 	}
 
-
+	@Override
+	public boolean hasSolution(String name){
+		return solutions.containsKey((Maze3d)getMazeByName(name));
+		}
+	
+	
 
 	/**
-	 * this method serves as an easy way to notify the observers with the
-	 * appropriate outcome in this case we want to specifiy in
-	 * the parameters what type of data we want the presenter to check.
 	 * 
-	 * @param  s
-	 *            acts as the notification type
-	 * @param o
-	 *            acts as the data passed
-	 */
-	 void scno(String type, Object data) {
-			notifications.put(type, data);
-			setChanged();
-			notifyObservers(type);
-			
+	 * updates the presentor about current list of items and their statuses 
+	 * method can be called whenever it seems appropriate to update on some changes
+	 * **/
+	void generateListStatus(){
+		ArrayList<String> status = new ArrayList<String>();
+		for(String m : mazes.keySet()){
+			if(hasSolution(m))
+			status.add(m+" true");
+			else
+		status.add(m+" false");
 		}
+		String items[]=new String[status.size()];
+		status.toArray(items);
+		if(!(items.length<1))
+		scno("updateListStatus",items);
+		
+	
+	}
+	
+
+
 
 	@Override
 	public void handleDir(String string) {
-		// TODO Auto-generated method stub
+		File lister = new File(string);
+		try {
+			String[] pathdetails = lister.list();
+			scno("DirDetails", pathdetails);
+		} catch (NullPointerException e) {
+			scno("error", "file or directory isn't found");
+		}
+		
 		
 	}
+	
+	
 	@Override
 	public Object getMazeByName(String string) {
 		if(mazes.containsKey(string))
@@ -410,11 +400,9 @@ public class MyModel extends CommonModel {
 		}
 	}
 	
-	@Override
-	public Object getData(String string) {
-		 return notifications.get(string);
-	}
-
+	
+	
+	
 	@Override
 	public void handleMazeSize(String name) {
 		scno("msg","Maze size in memory: "+mazes.get(name).toByteArray().length+"Bytes");
@@ -422,30 +410,10 @@ public class MyModel extends CommonModel {
 	}
 
 	
+	
+	
 	public void serializeAndCachSolutions(){
-		HashMap<byte[], Solution<Position>> serialized = new HashMap<byte[], Solution<Position>>();
-		Iterator<Maze3d> itr= solutions.keySet().iterator();
-		while(itr.hasNext()){
-			Maze3d temp=itr.next();
-			serialized.put(temp.toByteArray(), solutions.get(temp));
-		}
-		
-		
-		try
-        {
-		FileOutputStream fos =
-                new FileOutputStream("memoryCach.zip");
-		GZIPOutputStream gos = new GZIPOutputStream(fos);
-             ObjectOutputStream oos = new ObjectOutputStream(gos);
-             oos.writeObject(serialized);
-             oos.close();
-             fos.close();
-             System.out.printf("Serialized HashMap data is saved in memoryCach.zip");
-      }catch(IOException ioe)
-       {
-             ioe.printStackTrace();
-       }
-		
+		//MOVED TO THE SERVER SIDE
 		
 		
 		
@@ -454,61 +422,140 @@ public class MyModel extends CommonModel {
 		
 	}
 	
+	
+	
 	public void loadCachedSolutions(){
-		HashMap<byte[], Solution<Position>> serialized = new HashMap<byte[], Solution<Position>>();
-		try
-	      {
-	         FileInputStream fis = new FileInputStream("resources/memoryCach.zip");
-	         GZIPInputStream gis = new GZIPInputStream(fis);
-	         
-	         ObjectInputStream ois = new ObjectInputStream(gis);
-	         serialized = (HashMap) ois.readObject();
-	         ois.close();
-	         fis.close();
-	      }catch(IOException ioe)
-	      {
-	         ioe.printStackTrace();
-	         
-	      }catch(ClassNotFoundException c)
-	      {
-	         System.out.println("Class not found");
-	         c.printStackTrace();
-	         
-	      }
-	    //  System.out.println("Deserialized HashMap..");
-	      // Display content using Iterator
-	      Set set = serialized.entrySet();
-	      Iterator iterator = set.iterator();
-	      while(iterator.hasNext()) {
-	    	  Map.Entry mentry = ( Map.Entry)iterator.next();
-	    	  solutions.put(new Maze3d((byte[]) mentry.getKey()), (Solution<Position>)mentry.getValue());
-	      
-	      }
-	    //  System.out.println("Cached memory loaded");
+		//MOVED TO THE SERVER SIDE
+	    
 	}
 
+	
+	
+	
 	@Override
-	public void handleLoadSettings(String path) {
-		File f= new File(path);
-		
-		XmlHandler han = new XmlHandler();
-		if(f.exists()){
-			han.LoadDataFromXml(path);
+	public void handleLoadProperties() {
+		try {
+			prop=XMLproperties.getMyPropertiesInstance();
+			
+		} catch (FileNotFoundException e) {
+			try {
+				
+				XMLproperties.writeProperties(new Properties(), "resources/properties.xml");
+				System.out.println("error : no xml profile, creating a default one");
+				prop=XMLproperties.getMyPropertiesInstance();
+			} catch (FileNotFoundException e1) {
+				System.out.println("fatal error: system cant write or load settings");
+			}
 			
 		}
-		else
-		{
-			han.LoadDataFromXml(defaultSettingsPath);
-			scno("error","Path to xml file wasn't found, loaded the default settings");
-		}
-		threadPool=Executors.newFixedThreadPool(Preferences.getNumberOfThreads());
 	}
 
+	
 	@Override
-	public void handleSaveSettings(String path) {
-		XmlHandler han = new XmlHandler();
-		han.SaveDataToXml(path);
+	public void handleSaveProperties(Properties p,String path) {
+		try {
+			XMLproperties.writeProperties(p, path);
+			scno("msg","settings saved successfuly");
+		} catch (FileNotFoundException e) {
+			scno("error","File Not Found Exception");
+			
+		}
 		
+		
+	}
+
+	
+
+	@Override
+	public void start() {
+		handleLoadProperties();
+		ipaddress = prop.getServer_ip();
+		port = prop.getServer_port();
+
+		try {
+			serverSocket = new Socket(ipaddress, port);
+
+			dataReader = new ObjectInputStream(serverSocket.getInputStream());
+			
+			dataWriter = new ObjectOutputStream(serverSocket.getOutputStream());
+			
+			// TODO delete the stacktraces
+			threadPool.execute((new Runnable() {
+
+				@Override
+				public void run() {
+
+					try {
+						DataObject input;
+						do {
+
+							input = (DataObject) dataReader.readObject();
+
+							if (input != null){
+								if (input.getDataDetails().startsWith("solution")){
+									
+								solutions.put((Maze3d)getMazeByName(input.getDataDetails().split(" ")[1]), (Solution<Position>)input.getData());
+								generateListStatus();
+								scno("solutionReady", input.getDataDetails().split(" ")[1]);
+								}
+							}
+							
+						} while (input != null && !input.getDataDetails().equals("exit"));
+
+						scno("msg", "Connection ended");
+					} catch (ClassNotFoundException e) {
+						scno("error", "problem reading the object from server");
+						e.printStackTrace();
+					} catch (IOException e) {
+						scno("error", "problem reading the object from server");
+						e.printStackTrace();
+					}
+
+				}
+			}));
+			
+		} catch (UnknownHostException e) {
+			scno("error", "unknown host");
+			e.printStackTrace();
+		} catch (SocketException e) {
+			scno("error", "socket exception");
+			e.printStackTrace();
+		} catch (IOException e) {
+			scno("error", "IOException");
+			e.printStackTrace();
+		}
+		scno("modelReady","");
+	
+		
+	}
+
+	void packageToServer(String details, Object object) {
+		try {
+			dataWriter.writeObject(new DataObject(details, object));
+			dataWriter.flush();
+			dataWriter.reset();
+		} catch (IOException e) {
+			scno("error", "FATAL ERROR: cannot write to the server, check please connection");
+		}
+	}
+	
+	
+	@Override
+	public void handleCustomProperties(String path) {
+		try {
+			prop=XMLproperties.getCustomProperties(path);
+			scno("loadedCustomSettings","");
+		} catch (FileNotFoundException e) {
+			try {
+				
+				
+				System.out.println("error : problem loading xml profile, loading the default one");
+				prop=XMLproperties.getMyPropertiesInstance();
+			} catch (FileNotFoundException e1) {
+				System.out.println("fatal error: system cant write or load settings");
+			}
+			
+		}
 		
 	}
 	

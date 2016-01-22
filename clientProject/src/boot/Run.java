@@ -2,6 +2,8 @@ package boot;
 
 import controller.Presenter;
 import model.MyModel;
+import model.ClientModel;
+
 
 public class Run {
 	
@@ -31,8 +33,8 @@ public class Run {
 		
 		
 		Presenter p = new Presenter(); 
-		MyModel m = new MyModel();
-		
+		//MyModel m = new MyModel();
+		ClientModel m = new ClientModel();
 		   p.setModel(m);
 		   m.addObserver(p);
 		   m.start();
