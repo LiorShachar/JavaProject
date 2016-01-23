@@ -262,7 +262,13 @@ public class ClientModel extends CommonModel implements Model {
 			
 			@Override
 			public void run() {
+				if(isConnected){
+				if(mazes.containsKey(name) ){
 				packageToServer("handleSolve "+name+" "+algo+" "+prop.getHeuristic(),mazes.get(name).toByteArray() );
+				}
+				else{scno("error","maze name not found");}
+				}
+				else{scno("error","not connected to the server");}	
 				
 			}
 		});
