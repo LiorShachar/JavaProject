@@ -64,7 +64,7 @@ public class ServerView extends commonGuiView {
 	
 	@Override
 	void initWidgets() {
-		initListeners();
+		
 		 eventList = new List(shell, SWT.BORDER | SWT.V_SCROLL);
 		eventList.setForeground(SWTResourceManager.getColor(SWT.COLOR_WIDGET_LIGHT_SHADOW));
 		eventList.setBounds(10, 76, 223, 150);
@@ -109,7 +109,7 @@ public class ServerView extends commonGuiView {
 		 lblSessionLog = new Label(shell, SWT.NONE);
 		lblSessionLog.setBounds(239, 49, 75, 15);
 		lblSessionLog.setText("Session log");
-		
+		initListeners();
 
 	}
 	
