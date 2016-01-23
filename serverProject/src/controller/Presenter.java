@@ -31,23 +31,55 @@ public class Presenter implements Observer {
 		if (arg0 == v) {
 			switch (note) {
 
-			case "start":
+			case "Start":
+				
 				m.runServer();
 				break;
+
+			case "close":
 				
+				m.close();
+				
+				break;
+
+			case "kick":
+				String[] params=(String[])v.getData(note);
+				m.DcClient(Integer.parseInt(params[0]));
+				break;
+
 			}
 			/////////////////////////////////////////////////// NOTIFICATIONS
 			/////////////////////////////////////////////////// FROM THE
 			/////////////////////////////////////////////////// MODEL///////////////////////////////////////////////////////////
-			
+
 		} else if (arg0 == m)
 
 		{
 			switch (note) {
 
-			case "updateListStatus":
-
+			case "status":
+				String smsg = (String) m.getData(note);
+				v.showMsg("Server Status: "+smsg);
 				
+				break;
+			
+			case "msg":
+				String msg = (String) m.getData(note);
+				v.showMsg(msg);
+				break;
+
+			case "error":
+				String error = (String) m.getData(note);
+				v.showError(error);
+				break;
+
+			case "newConnection":
+				String[] itemElements = ((String) m.getData(note)).split(" ");
+				v.addTableItem(itemElements[0], itemElements[1]);
+				break;
+
+			case "modelReady":
+				v.start();
 				break;
 
 			}

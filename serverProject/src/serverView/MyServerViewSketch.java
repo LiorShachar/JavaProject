@@ -66,18 +66,22 @@ public class MyServerViewSketch extends Shell {
 		
 		table = new Table(this, SWT.BORDER | SWT.FULL_SELECTION);
 		table.setForeground(SWTResourceManager.getColor(SWT.COLOR_RED));
-		table.setBounds(239, 76, 172, 150);
+		table.setBounds(252, 76, 172, 150);
 		table.setHeaderVisible(true);
 		table.setLinesVisible(true);
 		
 		
 		TableColumn tblclmnId = new TableColumn(table, SWT.NONE);
-		tblclmnId.setWidth(29);
+		tblclmnId.setWidth(56);
 		tblclmnId.setText("ID");
 		
 		TableColumn tblclmnIpAddress = new TableColumn(table, SWT.NONE);
-		tblclmnIpAddress.setWidth(79);
+		tblclmnIpAddress.setWidth(112);
 		tblclmnIpAddress.setText("IP Address");
+		
+		TableItem tableItem = new TableItem(table, SWT.NONE);
+		tableItem.setText(new String[] {"number", "address"});
+		tableItem.setText("item1");
 		
 		Button offBtn = new Button(this, SWT.NONE);
 		

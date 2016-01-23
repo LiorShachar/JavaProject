@@ -152,22 +152,24 @@ public class MyServerModel extends Observable  implements Observer{
 			mainServerThread=new Thread(new Runnable() {	// we listen inside a thread		
 				@Override
 				public void run() {
+					scno("status","Server UP and running....");
 					while(!stop){
 						try {
 							final Socket someClient=server.accept(); //  get the client socket
 							SocketHolder.add(someClient);
-							
+							scno("newConnection",String.valueOf(SocketHolder.size()-1)+" "+someClient.getInetAddress());
 							if(someClient!=null){
 								threadPool.execute(new Runnable() {									
 									@Override
 									public void run() {
 										try{										
 											clientsHandled++;
-											System.out.println("\thandling client "+clientsHandled);
+											scno("status","handling client "+clientsHandled);
 											clientHandler.handleClient(someClient); 
 											 
 											someClient.close(); 
-											System.out.println("\tdone handling client "+clientsHandled);										
+											System.out.println();
+											scno("status","done handling client "+clientsHandled);
 										}catch(IOException e){
 											e.printStackTrace();
 										}									
@@ -227,7 +229,14 @@ public class MyServerModel extends Observable  implements Observer{
 		}
 	}
 	
-
+	public void DcClient(int index){
+		try {
+			SocketHolder.get(index).close();
+		} catch (IOException e) {
+			scno("error", "Session not available");
+		}
+		
+	}
 	
 	
 	@Override

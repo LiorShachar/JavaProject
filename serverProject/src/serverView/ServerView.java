@@ -10,7 +10,13 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.List;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
+import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.wb.swt.SWTResourceManager;
+
+
+
+// TODO syncexec with the console msgs
+
 
 public class ServerView extends commonGuiView {
 
@@ -139,16 +145,38 @@ public class ServerView extends commonGuiView {
 		kickBtn.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				scno("Kick","");
+				scno("Kick",table.getSelection());
 			}
 		});
 		
 		
 	}
 
+	public void addTableItem(String id,String ip) {
+		TableItem tableItem = new TableItem(table, SWT.NONE);
+		tableItem.setText(new String[] {id, ip});
+		
+		
+	}
+	
 	
 	public Object getData(String string) {
 		return notifications.get(string);
+	}
+
+
+
+
+
+	public void showError(String e) {
+		this.eventList.add("Error: "+e);
+		
+	}
+
+
+	public void showMsg(String m) {
+		this.eventList.add("MSG: "+m);
+		
 	}
 	
 }
