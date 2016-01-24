@@ -78,7 +78,10 @@ public class ClientModel extends CommonModel implements Model {
 	
 
 	Properties prop;
-	boolean isConnected;
+	boolean isConnected=false;
+
+
+
 	boolean canDisconnect;
 	
 	// streams for communicating with simple strings
@@ -276,7 +279,9 @@ public class ClientModel extends CommonModel implements Model {
 
 	}
 
-
+	public boolean isConnected() {
+		return isConnected;
+	}
 
 	
 	/**
@@ -369,9 +374,9 @@ public class ClientModel extends CommonModel implements Model {
 		ArrayList<String> status = new ArrayList<String>();
 		for(String m : mazes.keySet()){
 			if(hasSolution(m))
-			status.add(m+" true");
+			status.add(m+" Solved");
 			else
-		status.add(m+" false");
+		status.add(m+" Unsolved");
 		}
 		String items[]=new String[status.size()];
 		status.toArray(items);
@@ -503,6 +508,7 @@ public class ClientModel extends CommonModel implements Model {
 				try {
 					DataObject input;
 					isConnected=true;
+					scno("msg", "Connected to the server");
 					do {
 
 						input = (DataObject) dataReader.readObject();
@@ -533,13 +539,13 @@ public class ClientModel extends CommonModel implements Model {
 		
 	} catch (UnknownHostException e) {
 		scno("error", "unknown host");
-		e.printStackTrace();
+		
 	} catch (SocketException e) {
 		scno("error", "socket exception");
-		e.printStackTrace();
+		
 	} catch (IOException e) {
 		scno("error", "IOException");
-		e.printStackTrace();
+		
 	}
 	}
 	

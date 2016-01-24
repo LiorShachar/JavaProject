@@ -9,6 +9,7 @@ import java.util.Set;
 import algorithms.mazeGenerators.Maze3d;
 import algorithms.mazeGenerators.Position;
 import algorithms.search.Solution;
+import model.ClientModel;
 import model.Model;
 import model.XMLproperties;
 import singletonexplicitpack.Properties;
@@ -307,7 +308,18 @@ public class Presenter implements Observer {
 
 				}
 				break;
-
+				
+			case "connectBtn":
+				if(!((ClientModel)m).isConnected()){
+				((ClientModel)m).connectToServer();
+				}
+				else{
+					v.showMsg("already connected");
+				}
+				break;
+				
+				
+				
 			case "GuiDisposed":
 				if (((GuiWindowView) v).isCanExitAll())
 					m.close();

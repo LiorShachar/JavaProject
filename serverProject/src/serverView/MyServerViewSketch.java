@@ -44,7 +44,7 @@ public class MyServerViewSketch extends Shell {
 		super(display, SWT.SHELL_TRIM);
 		
 		List list_1 = new List(this, SWT.BORDER | SWT.V_SCROLL);
-		list_1.setForeground(SWTResourceManager.getColor(SWT.COLOR_WIDGET_LIGHT_SHADOW));
+		list_1.setForeground(SWTResourceManager.getColor(0, 153, 255));
 		list_1.setBounds(10, 76, 223, 150);
 		
 		Button startBtn = new Button(this, SWT.NONE);

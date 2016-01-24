@@ -115,8 +115,9 @@ public class MyServerModel extends Observable  implements Observer{
 			
 			scno("msg", "Shutting down...");
 			stop=true;
-			this.threadPool.shutdown();
-			this.threadPool.awaitTermination(10, TimeUnit.SECONDS);
+			
+			threadPool.shutdown();
+			threadPool.awaitTermination(10, TimeUnit.SECONDS);
 
 		} catch (InterruptedException e) {
 			scno("error", "InterruptedException");
@@ -130,7 +131,7 @@ public class MyServerModel extends Observable  implements Observer{
 		port = prop.getServer_port();
 		
 		
-		this.threadPool = Executors.newFixedThreadPool(prop.getClientsCapacity());
+		threadPool = Executors.newFixedThreadPool(prop.getClientsCapacity());
 		// TODO
 																					// EDIT
 																					// THE
@@ -149,6 +150,7 @@ public class MyServerModel extends Observable  implements Observer{
 		
 		try {
 			this.server=new ServerSocket(this.port);
+			server.setSoTimeout(10*1000);
 			mainServerThread=new Thread(new Runnable() {	// we listen inside a thread		
 				@Override
 				public void run() {
@@ -178,13 +180,19 @@ public class MyServerModel extends Observable  implements Observer{
 							}
 						}
 						catch (SocketTimeoutException e){
-							System.out.println("no clinet connected...");
+							scno("status","no client connected...");
 						} 
 						catch (IOException e) {
 							e.printStackTrace();
 						}
 					}
-					System.out.println("done accepting new clients.");
+					scno("status","*** Done accepting new clients ***");
+					try {
+						server.close();
+					} catch (IOException e) {
+						scno("error","Failed to close the server, socket error");
+						e.printStackTrace();
+					}
 				} // end of the mainServerThread task
 			});
 			
@@ -194,7 +202,7 @@ public class MyServerModel extends Observable  implements Observer{
 			
 			
 		} catch (IOException e) {
-			System.out.println("cant create server socket");
+			scno("error","can't create server socket");
 			e.printStackTrace();
 		}
 		

@@ -36,13 +36,13 @@ public class Presenter implements Observer {
 				m.runServer();
 				break;
 
-			case "close":
+			case "Close":
 				
 				m.close();
 				
 				break;
 
-			case "kick":
+			case "Kick":
 				String[] params=(String[])v.getData(note);
 				m.DcClient(Integer.parseInt(params[0]));
 				break;
@@ -59,7 +59,7 @@ public class Presenter implements Observer {
 
 			case "status":
 				String smsg = (String) m.getData(note);
-				v.showMsg("Server Status: "+smsg);
+				v.showStatus(smsg);
 				
 				break;
 			

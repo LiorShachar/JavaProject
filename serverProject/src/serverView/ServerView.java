@@ -5,9 +5,11 @@ import java.util.HashMap;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.List;
+import org.eclipse.swt.widgets.MessageBox;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.TableItem;
@@ -72,7 +74,7 @@ public class ServerView extends commonGuiView {
 	void initWidgets() {
 		
 		 eventList = new List(shell, SWT.BORDER | SWT.V_SCROLL);
-		eventList.setForeground(SWTResourceManager.getColor(SWT.COLOR_WIDGET_LIGHT_SHADOW));
+		eventList.setForeground(new Color(display, 0, 153, 255));
 		eventList.setBounds(10, 76, 223, 150);
 		
 		 startBtn = new Button(shell, SWT.NONE);
@@ -91,7 +93,7 @@ public class ServerView extends commonGuiView {
 		lblEventLog.setText("Event Log");
 		
 		table = new Table(shell, SWT.BORDER | SWT.FULL_SELECTION);
-		table.setForeground(SWTResourceManager.getColor(SWT.COLOR_RED));
+		table.setForeground(new Color(display, 255, 0, 0));
 		table.setBounds(239, 76, 172, 150);
 		table.setHeaderVisible(true);
 		table.setLinesVisible(true);
@@ -153,8 +155,17 @@ public class ServerView extends commonGuiView {
 	}
 
 	public void addTableItem(String id,String ip) {
-		TableItem tableItem = new TableItem(table, SWT.NONE);
-		tableItem.setText(new String[] {id, ip});
+		display.syncExec(new Runnable() {
+
+			@Override
+			public void run() {
+
+				TableItem tableItem = new TableItem(table, SWT.NONE);
+				tableItem.setText(new String[] {id, ip});
+				
+			}
+		});
+		
 		
 		
 	}
@@ -169,14 +180,48 @@ public class ServerView extends commonGuiView {
 
 
 	public void showError(String e) {
-		this.eventList.add("Error: "+e);
+
+		display.syncExec(new Runnable() {
+
+			@Override
+			public void run() {
+
+				eventList.add("Error: "+e);
+				
+			}
+		});
+		
 		
 	}
 
 
 	public void showMsg(String m) {
-		this.eventList.add("MSG: "+m);
+		display.syncExec(new Runnable() {
+
+			@Override
+			public void run() {
+
+				eventList.add("MSG: "+m);
+				
+			}
+		});
+		
 		
 	}
+	
+	public void showStatus(String s) {
+		display.syncExec(new Runnable() {
+
+			@Override
+			public void run() {
+
+				eventList.add("Status: "+s);
+				
+			}
+		});
+		
+		
+	}
+	
 	
 }
