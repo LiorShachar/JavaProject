@@ -111,20 +111,15 @@ public class MyServerModel extends Observable  implements Observer{
 
 	public void close() {
 		
-		try {
+		
 			
 			scno("msg", "Shutting down...");
 			stop=true;
-			
+			clientHandler.close();
 			threadPool.shutdown();
-			threadPool.awaitTermination(10, TimeUnit.SECONDS);
-
-		} catch (InterruptedException e) {
-			scno("error", "InterruptedException");
-
-		}
-
+			
 	}
+	
 
 	public void start() {
 		handleLoadProperties();
@@ -185,7 +180,7 @@ public class MyServerModel extends Observable  implements Observer{
 					}
 					scno("status","*** Done accepting new clients ***");
 					try {
-						clientHandler.close();
+						
 						server.close();
 					} catch (IOException e) {
 						scno("error","Failed to close the server, socket error");

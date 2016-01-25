@@ -230,7 +230,7 @@ public class ServerView extends commonGuiView {
 
 			@Override
 			public void run() {
-
+				if(!shell.isDisposed())
 				eventList.add("Status: "+s);
 				
 			}

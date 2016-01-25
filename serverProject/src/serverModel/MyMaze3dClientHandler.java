@@ -37,7 +37,7 @@ public class MyMaze3dClientHandler extends Observable implements ClientHandler{
 	
 	
 	
-
+	volatile boolean turnedoff=false;
 	private ConcurrentHashMap<String, Object> notifications;
 
 	private static ConcurrentHashMap<Maze3d, Solution<Position>> solutions; // a
@@ -53,7 +53,7 @@ public class MyMaze3dClientHandler extends Observable implements ClientHandler{
 	public MyMaze3dClientHandler() {
 		super();
 		
-		 solutions = new ConcurrentHashMap<Maze3d, Solution<Position>>();
+		 solutions = new ConcurrentHashMap<Maze3d,Solution<Position>>();
 		 notifications= new ConcurrentHashMap<String, Object>();
 		loadCachedSolutions();
 		
@@ -62,6 +62,20 @@ public class MyMaze3dClientHandler extends Observable implements ClientHandler{
 
 	
 	
+	public boolean isTurnedoff() {
+		return turnedoff;
+	}
+
+
+
+
+	public void setTurnedoff(boolean turnedoff) {
+		this.turnedoff = turnedoff;
+	}
+
+
+
+
 	@Override
 	public void handleClient(Socket sock) {
 
@@ -96,14 +110,20 @@ public class MyMaze3dClientHandler extends Observable implements ClientHandler{
 				case "handleSolve":
 					problem = (byte[]) inPackage.getData();
 					handleSolveMaze(params[1], params[2], params[3], new Maze3d(problem),dataWriter);
+					/*Maze3d maze1= new Maze3d(problem);
+					Maze3d maze2= new Maze3d(problem);
+					System.out.println(maze1.equals(maze2));
+					System.out.println(maze1.hashCode()==(maze2).hashCode());*/
+					
 					break;
 
 				}
 
-			} while (inPackage != null && !inPackage.getDataDetails().equals("exit")  );
+			} while (inPackage != null && !inPackage.getDataDetails().equals("exit") && !turnedoff );
 			dataWriter.close();
 			dataReader.close();
-			
+			sock.getInputStream().close();
+			sock.getOutputStream().close();
 		} catch (ClassNotFoundException e) {
 			scno("error", "cannot communicate with client package corrupted");
 		} catch (IOException e) {
@@ -122,7 +142,7 @@ public class MyMaze3dClientHandler extends Observable implements ClientHandler{
 		Solution<Position> tempsol=null;
 		boolean flag=false;
 		if(!solutions.containsKey(maze)){
-		
+			
 		if (algo.matches("[Bb][Ff][Ss]") || algo.matches("[Aa][Ss][Tt][Aa][Rr]")) {
 
 			packageToClient("status", "Solving " + name + " using " + algo,out);
@@ -167,7 +187,7 @@ public class MyMaze3dClientHandler extends Observable implements ClientHandler{
 		if (flag)
 		{
 			
-			
+			solutions.put(maze, tempsol);
 			packageToClient("solution "+name, tempsol,out);}
 		
 		
@@ -180,7 +200,7 @@ public class MyMaze3dClientHandler extends Observable implements ClientHandler{
 	public void close(){
 		
 		serializeAndCachSolutions();
-		
+		turnedoff=true;
 
 	}
 	
