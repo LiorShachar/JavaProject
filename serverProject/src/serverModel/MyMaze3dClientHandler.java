@@ -89,11 +89,12 @@ public class MyMaze3dClientHandler extends Observable implements ClientHandler{
 
 				modelCommand = inPackage.getDataDetails();
 				String params[]=modelCommand.split(" ");
-				problem = (byte[]) inPackage.getData();
+				
 
 				switch (params[0]) {
 
 				case "handleSolve":
+					problem = (byte[]) inPackage.getData();
 					handleSolveMaze(params[1], params[2], params[3], new Maze3d(problem),dataWriter);
 					break;
 

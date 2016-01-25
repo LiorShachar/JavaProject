@@ -43,8 +43,8 @@ public class Presenter implements Observer {
 				break;
 
 			case "Kick":
-				String[] params=(String[])v.getData(note);
-				m.DcClient(Integer.parseInt(params[0]));
+				String params=(String)v.getData(note);
+				m.DcClient(Integer.parseInt(params));
 				break;
 
 			}
@@ -68,6 +68,11 @@ public class Presenter implements Observer {
 				v.showMsg(msg);
 				break;
 
+			case "packetSent":
+				String pmsg = (String) m.getData(note);
+				v.showMsg("Packet sent: "+pmsg);
+				break;
+				
 			case "error":
 				String error = (String) m.getData(note);
 				v.showError(error);

@@ -605,6 +605,8 @@ public class GuiWindowView extends commonGuiView implements View {
 		listeners.put("exitItem", new Listener() {
 			public void handleEvent(Event event) {
 				close();
+				canExitAll=true;
+				scno("GuiDisposed","");
 			}
 		});
 		// ***************************************************************************************************************
@@ -619,17 +621,18 @@ public class GuiWindowView extends commonGuiView implements View {
 	}
 
 	public void showError(String s) {
-
+		if(!display.isDisposed()&& !shell.isDisposed() )
 		display.syncExec(new Runnable() {
 
 			@Override
 			public void run() {
-
+				if(!display.isDisposed()&& !shell.isDisposed() )
+				{
 				MessageBox messageBox = new MessageBox(shell, SWT.ICON_ERROR);
 				messageBox.setMessage(s);
 				messageBox.setText("Error!");
 				messageBox.open();
-
+				}
 			}
 		});
 
@@ -766,15 +769,17 @@ public class GuiWindowView extends commonGuiView implements View {
 
 	@Override
 	public void showMsg(String s) {
+		if(!display.isDisposed()&& !shell.isDisposed() )
 		display.syncExec(new Runnable() {
 
 			@Override
 			public void run() {
+				if(!display.isDisposed()&& !shell.isDisposed() ){
 				MessageBox messageBox = new MessageBox(shell, SWT.ICON_WORKING);
 				messageBox.setMessage(s);
 				messageBox.setText("Message");
 				messageBox.open();
-
+				}
 			}
 		});
 

@@ -2,7 +2,7 @@
 <classpath>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry exported="true" kind="lib" path="lib/trove-3.0.3.jar"/>
-	<classpathentry exported="true" kind="lib" path="D:/eclipse/plugins/org.eclipse.swt.win32.win32.x86_64_3.104.1.v20150825-0743.jar">
+	<classpathentry exported="true" kind="lib" path="D:/eclipse/plugins/org.eclipse.swt.win32.win32.x86_64_3.104.1.v20150825-0743.jar" sourcepath="D:/eclipse/plugins/org.eclipse.swt.win32.win32.x86_64_3.104.1.v20150825-0743.jar">
 		<attributes>
 			<attribute name="javadoc_location" value="jar:file:/D:/eclipse/plugins/org.eclipse.platform.doc.isv_4.5.1.v20150903-1352.jar!/reference/api"/>
 		</attributes>

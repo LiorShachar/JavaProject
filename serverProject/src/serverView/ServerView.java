@@ -3,12 +3,16 @@ package serverView;
 import java.util.HashMap;
 
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.DisposeEvent;
+import org.eclipse.swt.events.DisposeListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.widgets.Button;
+import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.List;
+import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.MessageBox;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
@@ -52,7 +56,7 @@ public class ServerView extends commonGuiView {
 	
 	public ServerView(String title, int width, int height) {
 		super(title, width, height);
-		// TODO Auto-generated constructor stub
+		
 		notifications = new HashMap<String, Object>();
 	}
 
@@ -147,10 +151,17 @@ public class ServerView extends commonGuiView {
 		kickBtn.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				scno("Kick",table.getSelection());
+				scno("Kick",table.getSelection()[0].getText(0));
 			}
 		});
-		
+		shell.addDisposeListener(new DisposeListener() {
+
+			@Override
+			public void widgetDisposed(DisposeEvent e) {
+				scno("Close", "");
+
+			}
+		});
 		
 	}
 
@@ -219,6 +230,7 @@ public class ServerView extends commonGuiView {
 				
 			}
 		});
+		
 		
 		
 	}

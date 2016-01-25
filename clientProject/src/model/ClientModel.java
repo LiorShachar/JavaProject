@@ -78,15 +78,13 @@ public class ClientModel extends CommonModel implements Model {
 	
 
 	Properties prop;
-	boolean isConnected=false;
+	
 
 
 
 	boolean canDisconnect;
 	
-	// streams for communicating with simple strings
-	PrintWriter stringToServer;
-	BufferedReader stringFromServer;
+
 
 	// streams for sending and getting objects
 	ObjectOutputStream dataWriter;
@@ -265,7 +263,7 @@ public class ClientModel extends CommonModel implements Model {
 			
 			@Override
 			public void run() {
-				if(isConnected){
+				if(serverSocket.isConnected()){
 				if(mazes.containsKey(name) ){
 				packageToServer("handleSolve "+name+" "+algo+" "+prop.getHeuristic(),mazes.get(name).toByteArray() );
 				}
@@ -280,7 +278,9 @@ public class ClientModel extends CommonModel implements Model {
 	}
 
 	public boolean isConnected() {
-		return isConnected;
+		if(serverSocket!=null)
+		return serverSocket.isConnected();
+		else{ return false;}
 	}
 
 	
@@ -290,19 +290,35 @@ public class ClientModel extends CommonModel implements Model {
 
 	@Override
 	public void close() {
+		if(serverSocket.isConnected())
+			packageToServer("exit","" );
+		canDisconnect=true;
 		
-		try {
 			serializeAndCachSolutions();
-			scno("msg", "Shutting down...");
-			canDisconnect=true;
-			this.threadPool.shutdown();
-			this.threadPool.awaitTermination(10,TimeUnit.SECONDS );
 			
 			
-		} catch (InterruptedException e) {
-			scno("error", "InterruptedException");
 			
-		}
+			
+			
+			
+			
+				
+				try {
+					
+					 dataWriter.close();
+					 dataReader.close();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				
+				
+			
+			threadPool.shutdown();
+			
+			
+			
+		 
 		
 	}
 
@@ -507,7 +523,7 @@ public class ClientModel extends CommonModel implements Model {
 
 				try {
 					DataObject input;
-					isConnected=true;
+					
 					scno("msg", "Connected to the server");
 					do {
 
@@ -522,16 +538,16 @@ public class ClientModel extends CommonModel implements Model {
 							}
 						}
 						
-					} while (input != null && !input.getDataDetails().equals("exit") && !canDisconnect);
-					isConnected=false;
+					} while ( !canDisconnect);
+					
 
 					scno("msg", "Connection ended");
 				} catch (ClassNotFoundException e) {
 					scno("error", "problem reading the object from server");
-					e.printStackTrace();
+					
 				} catch (IOException e) {
-					scno("error", "problem reading the object from server");
-					e.printStackTrace();
+					scno("error", "lost connection");
+					
 				}
 
 			}
@@ -559,13 +575,13 @@ public class ClientModel extends CommonModel implements Model {
 	 * */
 	void packageToServer(String details, Object object) {
 		try {
-			if(dataWriter!=null){
+			if(dataWriter!=null && !serverSocket.isClosed()){
 			dataWriter.writeObject(new DataObject(details, object));
 			dataWriter.flush();
 			dataWriter.reset();
 			}
 		} catch (IOException e) {
-			scno("error", "FATAL ERROR: cannot write to the server, check please connection");
+			
 		}
 	}
 	

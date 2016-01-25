@@ -132,17 +132,14 @@ public class MyServerModel extends Observable  implements Observer{
 		
 		
 		threadPool = Executors.newFixedThreadPool(prop.getClientsCapacity());
-		// TODO
-																					// EDIT
-																					// THE
-																					// PROPERTIES
-																					// ACCORDINGLY
+		
 
 		scno("modelReady", "");
 
 	}
 
 	public void runServer() {
+		stop=false;
 		clientHandler= new MyMaze3dClientHandler();
 		((MyMaze3dClientHandler)clientHandler).addObserver(this);
 		port = prop.getServer_port();
@@ -250,9 +247,11 @@ public class MyServerModel extends Observable  implements Observer{
 	@Override
 	public void update(Observable o, Object arg) {
 		String note = (String)arg;
-		System.out.println(note);
-		if(o==this.clientHandler){
-			//clientHandler.getData((String) arg);
+		
+		if(o==clientHandler){
+			
+			scno(note, (String)(clientHandler.getData(note)));
+			
 		}
 		
 	}

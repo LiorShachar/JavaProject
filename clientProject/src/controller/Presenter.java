@@ -396,6 +396,8 @@ public class Presenter implements Observer {
 				break;
 				
 			case "ShowMe":
+				if(((ClientModel)m).isConnected())
+			{
 			Object solvedetails[] = (Object[]) v.getData(note);
 			m.handleUpdatePosition(new Position((Position) solvedetails[0]), (String) solvedetails[1]);
 			try {
@@ -406,6 +408,9 @@ public class Presenter implements Observer {
 			}
 			while(!m.hasSolution((String) solvedetails[1]));
 			v.showSolution( (Solution<Position>) m.getSolutionFor( (String) solvedetails[1]) );
+			}
+				else
+					v.showError("not connected to the server!");
 			break;
 				
 
