@@ -783,7 +783,7 @@ public class GuiWindowView extends commonGuiView implements View {
 
 	@Override
 	public void showDir(String[] string) {
-		// TODO method is irrelevant here ,check for an alternative
+		//  method is irrelevant here
 
 	}
 
@@ -807,13 +807,13 @@ public class GuiWindowView extends commonGuiView implements View {
 
 	@Override
 	public void showMaze(byte[] arr) {
-		// TODO showMaze
+		
 
 	}
 
 	@Override
 	public void showCross(byte[] arr, String by, int i) {
-		// TODO showCross
+		
 
 	}
 

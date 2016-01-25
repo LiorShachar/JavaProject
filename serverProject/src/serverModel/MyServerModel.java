@@ -185,6 +185,7 @@ public class MyServerModel extends Observable  implements Observer{
 					}
 					scno("status","*** Done accepting new clients ***");
 					try {
+						clientHandler.close();
 						server.close();
 					} catch (IOException e) {
 						scno("error","Failed to close the server, socket error");

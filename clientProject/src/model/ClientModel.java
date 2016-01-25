@@ -258,7 +258,7 @@ public class ClientModel extends CommonModel implements Model {
 	 */
 	@Override
 	public void handleSolveMaze(String name, String algo) {
-		//TODO check
+	
 		threadPool.execute(new Runnable() {
 			
 			@Override
@@ -309,7 +309,7 @@ public class ClientModel extends CommonModel implements Model {
 						if(dataReader!=null)
 					 dataReader.close();
 				} catch (IOException e) {
-					// TODO Auto-generated catch block
+					
 					e.printStackTrace();
 				}
 				
@@ -362,7 +362,7 @@ public class ClientModel extends CommonModel implements Model {
 	@Override
 	public Solution<Position> getSolutionFor(String name) {
 		
-		//TODO ASKS THE SERVER FOR A SOLUTION FOR THE REPRESENTED MAZE
+		
 		
 		Maze3d maze= (Maze3d)getMazeByName(name);
 		if(maze!=null){
@@ -514,7 +514,7 @@ public class ClientModel extends CommonModel implements Model {
 			
 			dataWriter = new ObjectOutputStream(serverSocket.getOutputStream());
 			
-			// TODO delete the stacktraces
+		
 			
 		
 		threadPool.execute((new Runnable() {

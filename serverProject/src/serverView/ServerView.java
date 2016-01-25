@@ -194,7 +194,7 @@ public class ServerView extends commonGuiView {
 
 
 	public void showError(String e) {
-
+		if(!shell.isDisposed())
 		display.syncExec(new Runnable() {
 
 			@Override
@@ -210,6 +210,7 @@ public class ServerView extends commonGuiView {
 
 
 	public void showMsg(String m) {
+		if(!shell.isDisposed())
 		display.syncExec(new Runnable() {
 
 			@Override
@@ -224,6 +225,7 @@ public class ServerView extends commonGuiView {
 	}
 	
 	public void showStatus(String s) {
+		if(!shell.isDisposed())
 		display.syncExec(new Runnable() {
 
 			@Override

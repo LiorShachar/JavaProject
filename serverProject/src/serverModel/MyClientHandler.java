@@ -1,4 +1,4 @@
-package serverModel;
+/*package serverModel;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -44,3 +44,4 @@ public class MyClientHandler implements ClientHandler{
 	}
 
 }
+*/

@@ -158,7 +158,9 @@ public class MyMaze3dClientHandler extends Observable implements ClientHandler{
 		}
 		else{
 		tempsol=solutions.get(maze);
+		
 		flag=true;
+		scno("msg", "**SOLUTION FOUND IN CACHED MEMORY**");
 		}
 		
 		
@@ -175,7 +177,7 @@ public class MyMaze3dClientHandler extends Observable implements ClientHandler{
 	
 	
 	
-	void close(){
+	public void close(){
 		
 		serializeAndCachSolutions();
 		
