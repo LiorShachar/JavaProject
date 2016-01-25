@@ -70,7 +70,7 @@ public class GuiWindowView extends commonGuiView implements View {
 	Table l;
 	Text nametxt, heighttxt, widthtxt, levelstxt;
 	Label genlbl, mazelistlbl, namelbl, heightlbl, widthlbl, levelslbl;
-	Button playButton, genButton, showButton,btnConnect;
+	Button playButton, genButton, showButton,btnConnect,solveBtn;
 	String temp;
 	Timer timer;
 	TimerTask task;
@@ -114,11 +114,10 @@ public class GuiWindowView extends commonGuiView implements View {
 
 		// *****************************************************************//Solve
 		// Button
-		showButton = new Button(shell, SWT.PUSH);
-		showButton.setText("Solve");
-		showButton.addListener(SWT.Selection, listeners.get("ShowMe"));
-		showButton.setEnabled(false); // only when there's a playable maze the
-										// option should be enabled
+		solveBtn = new Button(shell, SWT.PUSH);
+		solveBtn.setText("Solve");
+		solveBtn.addListener(SWT.Selection, listeners.get("solveRequest"));
+		
 		// *****************************************************************
 
 		// *****************************************************************
@@ -522,8 +521,29 @@ public class GuiWindowView extends commonGuiView implements View {
 				});
 			}
 		});
-		// ***********************************{opens the maze
+		
+		
+		
+		
+		
+		
 		// widget}****************************************************
+
+				listeners.put("solveRequest", new Listener() {
+					public void handleEvent(Event event) {
+						if (l.getSelection().length > 0) {
+							TableItem[] selected = l.getSelection();
+							scno("solveRequest", selected[0].getText(0));
+						} else {
+							scno("error", "no maze selected");
+							showButton.setEnabled(false);
+						}
+					}
+				});
+				// ***************************************************************************************************************
+		
+		
+		// // ***********************************{opens the maze widget}****************************************************
 
 		listeners.put("mazewindow", new Listener() {
 			public void handleEvent(Event event) {

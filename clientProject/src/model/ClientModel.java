@@ -263,7 +263,7 @@ public class ClientModel extends CommonModel implements Model {
 			
 			@Override
 			public void run() {
-				if(serverSocket.isConnected()){
+				if(serverSocket != null && serverSocket.isConnected()){
 				if(mazes.containsKey(name) ){
 				packageToServer("handleSolve "+name+" "+algo+" "+prop.getHeuristic(),mazes.get(name).toByteArray() );
 				}
@@ -290,7 +290,7 @@ public class ClientModel extends CommonModel implements Model {
 
 	@Override
 	public void close() {
-		if(serverSocket.isConnected())
+		if(serverSocket!=null && serverSocket.isConnected())
 			packageToServer("exit","" );
 		canDisconnect=true;
 		
@@ -304,8 +304,9 @@ public class ClientModel extends CommonModel implements Model {
 			
 				
 				try {
-					
+						if(dataWriter!=null)
 					 dataWriter.close();
+						if(dataReader!=null)
 					 dataReader.close();
 				} catch (IOException e) {
 					// TODO Auto-generated catch block

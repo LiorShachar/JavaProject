@@ -21,7 +21,7 @@ import org.eclipse.wb.swt.SWTResourceManager;
 
 
 
-// TODO syncexec with the console msgs
+
 
 
 public class ServerView extends commonGuiView {
@@ -151,7 +151,10 @@ public class ServerView extends commonGuiView {
 		kickBtn.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
+				if(table.getSelection().length!=0)
 				scno("Kick",table.getSelection()[0].getText(0));
+				else
+					showError("invalid selection");
 			}
 		});
 		shell.addDisposeListener(new DisposeListener() {

@@ -125,7 +125,7 @@ public class MyMaze3dClientHandler extends Observable implements ClientHandler{
 		
 		if (algo.matches("[Bb][Ff][Ss]") || algo.matches("[Aa][Ss][Tt][Aa][Rr]")) {
 
-			packageToClient("status", "Solving " + name + " using " + algo,out);//TODO add this command to the client
+			packageToClient("status", "Solving " + name + " using " + algo,out);
 			if (algo.matches("[Bb][Ff][Ss]")) {
 
 				
@@ -153,7 +153,7 @@ public class MyMaze3dClientHandler extends Observable implements ClientHandler{
 
 			} 
 			else{
-				packageToClient("errorFromServer", "illegal solving algorithm/heuristic name",out); //TODO add error command to the client
+				packageToClient("errorFromServer", "illegal solving algorithm/heuristic name",out); //
 				}		
 		}
 		else{
@@ -194,8 +194,8 @@ public class MyMaze3dClientHandler extends Observable implements ClientHandler{
 			dataWriter.writeObject(new DataObject(details, object));
 			dataWriter.flush();
 			dataWriter.reset();
-			scno("packetSent", details); // TODO check that the view shows a log
-											// with these details
+			scno("packetSent", details); 
+											
 		} catch (IOException e) {
 			scno("error", "FATAL ERROR: cannot write to the client, IO exception");
 		}
@@ -266,7 +266,7 @@ public class MyMaze3dClientHandler extends Observable implements ClientHandler{
 		    	  solutions.put(new Maze3d((byte[]) mentry.getKey()), (Solution<Position>)mentry.getValue());
 		      
 		      }
-		      System.out.println("Cached memory loaded"); //TODO turn this to a GUI msg
+		    
 		      
 	      }catch(IOException ioe)
 	      {

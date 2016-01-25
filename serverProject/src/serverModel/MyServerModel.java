@@ -110,7 +110,7 @@ public class MyServerModel extends Observable  implements Observer{
 	}
 
 	public void close() {
-		// TODO check if needs anything to add
+		
 		try {
 			
 			scno("msg", "Shutting down...");
