@@ -24,7 +24,8 @@ import view.commonGuiView;
  * 
  * 
  * 
- * <h1>MyController</h1> this class represent my controller part of the project,
+ * <h1>Presenter</h1> this class represent my controller part of the project,
+ * acts as an agent between the view and the model
  * it is suitable for a Maze3d problem.
  * 
  * 
@@ -42,7 +43,9 @@ public class Presenter implements Observer {
 	private View v;
 	HashMap<String, Command> commandCreator; // our command map (usually for
 												// cli)
-
+/**
+ * 
+ * */
 	public Presenter(Model m, View v) {
 		super();
 		this.m = m;
@@ -50,7 +53,7 @@ public class Presenter implements Observer {
 		commandCreator = new HashMap<String, Command>();
 		fillMap(commandCreator);
 	}
-
+	/***/
 	public Presenter() {
 		super();
 		commandCreator = new HashMap<String, Command>();
@@ -250,27 +253,27 @@ public class Presenter implements Observer {
 			}
 		});
 	}
-
+	/***/
 	public Model getModel() {
 		return m;
 	}
-
+	/***/
 	public void setModel(Model m) {
 		this.m = m;
 	}
-
+	/***/
 	public View getView() {
 		return v;
 	}
-
+	/***/
 	public void setView(View v) {
 		this.v = v;
 	}
-
+	/***/
 	public HashMap<String, Command> getCommandCreator() {
 		return commandCreator;
 	}
-
+	/***/
 	public void setCommandCreator(HashMap<String, Command> commandCreator) {
 
 		this.commandCreator = commandCreator;

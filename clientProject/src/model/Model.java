@@ -28,16 +28,19 @@ import singletonexplicitpack.Properties;
 */
 public interface Model {
 	
-
+/****/
 	void handleGenerate(String name, int y, int x, int z);
-	
+	/****/
 	void handleDir(String string);
-
+	/****/
 	void handleSaveMaze(byte[] maze, String path);
+	/****/
 	void handleUpdatePosition (Position p,String name);
+	/****/
 	void handleLoadMaze(String path, String name);
-
+	/****/
 	 void handleFileSize(String name);
+	 /****/
 	 void handleMazeSize(String name);
 	 
 	 
@@ -50,24 +53,24 @@ public interface Model {
 	 
 	 void handleSolveMaze(String name,String algo);
 	
-	
+	 /****/
 	public Object getData(String string);
 
 	
 	
-
+	/****/
 	void close();
-	
+	/****/
 	void start();
-
+	/****/
 	Object getMazeByName(String string);
-	
+	/****/
 	void handleLoadProperties();
-	
+	/****/
 	void handleCustomProperties(String path);
-	
+	/****/
 	void handleSaveProperties(Properties p,String path);
-
+	/****/
 	boolean hasSolution(String name);
 
 	

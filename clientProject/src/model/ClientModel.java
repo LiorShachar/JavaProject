@@ -55,9 +55,9 @@ import sun.management.ManagementFactoryHelper;
  * 
  * 
  * 
- * <h1>MyModel</h1> this class represent my controller part of the project, it
- * is suitable for a Maze3d problem.
- * 
+ * <h1>ClientModel</h1> 
+ * my model suitable for a maze3d problem, use a socket to connect to a remote server to get a solution for mazes
+ * contains all the original methods of the model
  * 
  * <p>
  * <b>Notes:</b>

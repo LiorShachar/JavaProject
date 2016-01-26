@@ -6,6 +6,25 @@ import java.util.Observable;
 import algorithms.mazeGenerators.Position;
 import algorithms.search.Solution;
 
+/**
+*
+* 
+* 
+* 
+* 
+* <h1>CommonModel</h1> 
+* has all the common features of the models in this package
+* 
+* <p>
+* <b>Notes:</b>
+*
+* @author Lior Shachar
+* @version 1.0
+* @since 2016-1-26
+*/
+
+
+
 public abstract class CommonModel extends Observable implements Model {
 
 	private HashMap<String, Object> notifications;

@@ -27,7 +27,6 @@ import algorithms.mazeGenerators.Maze3d;
 import algorithms.mazeGenerators.Position;
 import sun.audio.AudioPlayer;
 import sun.audio.AudioStream;
-import widgets.widgetbuilds.ArrowTile;
 
 public class MyMazeWidget extends commonMaze3dWidget {
 
