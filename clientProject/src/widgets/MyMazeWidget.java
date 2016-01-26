@@ -62,24 +62,24 @@ public class MyMazeWidget extends commonMaze3dWidget {
 	public MyMazeWidget(Composite parent, int style, Maze3d maze, String name, Image goalImage, Image charImage) {
 		
 		super(parent, style, maze, name);
-		this.setLayout(new GridLayout(1, true));
+		
 		this.goalImage = goalImage;
 		this.charImage = charImage;
 		chr = new ImageGameCharacter(this, SWT.NONE, charImage);
 		currentPosition = new Position(0, 0, 0);
 		
 		u= new ArrowTile(this, SWT.NO_BACKGROUND, new Image(getDisplay(), "resources/up.png"));
-		u.setBackground(colors[4]);
+		
 		d= new ArrowTile(this, SWT.NO_BACKGROUND, new Image(getDisplay(), "resources/down.png"));
-		d.setBackground(colors[4]);
+		
 		l= new ArrowTile(this, SWT.NO_BACKGROUND, new Image(getDisplay(), "resources/left.png"));
-		l.setBackground(colors[4]);
+		
 		r= new ArrowTile(this, SWT.NO_BACKGROUND, new Image(getDisplay(), "resources/right.png"));
-		r.setBackground(colors[4]);
+		
 		f= new ArrowTile(this, SWT.NO_BACKGROUND, new Image(getDisplay(), "resources/for.png"));
-		f.setBackground(colors[4]);
+		
 		b= new ArrowTile(this, SWT.NO_BACKGROUND, new Image(getDisplay(), "resources/back.png"));
-		b.setBackground(colors[4]);
+		
 		
 		
 		
@@ -87,13 +87,21 @@ public class MyMazeWidget extends commonMaze3dWidget {
 		this.mazeName = name;
 		
 		setCharacterPosition(maze.getStartPosition());
-		setBackground(new Color(null, 255, 255, 255));
+		setBackground(colors[1]);
 
 		addDisposeListener(new DisposeListener() {
 
 			@Override
 			public void widgetDisposed(DisposeEvent e) {
 				chr.dispose();
+				u.dispose();
+				d.dispose();
+				l.dispose();
+				r.dispose();
+				 f.dispose();
+				 b.dispose();
+				 for(Color c : colors)
+					 c.dispose();
 
 			}
 		});
@@ -153,18 +161,20 @@ public class MyMazeWidget extends commonMaze3dWidget {
 	
 
 	protected void paintDirections(PaintEvent e,int w,int h) {
-		if(maze.getCell(currentPosition.up())==0)
-		u.paint(e,(int)w,(int)h);
-		if(maze.getCell(currentPosition.down())==0)
-		d.paint(e,(int)w,(int)h);
-		if(maze.getCell(currentPosition.backward())==0)
-		b.paint(e,(int)w,(int)h);
-		if(maze.getCell(currentPosition.forward())==0)
-		f.paint(e,(int)w,(int)h);
-		if(maze.getCell(currentPosition.left())==0)
-		l.paint(e,(int)w,(int)h);
-		if(maze.getCell(currentPosition.right())==0)
-		r.paint(e,(int)w,(int)h);
+		int xplacement=getSize().x/3;
+		int yplacement=getSize().y-getSize().y/10;
+		
+		u.paint(e,(int)w,(int)h,xplacement,yplacement);
+		
+		d.paint(e,(int)w,(int)h,xplacement+w,yplacement);
+		
+		b.paint(e,(int)w,(int)h,xplacement+2*w,yplacement);
+		
+		f.paint(e,(int)w,(int)h,xplacement+3*w,yplacement);
+		
+		l.paint(e,(int)w,(int)h,xplacement+4*w,yplacement);
+		
+		r.paint(e,(int)w,(int)h,xplacement+5*w,yplacement);
 	}
 
 
@@ -217,6 +227,30 @@ public class MyMazeWidget extends commonMaze3dWidget {
 
 				
 			}
+			if(maze.getCell(currentPosition.up())==0)
+				u.setValid(true);
+			else
+				u.setValid(false);
+			if(maze.getCell(currentPosition.down())==0)
+				d.setValid(true);
+			else
+				d.setValid(false);
+			if(maze.getCell(currentPosition.backward())==0)
+				b.setValid(true);
+			else
+				b.setValid(false);
+			if(maze.getCell(currentPosition.left())==0)
+				l.setValid(true);
+			else
+				l.setValid(false);
+			if(maze.getCell(currentPosition.forward())==0)
+				f.setValid(true);
+			else
+				f.setValid(false);
+			if(maze.getCell(currentPosition.right())==0)
+				r.setValid(true);
+			else
+				r.setValid(false);
 		}
 
 
