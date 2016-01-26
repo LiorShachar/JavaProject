@@ -62,9 +62,10 @@ import sun.management.ManagementFactoryHelper;
  * <p>
  * <b>Notes:</b>
  *
- * @author Lior Shachar
- * @version 1.0
- * @since 2015-12-17
+ 
+* @author Lior Shachar
+* @version 1.0
+* @since 2016-1-26
  */
 
 public class ClientModel extends CommonModel implements Model {

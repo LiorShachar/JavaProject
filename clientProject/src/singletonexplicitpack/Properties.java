@@ -4,7 +4,24 @@ package singletonexplicitpack;
 
 import java.io.Serializable;
 
+/**
+*
+* 
+* 
+* 
+* 
+* <h1>Properties</h1> 
+* a class that holdes all the information needed to initialize 
+* dynamic vars in the project, it is held static in the XMLproperties class
+* 
+* <p>
+* <b>Notes:</b>
+*
 
+* @author Lior Shachar
+* @version 1.0
+* @since 2016-1-26
+*/
 
 public class Properties implements Serializable {
 	

@@ -51,8 +51,8 @@ import sun.management.ManagementFactoryHelper;
  * 
  * 
  * 
- * <h1>MyModel</h1> this class represent my controller part of the project, it
- * is suitable for a Maze3d problem.
+ * <h1>MyModel</h1> 
+ * the maze3d stand alone model version in my project, is able to do all the functions by itself without a server
  * 
  * 
  * <p>
@@ -385,7 +385,7 @@ public class MyModel extends CommonModel {
 
 	}
 
-	public HashMap<String, Maze3d> getMazes() {
+	 HashMap<String, Maze3d> getMazes() {
 		return mazes;
 	}
 
@@ -469,7 +469,11 @@ public class MyModel extends CommonModel {
 	}
 
 	
-	
+	/**
+	 * 
+	 * serialize every key and object in the map so it can be compressed by GZIP
+	 * then saves it to the default location
+	 * **/
 	
 	public void serializeAndCachSolutions(){
 		HashMap<byte[], Solution<Position>> serialized = new HashMap<byte[], Solution<Position>>();
@@ -503,7 +507,10 @@ public class MyModel extends CommonModel {
 		
 	}
 	
-	
+	/**
+	 * loads the hashmap from the cach ZIP file
+	 * 
+	 * **/
 	
 	public void loadCachedSolutions(){
 		HashMap<byte[], Solution<Position>> serialized = new HashMap<byte[], Solution<Position>>();
