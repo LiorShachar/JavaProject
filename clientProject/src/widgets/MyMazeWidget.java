@@ -1,6 +1,6 @@
 package widgets;
 
-import java.awt.Canvas;
+
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -27,15 +27,26 @@ import algorithms.mazeGenerators.Maze3d;
 import algorithms.mazeGenerators.Position;
 import sun.audio.AudioPlayer;
 import sun.audio.AudioStream;
+import widgets.widgetbuilds.ArrowTile;
 
 public class MyMazeWidget extends commonMaze3dWidget {
 
 	Color colors[] = { new Color(null, 0, 255, 250), new Color(null, 255, 255, 255), new Color(null, 180, 230, 255),
-			new Color(null, 0, 255, 252) };
+			new Color(null, 0, 255, 252) ,new Color(getDisplay(), 0, 0, 0, 0)};
 
 	Image goalImage;
 	Image charImage;
 
+	ArrowTile u;
+	ArrowTile d;
+	ArrowTile l;
+	ArrowTile r;
+	ArrowTile f;
+	ArrowTile b;
+	
+	
+	
+	
 	/**CTOR with default images
 	 * */
 
@@ -51,10 +62,26 @@ public class MyMazeWidget extends commonMaze3dWidget {
 	public MyMazeWidget(Composite parent, int style, Maze3d maze, String name, Image goalImage, Image charImage) {
 		
 		super(parent, style, maze, name);
+		this.setLayout(new GridLayout(1, true));
 		this.goalImage = goalImage;
 		this.charImage = charImage;
 		chr = new ImageGameCharacter(this, SWT.NONE, charImage);
 		currentPosition = new Position(0, 0, 0);
+		
+		u= new ArrowTile(this, SWT.NO_BACKGROUND, new Image(getDisplay(), "resources/up.png"));
+		u.setBackground(colors[4]);
+		d= new ArrowTile(this, SWT.NO_BACKGROUND, new Image(getDisplay(), "resources/down.png"));
+		d.setBackground(colors[4]);
+		l= new ArrowTile(this, SWT.NO_BACKGROUND, new Image(getDisplay(), "resources/left.png"));
+		l.setBackground(colors[4]);
+		r= new ArrowTile(this, SWT.NO_BACKGROUND, new Image(getDisplay(), "resources/right.png"));
+		r.setBackground(colors[4]);
+		f= new ArrowTile(this, SWT.NO_BACKGROUND, new Image(getDisplay(), "resources/for.png"));
+		f.setBackground(colors[4]);
+		b= new ArrowTile(this, SWT.NO_BACKGROUND, new Image(getDisplay(), "resources/back.png"));
+		b.setBackground(colors[4]);
+		
+		
 		
 		this.maze = maze;
 		this.mazeName = name;
@@ -109,19 +136,37 @@ public class MyMazeWidget extends commonMaze3dWidget {
 
 					}
 
-					e.gc.setForeground(new Color(null, 255, 0, 0));
-					e.gc.drawString("Position: " + currentPosition, 0, 20);
+					
 
 				}
-
+				e.gc.setForeground(new Color(null, 255, 0, 0));
+				e.gc.drawString("Position: " + currentPosition, 0, 20);
+				paintDirections(e, (int)w,(int)h);
+				
 			}
 
 		});
-
+		updateMazeData();
 	}
 
 	
 	
+
+	protected void paintDirections(PaintEvent e,int w,int h) {
+		if(maze.getCell(currentPosition.up())==0)
+		u.paint(e,(int)w,(int)h);
+		if(maze.getCell(currentPosition.down())==0)
+		d.paint(e,(int)w,(int)h);
+		if(maze.getCell(currentPosition.backward())==0)
+		b.paint(e,(int)w,(int)h);
+		if(maze.getCell(currentPosition.forward())==0)
+		f.paint(e,(int)w,(int)h);
+		if(maze.getCell(currentPosition.left())==0)
+		l.paint(e,(int)w,(int)h);
+		if(maze.getCell(currentPosition.right())==0)
+		r.paint(e,(int)w,(int)h);
+	}
+
 
 	/**
 	 * 
@@ -148,10 +193,14 @@ public class MyMazeWidget extends commonMaze3dWidget {
 
 	public void updateMazeData() {
 		setMazeData(maze.getCrossSectionByY(currentPosition.getY()));
+		redraw();
 
 	}
 
 	public void set3DCharacterPosition(int level, int row, int col) {
+			boolean flag=false;
+					if(currentPosition.getY()==level)
+						flag=true;
 		
 			chr.setY(level);
 			chr.setX(row);
@@ -159,7 +208,9 @@ public class MyMazeWidget extends commonMaze3dWidget {
 			currentPosition.setY(level);
 			currentPosition.setX(row);
 			currentPosition.setZ(col);
-			updateMazeData();
+			if(flag)
+				updateMazeData();
+			
 
 			if (currentPosition.equals(maze.getGoalPosition())) {
 				this.command.doCommand();
@@ -171,6 +222,7 @@ public class MyMazeWidget extends commonMaze3dWidget {
 
 
 
+	
 	
 
 	@Override
@@ -190,11 +242,13 @@ public class MyMazeWidget extends commonMaze3dWidget {
 
 	public void moveUp() {
 		moveCharacter(currentPosition.up());
+		updateMazeData();
 
 	}
 
 	public void moveDown() {
 		moveCharacter(currentPosition.down());
+		updateMazeData();
 
 	}
 
@@ -246,12 +300,17 @@ public class MyMazeWidget extends commonMaze3dWidget {
 
 	}
 
+	
+	
+	
 	@Override
 	void setCharacterPosition(Position p) {
 		set3DCharacterPosition(p.getY(), p.getX(), p.getZ());
 
 	}
 
+	
+	
 	@Override
 	int getCharacterPositionZ() {
 		return currentPosition.getZ();

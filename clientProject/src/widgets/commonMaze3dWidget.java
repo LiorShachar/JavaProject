@@ -102,10 +102,15 @@ public abstract class commonMaze3dWidget extends Canvas {
 
 
 
-
+	
 	public void setMazeData(int[][] mazeData) {
 		this.mazeData = mazeData;
+		
 	}
+
+
+
+
 
 
 

@@ -219,7 +219,7 @@ public class MyMaze3dClientHandler extends Observable implements ClientHandler{
 			scno("packetSent", details); 
 											
 		} catch (IOException e) {
-			scno("error", "FATAL ERROR: cannot write to the client, IO exception");
+			scno("status", "connection lost with the client");
 		}
 	}
 
@@ -259,7 +259,7 @@ public class MyMaze3dClientHandler extends Observable implements ClientHandler{
              oos.writeObject(serialized);
              oos.close();
              fos.close();
-             System.out.println("cach updated successfuly to memoryCach.zip");
+             
       }catch(IOException ioe)
        {
              scno("error", "problem updating the cach file");

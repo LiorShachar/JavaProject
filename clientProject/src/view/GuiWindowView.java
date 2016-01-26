@@ -280,7 +280,7 @@ public class GuiWindowView extends commonGuiView implements View {
 		
 		// *****************************************************************//levels
 				// label
-				levelslbl = new Label(shell, SWT.BORDER);
+				levelslbl = new Label(shell, SWT.None);
 				levelslbl.setText("Levels");
 				
 
@@ -289,14 +289,14 @@ public class GuiWindowView extends commonGuiView implements View {
 		
 		// *****************************************************************//"height"
 		// label
-		heightlbl = new Label(shell, SWT.BORDER);
+		heightlbl = new Label(shell, SWT.None);
 		heightlbl.setText("Rows(in cells)");
 		
 
 		// *****************************************************************//
 		// *****************************************************************//width
 				// label
-				widthlbl = new Label(shell, SWT.BORDER);
+				widthlbl = new Label(shell, SWT.None);
 				widthlbl.setText("Columns(in cells)");
 				
 
@@ -304,6 +304,15 @@ public class GuiWindowView extends commonGuiView implements View {
 				
 				new Label(shell, SWT.NONE);
 				new Label(shell, SWT.NONE);
+				
+				// *****************************************************************//levels
+				// text
+				levelstxt = new Text(shell, SWT.SINGLE | SWT.BORDER);
+				levelstxt.setLayoutData(new GridData(SWT.None, SWT.None, false, false, 1, 1));
+
+				// *****************************************************************//
+				
+				
 				
 		// *****************************************************************//"height"
 		// text
@@ -323,12 +332,7 @@ public class GuiWindowView extends commonGuiView implements View {
 
 		
 
-		// *****************************************************************//levels
-		// text
-		levelstxt = new Text(shell, SWT.SINGLE | SWT.BORDER);
-		levelstxt.setLayoutData(new GridData(SWT.None, SWT.None, false, false, 1, 1));
-
-		// *****************************************************************//
+	
 
 		
 

@@ -541,7 +541,7 @@ public class ClientModel extends CommonModel implements Model {
 						
 					} while ( !canDisconnect);
 					
-
+					
 					scno("msg", "Connection ended");
 				} catch (ClassNotFoundException e) {
 					scno("error", "problem reading the object from server");
@@ -550,7 +550,17 @@ public class ClientModel extends CommonModel implements Model {
 					scno("error", "lost connection");
 					
 				}
-
+				try {
+					dataReader.close();
+					dataWriter.close();
+					serverSocket.getOutputStream().close();
+					serverSocket.getInputStream().close();
+				} catch (IOException e) {
+					
+				}
+					
+				
+				
 			}
 		}));
 		
