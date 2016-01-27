@@ -157,7 +157,9 @@ public class MyMazeWidget extends commonMaze3dWidget {
 	}
 
 	
-	
+	/**
+	 * sets the arrow widgets in a comfortable relative positions and orders to paint them proportionally
+	 * */
 
 	protected void paintDirections(PaintEvent e,int w,int h) {
 		int xplacement=getSize().x/3;
@@ -200,12 +202,21 @@ public class MyMazeWidget extends commonMaze3dWidget {
 
 	}
 
+	
+	/**
+	 * once the char moves up or down to another level the widget should present to new cross section associated with this level, so it gets updated from the maze its operating on
+	 * */
 	public void updateMazeData() {
 		setMazeData(maze.getCrossSectionByY(currentPosition.getY()));
 		redraw();
 
 	}
 
+	/**
+	 * sets the char position to the given coord's while checking winning conditions, availability, whether the cross section needs an update 
+	 * and which moves are available next
+	 * */
+	
 	public void set3DCharacterPosition(int level, int row, int col) {
 			boolean flag=false;
 					if(currentPosition.getY()==level)

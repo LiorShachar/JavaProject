@@ -7,7 +7,7 @@ import java.io.Serializable;
  * the client handlers at the server will get the data objects to where
  * they are supposed to be used.
  * the object contains a String for identification or details about its use
- * and an Object instance that represent any data.
+ * and an Object instance that represent any usable data.
  * 
  * 
  * 

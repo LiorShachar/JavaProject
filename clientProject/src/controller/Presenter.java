@@ -44,7 +44,7 @@ public class Presenter implements Observer {
 	HashMap<String, Command> commandCreator; // our command map (usually for
 												// cli)
 /**
- * 
+ * a ctor with initialized model and view components
  * */
 	public Presenter(Model m, View v) {
 		super();
@@ -53,7 +53,8 @@ public class Presenter implements Observer {
 		commandCreator = new HashMap<String, Command>();
 		fillMap(commandCreator);
 	}
-	/***/
+	/**
+	 * default ctor*/
 	public Presenter() {
 		super();
 		commandCreator = new HashMap<String, Command>();
@@ -253,11 +254,15 @@ public class Presenter implements Observer {
 			}
 		});
 	}
-	/***/
+	
+	
+	
+	/**returns the registered model
+	 * */
 	public Model getModel() {
 		return m;
 	}
-	/***/
+	
 	public void setModel(Model m) {
 		this.m = m;
 	}
@@ -509,6 +514,9 @@ public class Presenter implements Observer {
 		}
 	}
 
+	
+	/**switches the view to CLI view and closing any running view components if exists
+	 * */
 	public void switchToCLI() {
 		if (v != null)
 			v.close();
@@ -518,6 +526,9 @@ public class Presenter implements Observer {
 		v.start();
 	}
 
+	/**switches the view to GUI view and closing any running view components if exists
+	 * */
+	
 	public void switchToGUI() {
 		if (v != null){
 			v.close();

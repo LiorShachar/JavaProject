@@ -6,6 +6,8 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 
 
+
+
 public abstract class commonGuiView extends BasicWindow implements Runnable{
 	
 	

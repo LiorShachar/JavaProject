@@ -6,6 +6,11 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 
 
+/**
+ * a basic gui window with a shell and display that read and dispatch events
+ * */
+
+
 public abstract class BasicWindow extends CommonView implements Runnable{
 	
 	Display display;

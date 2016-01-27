@@ -26,16 +26,56 @@ import algorithms.search.Solution;
 */
 
 public interface View {
+	
+	/**
+	 * starts the view and notifies other parts of the system
+	 * */
 	  void start();
+		/**
+		 * closes the view, notifies the presenter and disposes any running threads or gui components
+		 * */
 	  void close();
+		/**
+		 * prints a list of path content
+		 * @param string the array of strings to print
+		 * */
 	void showDir(String []string);
+	/**
+	 * prints a message to the user
+	 * @param s the text to print
+	 * */
 	void showMsg(String s);
+	/**
+	 * prints an error
+	 * @param s the string to print
+	 * */
 	void showError(String s);
+	/**
+	 * returns the simple name of the view class
+	 * */
 	 String getViewType();
+		/**
+		 * shows the serialized maze
+		 * */
 	void showMaze(byte[] arr);
+	/**
+	 * show a cross section of the maze
+	 * @param arr is the serialized problem
+	 * @param by is the axis to fix
+	 * @param i is the index of the axis
+	 * */
 	void showCross(byte[] arr,String by,int i);
+	/**
+	 * prints the given solution
+	 * */
 	void showSolution(Solution<Position> s);
+	/**
+	 * notify the user that the problem represented by the string is solved
+	 * */
 	void showSolved(String name);
+	/**
+	 * gets the data for the observer's update
+	 * */
 	Object getData(String string);
 	
 	
@@ -49,7 +89,9 @@ public interface View {
 	void showUpdatedList(String []elements);
 	
 	
-	//////////////////////////////////////////// TEST
+	/**
+	 * notifies the user the a maze has been created by the model
+	 * */
 	 void showMazeIsReady(String s);
 	
 

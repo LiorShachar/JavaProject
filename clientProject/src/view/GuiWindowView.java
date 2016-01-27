@@ -637,6 +637,11 @@ public class GuiWindowView extends commonGuiView implements View {
 
 	}
 
+	
+	/**
+	 * a packed method to notify the observers with a hint that is used as a key to get the data needed
+	 * */
+	
 	void scno(String type, Object data) {
 		notifications.put(type, data);
 		setChanged();
@@ -644,6 +649,11 @@ public class GuiWindowView extends commonGuiView implements View {
 
 	}
 
+	
+	/**
+	 * prints the error string given as a messege box
+	 * */
+	
 	public void showError(String s) {
 		if(!display.isDisposed()&& !shell.isDisposed() )
 		display.syncExec(new Runnable() {
@@ -778,19 +788,29 @@ public class GuiWindowView extends commonGuiView implements View {
 
 	}
 
+	/**
+	 * starts the view read and dispatch loop
+	 * */
+	
 	@Override
 	public void start() {
 
 		run();
 
 	}
-
+	/**
+	 * a method to print a dir's content given by the model (from the presenter)
+	 * */
 	@Override
 	public void showDir(String[] string) {
 		//  method is irrelevant here
 
 	}
 
+	/**
+	 * prints the message string given as a messege box
+	 * */
+	
 	@Override
 	public void showMsg(String s) {
 		if(!display.isDisposed()&& !shell.isDisposed() )
@@ -809,6 +829,8 @@ public class GuiWindowView extends commonGuiView implements View {
 
 	}
 
+	
+	
 	@Override
 	public void showMaze(byte[] arr) {
 		
@@ -904,6 +926,10 @@ public class GuiWindowView extends commonGuiView implements View {
 		// does nothing here(GUI) (the update list function does its job )
 	}
 
+	
+	/**
+	 * get the simple name of the view class
+	 * */
 	@Override
 	public String getViewType() {
 
@@ -912,6 +938,10 @@ public class GuiWindowView extends commonGuiView implements View {
 
 	}
 
+	/**
+	 * indicates if the model can shutdown or if only the gui is needed to be disposed (used for switching a UI on runtime)
+	 * */
+	
 	public boolean isCanExitAll() {
 		return canExitAll;
 	}
@@ -925,6 +955,8 @@ public class GuiWindowView extends commonGuiView implements View {
 
 		// does nothing here (GUI)(the update list function does its job )
 	}
+
+	
 
 	public void showUpdatedList(String[] elements) {
 		display.syncExec(new Runnable() {

@@ -11,8 +11,8 @@ import java.io.Serializable;
 * 
 * 
 * <h1>Properties</h1> 
-* a class that holdes all the information needed to initialize 
-* dynamic vars in the project, it is held static in the XMLproperties class
+* a class that holds all the information needed to initialize 
+* dynamic var's in the project, it is held static in the XMLproperties class
 * 
 * <p>
 * <b>Notes:</b>

@@ -30,6 +30,12 @@ import sun.audio.AudioStream;
 public abstract class commonMaze3dWidget extends Canvas {
 
 	
+	/**
+	 * a common widget that makes a use with "my algorithms" library
+	 * using the {@link Maze3d}  and {@link Position} classes
+	 * */
+	
+	
 	public commonMaze3dWidget(Composite parent, int style) {
 		super(parent, style);
 		

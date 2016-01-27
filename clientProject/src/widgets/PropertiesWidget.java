@@ -101,6 +101,7 @@ public class PropertiesWidget extends Composite {
 
 		genCombo = new Combo(this, SWT.NONE);
 		genCombo.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 2, 1));
+		genCombo.setItems(new String[] { "simple", "dfs" });
 		new Label(this, SWT.NONE);
 
 		solveLabel = new Label(this, SWT.NONE);
@@ -110,6 +111,7 @@ public class PropertiesWidget extends Composite {
 
 		solveCombo = new Combo(this, SWT.NONE);
 		solveCombo.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 2, 1));
+		solveCombo.setItems(new String[] { "BFS", "Astar" });
 		new Label(this, SWT.NONE);
 
 		heurCombo = new Combo(this, SWT.NONE);

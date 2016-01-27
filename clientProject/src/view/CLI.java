@@ -17,7 +17,7 @@ import controller.Command;
 * 
 * <h1>CLI</h1><h4>(Command Line Interface)</h4>
 * this class represent a user interface based on textual commands as input.
-* it is threaded since it has an I\O loop.
+* it should be threaded since it has an I\O loop, which would be blocked.
 * 
 * 
 * <p>
@@ -64,7 +64,9 @@ public class CLI extends Observable implements Runnable{
 
 
 
-
+/**
+ * set the input stream to communicate with the user
+ * */
 
 	public void setIn(BufferedReader in) {
 		this.in = in;
@@ -72,14 +74,18 @@ public class CLI extends Observable implements Runnable{
 
 
 
-
+	/**
+	 * set the output stream to communicate with the user
+	 * */
 
 	public void setOut(PrintWriter out) {
 		this.out = out;
 	}
 
 
-
+/**
+ * gets the user input command
+ * */
 
 	public String getInputCom() {
 		return inputCom;

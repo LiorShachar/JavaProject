@@ -22,7 +22,7 @@ public interface Command {
 	/**
 	 * Do command.
 	 *
-	 * @param args the args
+	 * @param args 
 	 */
 	void doCommand(String[] args);
 
