@@ -55,16 +55,16 @@ import sun.management.ManagementFactoryHelper;
  * 
  * 
  * 
- * <h1>ServerModel</h1> this class represent my controller part of the project,
- * it is suitable for a Maze3d problem.
- * 
+ * <h1>ServerModel</h1> 
+ * the Model part of the server, responsible for handling the threadpool for handling different clients, and handling 
+ * the sockets
  * 
  * <p>
  * <b>Notes:</b>
  *
  * @author Lior Shachar
  * @version 1.0
- * @since 2015-12-17
+ * @since 2016-1-26
  */
 
 public class MyServerModel extends Observable  implements Observer{
@@ -81,7 +81,7 @@ public class MyServerModel extends Observable  implements Observer{
 	Thread mainServerThread;
 
 	
-	ArrayList<Socket> SocketHolder;
+	ArrayList<Socket> SocketHolder; // an array list the holds all the client sockets
 	ClientHandler clientHandler;
 
 	
@@ -109,6 +109,10 @@ public class MyServerModel extends Observable  implements Observer{
 		return notifications.get(string);
 	}
 
+	
+	/**
+	 * initiate an ordered shutdown for every part in the system
+	 * */
 	public void close() {
 		
 		
@@ -133,6 +137,11 @@ public class MyServerModel extends Observable  implements Observer{
 
 	}
 
+	
+	/**
+	 * runs the server thread to accept new client
+	 * */
+	
 	public void runServer() {
 		stop=false;
 		clientHandler= new MyMaze3dClientHandler();
@@ -202,6 +211,10 @@ public class MyServerModel extends Observable  implements Observer{
 		
 	}
 
+	
+	/**
+	 * saves the current properties to the given path
+	 * */
 	public void handleSaveProperties(Properties p, String path) {
 		try {
 			XMLproperties.writeProperties(p, path);
@@ -213,6 +226,10 @@ public class MyServerModel extends Observable  implements Observer{
 
 	}
 
+	
+	/***
+	 * load properties from the default path 
+	 * */
 	public void handleLoadProperties() {
 		try {
 			prop = XMLproperties.getMyPropertiesInstance();
@@ -230,6 +247,10 @@ public class MyServerModel extends Observable  implements Observer{
 		}
 	}
 	
+	
+	/**
+	 * disconnect the specified client index (in the socketHolder)
+	 * */
 	public void DcClient(int index){
 		try {
 			SocketHolder.get(index).close();

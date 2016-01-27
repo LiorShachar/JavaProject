@@ -1,4 +1,4 @@
-/*package serverModel;
+package serverModel;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -8,7 +8,22 @@ import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.net.Socket;
 
-public class MyClientHandler implements ClientHandler{
+/**
+ * <h1>MyClientHandler</h1>
+ * a common client handler
+ * 
+ * 
+ * <p>
+ * <b>Notes:</b> .
+ *
+ * @author  Lior Shachar
+ * @version 1.0
+ * @since   2016-1-26
+ */
+
+
+
+public abstract class MyClientHandler implements ClientHandler{
 
 	@Override
 	public void handleClient(Socket sock) {
@@ -44,4 +59,3 @@ public class MyClientHandler implements ClientHandler{
 	}
 
 }
-*/

@@ -32,8 +32,18 @@ import protocol.DataObject;
 
 public class MyMaze3dClientHandler extends Observable implements ClientHandler{
 	
-	
-	
+	/**
+	 * <h1>MyMaze3dClientHandler</h1>
+	 * The interface of a UI command
+	 * 
+	 * 
+	 * <p>
+	 * <b>Notes:</b> .
+	 *
+	 * @author  Lior Shachar
+	 * @version 1.0
+	 * @since   2016-1-26
+	 */
 	
 	
 	

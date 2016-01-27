@@ -17,10 +17,21 @@ import org.eclipse.swt.widgets.MessageBox;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.TableItem;
-import org.eclipse.wb.swt.SWTResourceManager;
 
 
 
+/**
+ * <h1>ServerView</h1>
+ * the View part of the server, presented as a graphic user interface
+ * 
+ * 
+ * <p>
+ * <b>Notes:</b> .
+ *
+ * @author  Lior Shachar
+ * @version 1.0
+ * @since   2016-1-26
+ */
 
 
 

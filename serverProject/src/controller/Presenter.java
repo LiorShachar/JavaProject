@@ -6,6 +6,19 @@ import java.util.Observer;
 import serverModel.MyServerModel;
 import serverView.ServerView;
 
+
+/**
+ * <h1>Presenter</h1>
+ * The Server Presenter, responsible for the communication  and synchronization between the view and model
+ * 
+ * 
+ * <p>
+ * <b>Notes:</b> .
+ *
+ * @author  Lior Shachar
+ * @version 1.0
+ * @since   2016-1-26
+ */
 public class Presenter implements Observer {
 
 	private MyServerModel m;
@@ -23,6 +36,8 @@ public class Presenter implements Observer {
 
 	}
 
+	
+	
 	public void update(Observable arg0, Object arg1) {
 		String note = (String) arg1;
 		///////////////////////////////////////////////////////// NOTIFICATIONS
