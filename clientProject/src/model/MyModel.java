@@ -110,8 +110,8 @@ public class MyModel extends CommonModel {
 	}
 
 	/**
-	 * generate a maze based on the coordinates size given and save it on the
-	 * system with the specified name uses submit and callable to generate the
+	 * generate a maze based on the coordinates size given and saves it on the
+	 * system with the specified name ,uses submit and callable to generate the
 	 * thread in a separate thread
 	 */
 

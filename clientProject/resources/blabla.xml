@@ -4,6 +4,9 @@
   <void property="heuristic">
    <string>Manhatten</string>
   </void>
+  <void property="searchingAlgorithm">
+   <string>Astar</string>
+  </void>
   <void property="server_ip">
    <string>127.0.0.1</string>
   </void>

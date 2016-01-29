@@ -1,6 +1,6 @@
 package model;
 
-import java.io.BufferedReader;
+
 import java.io.DataInputStream;
 import java.io.File;
 import java.io.FileInputStream;
@@ -9,45 +9,33 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.io.PrintWriter;
+
 import java.net.Socket;
 import java.net.SocketException;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
-import java.util.Set;
+
 import java.util.concurrent.Callable;
-import java.util.concurrent.ConcurrentHashMap;
+
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
-import java.util.concurrent.ThreadPoolExecutor;
-import java.util.concurrent.TimeUnit;
-import java.util.zip.GZIPInputStream;
-import java.util.zip.GZIPOutputStream;
-
-import org.eclipse.swt.SWT;
 
 import algorithms.mazeGenerators.Maze3d;
 import algorithms.mazeGenerators.Maze3dGenerator;
 import algorithms.mazeGenerators.MyMaze3dGenerator;
 import algorithms.mazeGenerators.Position;
 import algorithms.mazeGenerators.SimpleMaze3dGenerator;
-import algorithms.search.Astar;
-import algorithms.search.BFS;
-import algorithms.search.Heuristic;
-import algorithms.search.MazeAirDis;
-import algorithms.search.MazeManDis;
+
 import algorithms.search.Solution;
-import algorithms.search.searchableMaze3d;
+
 import io.MyCompressorOutputStream;
 import io.MyDecompressorInputStream;
 import protocol.DataObject;
 import singletonexplicitpack.Properties;
-import sun.management.ManagementFactoryHelper;
+
 
 /**
  *
